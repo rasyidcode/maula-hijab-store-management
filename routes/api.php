@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/bahan', 'API\DashboardController@get_all_bahan');
+Route::get('/bahan/{id}', 'API\DashboardController@get_bahan');
+Route::post('/bahan', 'API\DashboardController@create_bahan');
+Route::post('/bahan/{id}/edit', 'API\DashboardController@update_bahan');
+Route::post('/bahan/{id}/hapus', 'API\DashboardController@delete_bahan');

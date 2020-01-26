@@ -14,3 +14,27 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/adminlte', function() {
+    return view('pages.sample');
+});
+
+Route::get('/persediaan/barang', function() {
+    return view('pages.persediaan.barang');
+});
+
+Route::get('/persediaan/induk', function() {
+    return view('pages.persediaan.induk');
+});
+
+Route::get('/persediaan/bahan', function() {
+    return view('pages.persediaan.bahan');
+});
+
+Route::get('/penjahit', function() {
+    return view('pages.penjahit');
+});
+
+Route::get('/wos', function() {
+    return view('pages.wos');
+});
