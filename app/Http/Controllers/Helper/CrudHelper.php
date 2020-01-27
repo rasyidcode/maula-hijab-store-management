@@ -22,6 +22,14 @@ class CrudHelper {
         }
     }
 
+    public static function getBy(string $model, string $key, string $value) : object {
+        if (CrudHelper::checkClass($model)) {
+            return $model::where($key, '=', $value)->get();
+        } else {
+            return (object)[];
+        }
+    }
+
     public static function create(string $model, array $data) : object {
         if (CrudHelper::checkClass($model)) {
             return $model::create($data);
@@ -39,9 +47,27 @@ class CrudHelper {
         }
     }
 
+    public static function updateBy(string $model, string $key, string $value, array $data) : object {
+        if (CrudHelper::checkClass($model)) {
+            $model::where($key, '=', $value)->update($data);
+            return CrudHelper::getBy($model, $key, $data['kode']);
+        } else {
+            return (object)[];
+        }
+    }
+
     public static function delete(string $model, int $id) : object {
         if (CrudHelper::checkClass($model)) {
             $model::destroy($id);
+            return (object)[];
+        } else {
+            return (object)[];
+        }
+    }
+
+    public static function deleteBy(string $model, string $key, string $value) : object {
+        if (CrudHelper::checkClass($model)) {
+            $model::where($key, '=', $value)->delete();
             return (object)[];
         } else {
             return (object)[];

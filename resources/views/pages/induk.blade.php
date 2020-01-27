@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Induk')
+@section('title', 'Data Induk')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Daftar Induk</h1>
+                <h1 class="m-0 text-dark">Data Induk</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Daftar Induk</li>
+                    <li class="breadcrumb-item active">Data Induk</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -44,20 +44,24 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-bordered table-hover text-nowrap text-center">
+                        <table class="table table-sm table-bordered table-hover text-nowrap text-center">
                             <thead>
                                 <tr>
+                                    <th width="1%">No.</th>
                                     <th width="10%">Kode Induk</th>
                                     <th>Nama Produk</th>
                                     <th>Harga Jahit</th>
+                                    <th>HPP</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>1.</td>
                                     <td>Aara</td>
                                     <td>Arafah Hijab</td>
                                     <td>Rp. 12.000</td>
+                                    <td>Rp. 13.500</td>
                                     <td>
                                         <a class="btn btn-primary btn-sm" href="#">
                                             <i class="fas fa-eye">
@@ -74,9 +78,11 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>2.</td>
                                     <td>Aara</td>
                                     <td>Arafah Hijab</td>
                                     <td>Rp. 12.000</td>
+                                    <td>Rp. 13.500</td>
                                     <td>
                                         <a class="btn btn-primary btn-sm" href="#">
                                             <i class="fas fa-eye">
@@ -93,9 +99,11 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>3.</td>
                                     <td>Aara</td>
                                     <td>Arafah Hijab</td>
                                     <td>Rp. 12.000</td>
+                                    <td>Rp. 13.500</td>
                                     <td>
                                         <a class="btn btn-primary btn-sm" href="#">
                                             <i class="fas fa-eye">
@@ -112,9 +120,11 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>4.</td>
                                     <td>Aara</td>
                                     <td>Arafah Hijab</td>
                                     <td>Rp. 12.000</td>
+                                    <td>Rp. 13.500</td>
                                     <td>
                                         <a class="btn btn-primary btn-sm" href="#">
                                             <i class="fas fa-eye">

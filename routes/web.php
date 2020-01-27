@@ -19,16 +19,24 @@ Route::get('/adminlte', function() {
     return view('pages.sample');
 });
 
-Route::get('/persediaan/barang', function() {
-    return view('pages.persediaan.barang');
+Route::get('/persediaan/induk', function() {
+    return view('pages.induk');
 });
 
-Route::get('/persediaan/induk', function() {
-    return view('pages.persediaan.induk');
+Route::get('/persediaan/induk/tambah', function() {
+    return view('pages.induk_add');
+});
+
+Route::get('/persediaan/induk/edit', function() {
+    return view('pages.induk_edit');
+});
+
+Route::get('/persediaan/barang', function() {
+    return view('pages.barang');
 });
 
 Route::get('/persediaan/bahan', function() {
-    return view('pages.persediaan.bahan');
+    return view('pages.bahan');
 });
 
 Route::get('/penjahit', function() {

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Bahan extends Model {
-
-    protected $table = "bahan";
+class Induk extends Model
+{
+    protected $table = "induk";
+    protected $primaryKey = "kode";
+    public $incrementing = false;
 
     protected $guarded = [];
 

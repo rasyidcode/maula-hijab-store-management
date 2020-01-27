@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBarangTable extends Migration
+class CreateIndukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateBarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('barang', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('induk', function (Blueprint $table) {
+            $table->string('kode')->primary();
+            $table->string('nama_produk');
+            $table->bigInteger('harga_jahit');
+            $table->bigInteger('hpp');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateBarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barang');
+        Schema::dropIfExists('induk');
     }
 }
