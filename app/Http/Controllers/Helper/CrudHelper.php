@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CrudHelper {
 
-    public static function get_all(string $model) : object {
+    public static function get_all(string $model, array $fields = null) : object {
         if (CrudHelper::checkClass($model)) {
-            return $model::all();
+            if ($fields == null) {
+                return $model::all();
+            } else {
+                return $model::all($fields);
+            }
         } else {
             return (object)[];
         }
@@ -24,7 +28,7 @@ class CrudHelper {
 
     public static function getBy(string $model, string $key, string $value) : object {
         if (CrudHelper::checkClass($model)) {
-            return $model::where($key, '=', $value)->get();
+            return $model::where($key, '=', $value)->first();
         } else {
             return (object)[];
         }

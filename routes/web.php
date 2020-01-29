@@ -27,7 +27,7 @@ Route::get('/persediaan/induk/tambah', function() {
     return view('pages.induk_add');
 });
 
-Route::get('/persediaan/induk/edit', function() {
+Route::get('/persediaan/induk/{kode}/edit', function(string $kode) {
     return view('pages.induk_edit');
 });
 
@@ -45,4 +45,8 @@ Route::get('/penjahit', function() {
 
 Route::get('/wos', function() {
     return view('pages.wos');
+});
+
+Route::get('/error', function() {
+    return view('pages.error');
 });

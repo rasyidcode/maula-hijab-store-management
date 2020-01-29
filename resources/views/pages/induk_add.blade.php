@@ -36,19 +36,19 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="kode">Kode</label>
-                                <input id="kode" type="text" class="form-control" placeholder="Ex : TPDL" required>
+                                <input id="kode" type="text" class="form-control" placeholder="Ex : TPDL">
                             </div>
                             <div class="form-group">
                                 <label for="nama_produk">Nama Produk</label>
-                                <input id="nama_produk" type="text" class="form-control" placeholder="Ex : TPDL" required>
+                                <input id="nama_produk" type="text" class="form-control" placeholder="Ex : TPDL">
                             </div>
                             <div class="form-group">
                                 <label for="harga_jahit">Harga Jahit</label>
-                                <input id="harga_jahit" type="text" class="form-control" placeholder="Ex : Rp. 12.000" required>
+                                <input id="harga_jahit" type="text" class="form-control" placeholder="Ex : Rp. 12.000">
                             </div>
                             <div class="form-group">
                                 <label for="hpp">HPP</label>
-                                <input id="hpp" type="text" class="form-control" placeholder="Ex : Rp. 13.500" required>
+                                <input id="hpp" type="text" class="form-control" placeholder="Ex : Rp. 13.500">
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -63,6 +63,16 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+@endsection
+
+@section('custom-css-adminlte')
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+@endsection
+
+@section('custom-js-adminlte')
+<!-- SweetAlert2 -->
+<script src="{{ asset('admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection
 
 @section('custom-js')

@@ -33,18 +33,35 @@
                         </div>
     
                         <div class="card-tools">
-                            <div class="input-group input-group-sm p-1" style="width: 250px;">
-                                <input type="text" name="table_search" class="form-control float-right" placeholder="Cari Induk...">
-            
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="btn-group">
+                                        <button id="refresh_induk" type="button" class="btn btn-default"><i class="fas fa-sync-alt"></i></button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown">10</button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">10</a>
+                                                <a class="dropdown-item" href="#">50</a>
+                                                <a class="dropdown-item" href="#">100</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="input-group input-group-sm p-2">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Cari induk...">
+                    
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-sm table-bordered table-hover text-nowrap text-center">
+                        <table id="data_induk" class="table table-sm table-bordered table-hover text-nowrap text-center">
                             <thead>
                                 <tr>
                                     <th width="1%">No.</th>
@@ -52,106 +69,31 @@
                                     <th>Nama Produk</th>
                                     <th>Harga Jahit</th>
                                     <th>HPP</th>
+                                    <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1.</td>
-                                    <td>Aara</td>
-                                    <td>Arafah Hijab</td>
-                                    <td>Rp. 12.000</td>
-                                    <td>Rp. 13.500</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Aara</td>
-                                    <td>Arafah Hijab</td>
-                                    <td>Rp. 12.000</td>
-                                    <td>Rp. 13.500</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Aara</td>
-                                    <td>Arafah Hijab</td>
-                                    <td>Rp. 12.000</td>
-                                    <td>Rp. 13.500</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Aara</td>
-                                    <td>Arafah Hijab</td>
-                                    <td>Rp. 12.000</td>
-                                    <td>Rp. 13.500</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer clearfix">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-8">
+                                <ul class="pagination pagination-sm m-0">
+                                    <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-4 text-right">
+                                <p>Data dari <strong>1</strong> s/d <strong>10</strong> dari <strong>1000</strong></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -161,16 +103,46 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+<div class="modal fade" id="modal_induk_detail">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detail Induk</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="list-detail" class="list-group list-group-bordered"></ul>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 @endsection
 
 @section('custom-css-adminlte')
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('custom-js-adminlte')
+<!-- SweetAlert2 -->
+<script src="{{ asset('admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection
 
 @section('custom-css')
 @endsection
 
 @section('custom-js')
+<script src="{{ asset('js/models/model_induk.js') }}"></script>
+<script src="{{ asset('js/general.js') }}"></script>
+<script src="{{ asset('js/induk.js') }}"></script>
 @endsection

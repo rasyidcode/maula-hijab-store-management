@@ -72,7 +72,7 @@ class DashboardController extends Controller {
 
     /* start induk */
     public function get_all_induk() {
-        $all_induk = CrudHelper::get_all(Induk::class);
+        $all_induk = CrudHelper::get_all(Induk::class, ["kode", "nama_produk", "harga_jahit", "hpp", "created_at"]);
         return GeneralHelper::send_response(200, "Berhasil", $all_induk);
     }
 
@@ -103,8 +103,8 @@ class DashboardController extends Controller {
         $data = $request->only(['kode', 'nama_produk', 'harga_jahit', 'hpp']);
         $validator = Validator::make(
             $data, 
-            ValidatorConstantHelper::RULES_INDUK, 
-            ValidatorConstantHelper::MESSAGES_INDUK
+            ValidatorConstantHelper::RULES_INDUK2, 
+            ValidatorConstantHelper::MESSAGES_INDUK2
         );
         if ($validator->fails()) {
             return GeneralHelper::send_response(

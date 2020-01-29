@@ -22,9 +22,25 @@ class ValidatorConstantHelper {
         'hpp' => 'required|numeric'
     ];
 
+    public const RULES_INDUK2 = [
+        'kode' => 'required',
+        'nama_produk' => 'required',
+        'harga_jahit' => 'required|numeric',
+        'hpp' => 'required|numeric'
+    ];
+
     public const MESSAGES_INDUK = [
         'kode.required' => 'Kode tidak boleh kosong',
         'kode.unique' => 'Kode sudah terpakai, silahkan coba yang lain',
+        'nama_produk.required' => 'Nama produk tidak boleh kosong',
+        'harga_jahit.required' => 'Harga jahit tidak boleh kosong',
+        'harga_jahit.numeric' => 'Harga jahit harus angka',
+        'hpp.required' => 'HPP tidak boleh kosong',
+        'hpp.numeric' => 'HPP harus berupa angka'
+    ];
+
+    public const MESSAGES_INDUK2 = [
+        'kode.required' => 'Kode tidak boleh kosong',
         'nama_produk.required' => 'Nama produk tidak boleh kosong',
         'harga_jahit.required' => 'Harga jahit tidak boleh kosong',
         'harga_jahit.numeric' => 'Harga jahit harus angka',
