@@ -30,7 +30,9 @@ Route::post('/induk/{id}/edit', 'API\DashboardController@update_induk');
 Route::post('/induk/{id}/hapus', 'API\DashboardController@delete_induk');
 
 Route::get('/barang', 'API\DashboardController@get_all_barang');
+Route::get('/barang/completed', 'API\DashboardController@get_all_barang_detailed');
 Route::get('/barang/{id}', 'API\DashboardController@get_barang');
+Route::get('/barang/{id}/completed', 'API\DashboardController@get_barang_detailed');
 Route::post('/barang', 'API\DashboardController@create_barang');
 Route::post('/barang/{id}/edit', 'API\DashboardController@update_barang');
 Route::post('/barang/{id}/hapus', 'API\DashboardController@delete_barang');

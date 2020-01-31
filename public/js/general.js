@@ -1,5 +1,7 @@
-class General {
+const IntType = Object.freeze({"MONEY": 0, "STANDARD": 1})
 
+class General {
+    
     static sendRequest(data, route, method, headers, onsuccess = null, onerror = null) {
         const url = window.location.origin + "/api" + route
         const xhttp = new XMLHttpRequest()
@@ -98,6 +100,7 @@ class General {
 
     static handleEmptyField(el_msg) {
         el_msg.forEach((function (item) {
+            console.log(item.element.value)
             if (item.element.value === "") {
                 if (item.element.closest(".form-group").children.length <= 2) {
                     General.createInvalidFeedback(item.element, item.message)
@@ -110,8 +113,11 @@ class General {
         }))
     }
 
-    static createTd(value) {
+    static createTd(value, style = null) {
         let td = document.createElement("td")
+        if (style !== null) {
+            td.classList.add(style)
+        }
         td.innerHTML = value
         return td
     }
@@ -152,7 +158,7 @@ class General {
                 button.setAttribute("type", "button")
                 button.setAttribute("data-toggle", "modal")
                 button.setAttribute("data-target", options.action)
-                button.setAttribute("data-kode", options.kode)
+                button.setAttribute("data-id", options.id)
                 break
             case "action":
                 button = General.buttonStyleChooser(document.createElement("button"), options.position)
@@ -164,5 +170,88 @@ class General {
         }
 
         return button
+    }
+
+    static actionChooser(type, action, id) {
+        switch(type) {
+            case "modal":
+                return action
+            case "link":
+                return `${action}/${id}/edit`
+            case "action":
+                return function() {
+                    const url = `${action}/${id}/hapus`
+                    let result = confirm("Anda yakin ingin dihapus?")
+                    if (result) {
+                        General.sendRequest(null, url, "POST", [{key: "Content-Type", value: "application/json"}],
+                            function onsuccess(xhttp) {
+                                const response = JSON.parse(xhttp.responseText)
+                                General.showToast("success", response.message)
+                                setTimeout(function() {
+                                    location.reload()
+                                }, 3000)
+                            },
+                            function onerror(xhttp) {
+                                const response = JSON.parse(xhttp.responseText)
+                                General.showToast("error", response.message)
+                            }
+                        )
+                    }
+                }
+            default:
+                break
+        }
+    }
+
+    static makeListData(options) {
+        options.data.forEach(function(item, index) {
+            let tr = document.createElement("tr")
+            let keys = Object.keys(item)
+            tr.appendChild(General.createTd(`${index + 1}.`))
+            keys.forEach(function(key) {
+                if (key !== "id") {
+                    if (typeof item[key] === 'string' || item[key] instanceof String) {
+                        tr.appendChild(General.createTd(item[key]))
+                    } else {
+                        if (item[key].type === IntType.MONEY) {
+                            tr.appendChild(General.createTd(General.rupiahFormat(item[key].value.toString(), "")))
+                        } else {
+                            if (!item[key].has_style) {
+                                tr.appendChild(General.createTd(item[key].value))   
+                            } else {
+                                // START ATTENTION : barang spesific code
+                                if ((item[key].value + 20) <= item.stok.value) {
+                                    tr.appendChild(General.createTd(item[key].value, "bg-red"))
+                                } else {
+                                    tr.appendChild(General.createTd(item[key].value, "bg-green"))
+                                }
+                                // END ATTENTION
+                            }
+                        }
+                    }
+                }
+            })
+            /* ATTENTION : not dynamic */
+            let td_action = document.createElement("td")
+            options.actions.forEach(function(act, index) {
+                const button_options = {
+                    position: index,
+                    type: act.type,
+                    action: General.actionChooser(
+                        act.type,
+                        act.action,
+                        item[keys[0]]
+                    )
+                }
+                if (act.is_pass_id) {
+                    button_options.id = item[keys[0]]
+                }
+                let button = General.createActionButton(button_options)
+                td_action.appendChild(button)
+            })
+
+            tr.appendChild(td_action)
+            document.getElementById(options.table_id).children[1].appendChild(tr)
+        })
     }
 }

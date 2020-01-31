@@ -13,6 +13,8 @@ use App\Http\Controllers\Helper\ValidatorConstantHelper;
 use App\Models\Bahan;
 use App\Models\Induk;
 use App\Models\Barang;
+use App\Models\Penjahit;
+use App\Models\Wos;
 
 class DashboardController extends Controller {
 
@@ -130,9 +132,19 @@ class DashboardController extends Controller {
         return GeneralHelper::send_response(200, "Berhasil", $all_barang);
     }
 
+    public function get_all_barang_detailed() {
+        $all_detailed_barang = CrudHelper::get_all_with2(Barang::class, "induk", "bahan");
+        return GeneralHelper::send_response(200, "Berhasil", $all_detailed_barang);
+    }
+
     public function get_barang(string $kode) {
         $barang = CrudHelper::getBy(Barang::class, "kode", $kode);
         return GeneralHelper::send_response(200, "Berhasil", $barang);
+    }
+
+    public function get_barang_detailed(string $kode) {
+        $detailed_barang = CrudHelper::getBy2(Barang::class, "induk", "bahan", $kode);
+        return GeneralHelper::send_response(200, "Berhasil", $detailed_barang);
     }
 
     public function create_barang(Request $request)  {
@@ -176,4 +188,37 @@ class DashboardController extends Controller {
         return GeneralHelper::send_response(200, "Barang berhasil dihapus", []);
     }
     /* end barang */
+
+    /* start penjahit */
+    public function getAllPenjahit() {
+        $allPenjahit = CrudHelper::get_all(Penjahit::class);
+        return GeneralHelper::send_response(200, "Berhasil!", $allPenjahit);
+    }
+
+    public function getPenjahit() {
+        $penjahit = CrudHelper::getBy(Penjahit::class, 'nomor_hp');
+        return GeneralHelper::send_response(200, 'Berhasil!', $penjahit);
+    }
+
+    public function createPenjahit(Request $request) {
+        $data = $request->only(['nomor_hp', 'nama_lengkap', 'alamat']);
+
+        $validator = Validator::make(
+            $data,
+            ValidatorConstantHelper::RULES_PENJAHIT,
+            ValidatorConstantHelper::MESSAGES_PENJAHIT
+        );
+
+        if ($validator->fails()) {
+            return GeneralHelper::send_response(
+                422, 
+                "validation error", 
+                $validator->errors()
+            );
+        }
+
+        $penjahit = CrudHelper::create(Penjahit::class, $data);
+        return GeneralHelper::send_response(200, 'Penjahit telah ditambahkan');
+    }
+    /* end panjahit */
 }

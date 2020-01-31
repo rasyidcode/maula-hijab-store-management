@@ -63,326 +63,21 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-sm table-bordered table-hover text-nowrap text-center">
+                        <table id="data_barang" class="table table-sm table-bordered table-hover text-nowrap text-center">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Kode</th>
-                                    <th width="10%">Induk</th>
+                                    <th width="1%">No.</th>
+                                    <th width="5%">Kode</th>
+                                    <th width="25%">Nama Produk</th>
                                     <th width="5%">Warna</th>
                                     <th width="5%">Bahan</th>
-                                    <th width="1%">Masuk</th>
-                                    <th width="1%">Keluar</th>
-                                    <th width="1%">Stok Akhir</th>
-                                    <th width="1%">Treshold</th>
-                                    <th>Status Produksi</th>
-                                    <th>HPP</th>
+                                    <th width="5%">Stok</th>
+                                    <th width="10%">Treshold</th> <!-- green +50, orange +20 red +0 -->
                                     <th>Total Modal</th>
-                                    <th>Action</th>
+                                    <th width="10%">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>5.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>7.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>8.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>9.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>10.</td>
-                                    <td>Aara-BiruMuda</td>
-                                    <td>Aara</td>
-                                    <td>Warna</td>
-                                    <td>Diamond</td>
-                                    <td>20</td>
-                                    <td>5</td>
-                                    <td>15</td>
-                                    <td>10</td>
-                                    <td>
-                                        <span class="badge badge-danger">urgent</span>
-                                    </td>
-                                    <td>Rp. 13.000</td>
-                                    <td>Rp. 300.000</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" href="#">
-                                            <i class="fas fa-eye">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-info btn-sm" href="#">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm" href="#">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
@@ -415,13 +110,20 @@
 @endsection
 
 @section('custom-css-adminlte')
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 @section('custom-js-adminlte')
+<!-- SweetAlert2 -->
+<script src="{{ asset('admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 @endsection
 
 @section('custom-css')
 @endsection
 
 @section('custom-js')
+<script src="{{ asset('js/general.js') }}"></script>
+<script src="{{ asset('js/models/model_barang.js') }}"></script>
+<script src="{{ asset('js/barang.js') }}"></script>
 @endsection

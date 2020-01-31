@@ -142,7 +142,7 @@
 @endsection
 
 @section('custom-js')
-<script src="{{ asset('js/models/model_induk.js') }}"></script>
 <script src="{{ asset('js/general.js') }}"></script>
+<script src="{{ asset('js/models/model_induk.js') }}"></script>
 <script src="{{ asset('js/induk.js') }}"></script>
 @endsection

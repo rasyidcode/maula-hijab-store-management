@@ -13,6 +13,6 @@ class Induk extends Model
     protected $guarded = [];
 
     public function barang() {
-        return $this->hasMany('App\Models\Barang');
+        return $this->hasMany('App\Models\Barang', "kode_induk", "kode");
     }
 }

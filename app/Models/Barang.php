@@ -12,10 +12,10 @@ class Barang extends Model {
     protected $guarded = [];
 
     public function induk() {
-        return $this->belongsTo('App\Models\Induk');
+        return $this->belongsTo('App\Models\Induk', "kode_induk", "kode");
     }
 
     public function bahan() {
-        return $this->belongsTo('App\Models\Bahan');
+        return $this->belongsTo('App\Models\Bahan', "id_bahan", "id");
     }
 }

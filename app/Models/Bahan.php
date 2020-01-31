@@ -11,6 +11,6 @@ class Bahan extends Model {
     protected $guarded = [];
 
     public function barang() {
-        return $this->hasMany('App\Models\Barang');
+        return $this->hasMany('App\Models\Barang', "id_bahan", "id");
     }
 }

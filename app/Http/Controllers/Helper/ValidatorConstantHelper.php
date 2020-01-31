@@ -49,7 +49,7 @@ class ValidatorConstantHelper {
     ];
 
     public const RULES_BARANG = [
-        'kode' => 'required|',
+        'kode' => 'required|unique:barang',
         'kode_induk' => 'required',
         'warna' => 'required',
         'stok' => 'required|numeric',
@@ -59,6 +59,7 @@ class ValidatorConstantHelper {
 
     public const MESSAGES_BARANG = [
         'kode.required' => 'Kode tidak boleh kosong',
+        'kode.unique' => 'Kode sudah terpakai',
         'kode_induk.required' => 'Kode induk tidak boleh kosong',
         'warna.required' => 'Warna tidak boleh kosong',
         'stok.required' => 'Stok tidak boleh kosong',
@@ -67,6 +68,19 @@ class ValidatorConstantHelper {
         'treshold.numeric' => 'Treshold harus berupa angka',
         'id_bahan.required' => 'Id bahan tidak boleh kosong',
         'id_bahan.numeric' => 'Id bahan harus berupa angka'
+    ];
+
+    public const RULES_PENJAHIT = [
+        'nomor_hp' => 'required|unique:penjahit',
+        'nama_lengkap' => 'required',
+        'alamat' => 'required'
+    ];
+
+    public const MESSAGES_PENJAHIT = [
+        'nomor_hp.required' => 'Nomor hp tidak boleh kosong',
+        'nomor_hp.unique' => 'Nomor hp sudah terpakai',
+        'nama_lengkap.required' => 'Nama lengkap tidak boleh kosong',
+        'alamat.required' => 'Alamat tidak boleh kosong'
     ];
 
 }

@@ -8,7 +8,7 @@ $(function () {
         handleListIndukPage()
         $("#modal_induk_detail").on("show.bs.modal", function(e) {
             const link = e.relatedTarget.dataset
-            const url = `/induk/${link.kode}`
+            const url = `/induk/${link.id}`
             const headers = [
                 {
                     key: "Content-Type",
@@ -29,7 +29,6 @@ $(function () {
                     model_induk.setTotalBarang(response.data.total_barang == null ? "" : "")
 
                     const list = document.getElementById("list-detail")
-                    console.log(list.children.length)
                     Object.keys(model_induk).forEach(function (key) {
                         if (list.children.length <= 7) {
                             const li = document.createElement("li")
@@ -88,13 +87,9 @@ $(function () {
             }
         ]
 
-        General.sendRequest(
-            null,
-            "/induk",
-            "GET",
-            headers,
+        General.sendRequest(null, "/induk", "GET", headers,
             function onsuccess(xhttpd) {
-                dataInduk = JSON.parse(xhttpd.responseText)
+                const dataInduk = JSON.parse(xhttpd.responseText)
                 const allInduk = []
                 dataInduk.data.forEach(function(induk) {
                     const model_induk = new ModelInduk(
@@ -104,7 +99,7 @@ $(function () {
                         induk.hpp,
                         induk.created_at
                     )
-                    allInduk.push(model_induk)
+                    allInduk.push(model_induk.getUIData())
                 })
                 const options = { 
                     data: allInduk,
@@ -112,87 +107,28 @@ $(function () {
                     actions: [
                         {
                             type: "modal",
-                            action: "#modal_induk_detail"
+                            action: "#modal_induk_detail",
+                            is_pass_id: true
                         },
                         {
                             type: "link",
-                            action: "/persediaan/induk"
+                            action: "/persediaan/induk",
+                            is_pass_id: false
                         },
                         {
                             type: "action",
-                            action: "/induk"
+                            action: "/induk",
+                            is_pass_id: false
                         }
                     ]
                 }
-                makeListData(options)
+                General.makeListData(options)
             },
             function onsuccess(xhttpd) {
                 console.log(xhttpd.responseText)
                 console.log(xhttpd.status)
             }
         )
-    }
-
-    function makeListData(options) {
-        options.data.forEach(function(item, index) {
-            let tr = document.createElement("tr")
-            let keys = Object.keys(item)
-            tr.appendChild(General.createTd(`${index + 1}.`))
-            keys.forEach(function(key) {
-                if (typeof item[key] === 'string' || item[key] instanceof String) {
-                    tr.appendChild(General.createTd(item[key]))
-                } else {
-                    if (item.getHargaJahit().type === IntType.MONEY) {
-                        tr.appendChild(General.createTd(General.rupiahFormat(item[key].toString(), "")))
-                    } else {
-                        tr.appendChild(General.createTd(item[key]))
-                    }
-                }
-            })
-            /* ATTENTION : not dynamic */
-            let td_action = document.createElement("td")
-            let button_detail = General.createActionButton({
-                position: 0,
-                type: options.actions[0].type,
-                action: options.actions[0].action,
-                kode: item[keys[0]]
-            })
-            let button_edit = General.createActionButton({
-                position: 1,
-                type: options.actions[1].type,
-                action: `${options.actions[1].action}/${item[keys[0]]}/edit`,
-            })
-            let button_delete = General.createActionButton({
-                position: 2,
-                type: options.actions[2].type,
-                action: function() {
-                    const url = `${options.actions[2].action}/${item[keys[0]]}/hapus`
-                    let result = confirm("Anda yakin ingin dihapus?")
-                    if (result) {
-                        General.sendRequest(null, url, "POST", [{key: "Content-Type", value: "application/json"}],
-                            function onsuccess(xhttp) {
-                                const response = JSON.parse(xhttp.responseText)
-                                General.showToast("success", response.message)
-                                setTimeout(function() {
-                                    location.reload()
-                                }, 3000)
-                            },
-                            function onerror(xhttp) {
-                                const response = JSON.parse(xhttp.responseText)
-                                General.showToast("error", response.message)
-                            }
-                        )
-                    }
-                },
-            })
-
-            td_action.appendChild(button_detail)
-            td_action.appendChild(button_edit)
-            td_action.appendChild(button_delete)
-
-            tr.appendChild(td_action)
-            document.getElementById(options.table_id).children[1].appendChild(tr)
-        })
     }
 
     function handleCreateIndukPage() {
@@ -322,10 +258,6 @@ $(function () {
                 window.location.href = window.location.origin + "/error"
             }
         )
-    }
-
-    async function refreshPage(url) {
-        window.location.href = url
     }
     /* end page handler */
 })
