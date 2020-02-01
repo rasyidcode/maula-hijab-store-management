@@ -83,4 +83,16 @@ class ValidatorConstantHelper {
         'alamat.required' => 'Alamat tidak boleh kosong'
     ];
 
+    public const RULES_PENJAHIT2 = [
+        'nomor_hp' => 'required',
+        'nama_lengkap' => 'required',
+        'alamat' => 'required'
+    ];
+
+    public const MESSAGES_PENJAHIT2 = [
+        'nomor_hp.required' => 'Nomor hp tidak boleh kosong',
+        'nama_lengkap.required' => 'Nama lengkap tidak boleh kosong',
+        'alamat.required' => 'Alamat tidak boleh kosong'
+    ];
+
 }

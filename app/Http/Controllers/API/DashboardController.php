@@ -195,9 +195,19 @@ class DashboardController extends Controller {
         return GeneralHelper::send_response(200, "Berhasil!", $allPenjahit);
     }
 
-    public function getPenjahit() {
-        $penjahit = CrudHelper::getBy(Penjahit::class, 'nomor_hp');
+    public function getAllPenjahitWithWos() {
+        $allPenjahit = CrudHelper::get_all_penjahit_with_wos(Penjahit::class, 'wos');
+        return GeneralHelper::send_response(200, 'Berhasil', $allPenjahit);
+    }
+
+    public function getPenjahit(string $nomor_hp) {
+        $penjahit = CrudHelper::getBy(Penjahit::class, 'nomor_hp', $nomor_hp);
         return GeneralHelper::send_response(200, 'Berhasil!', $penjahit);
+    }
+
+    public function getAllWosByPenjahit(int $nomor_hp) {
+        $penjahit = CrudHelper::get_wos_by_penjahit(Penjahit::class, 'wos', 'nomor_hp', $nomor_hp);
+        return GeneralHelper::send_response(200, 'Berhasil', $penjahit);
     }
 
     public function createPenjahit(Request $request) {
@@ -218,7 +228,33 @@ class DashboardController extends Controller {
         }
 
         $penjahit = CrudHelper::create(Penjahit::class, $data);
-        return GeneralHelper::send_response(200, 'Penjahit telah ditambahkan');
+        return GeneralHelper::send_response(200, 'Penjahit telah ditambahkan', $penjahit);
+    }
+
+    public function updatePenjahit(Request $request, string $nomor_hp) {
+        $data = $request->only(['nomor_hp', 'nama_lengkap', 'alamat']);
+
+        $validator = Validator::make(
+            $data,
+            ValidatorConstantHelper::RULES_PENJAHIT2,
+            ValidatorConstantHelper::MESSAGES_PENJAHIT2
+        );
+
+        if ($validator->fails()) {
+            return GeneralHelper::send_response(
+                422, 
+                "validation error", 
+                $validator->errors()
+            );
+        }
+
+        $penjahit = CrudHelper::updateBy2(Penjahit::class, 'nomor_hp', $nomor_hp, $data);
+        return GeneralHelper::send_response(200, 'Penjahit telah diperbaharui', $penjahit);
+    }
+
+    public function deletePenjahit(string $nomor_hp) {
+        CrudHelper::deleteBy(Penjahit::class, "nomor_hp", $nomor_hp);
+        return GeneralHelper::send_response(200, "Penjahit berhasil dihapus", []);
     }
     /* end panjahit */
 }

@@ -34,6 +34,22 @@ class CrudHelper {
         }
     }
 
+    public static function get_all_penjahit_with_wos(string $model, string $model_1) : object {
+        if (CrudHelper::checkClass($model)) {
+            return $model::with($model_1)->get();
+        } else {
+            return (object)[];
+        }
+    }
+
+    public static function get_wos_by_penjahit(string $model, string $model_1, string $key, int $value) : object {
+        if (CrudHelper::checkClass($model)) {
+            return $model::with($model_1)->where($key, $value)->first();
+        } else {
+            return (object)[];
+        }
+    }
+
     public static function get(string $model, int $id) : object {
         if (CrudHelper::checkClass($model)) {
             return $model::findOrFail($id);
@@ -79,6 +95,15 @@ class CrudHelper {
         if (CrudHelper::checkClass($model)) {
             $model::where($key, '=', $value)->update($data);
             return CrudHelper::getBy($model, $key, $data['kode']);
+        } else {
+            return (object)[];
+        }
+    }
+
+    public static function updateBy2(string $model, string $key, string $value, array $data) : object {
+        if (CrudHelper::checkClass($model)) {
+            $model::where($key, '=', $value)->update($data);
+            return CrudHelper::getBy($model, $key, $data['nomor_hp']);
         } else {
             return (object)[];
         }

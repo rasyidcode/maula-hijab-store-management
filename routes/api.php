@@ -36,3 +36,11 @@ Route::get('/barang/{id}/completed', 'API\DashboardController@get_barang_detaile
 Route::post('/barang', 'API\DashboardController@create_barang');
 Route::post('/barang/{id}/edit', 'API\DashboardController@update_barang');
 Route::post('/barang/{id}/hapus', 'API\DashboardController@delete_barang');
+
+Route::get('/penjahit', 'API\DashboardController@getAllPenjahit');
+Route::get('/penjahit/wos', 'API\DashboardController@getAllPenjahitWithWos');
+Route::get('/penjahit/{nomor_hp}', 'API\DashboardController@getPenjahit');
+Route::get('/penjahit/{nomor_hp}/wos', 'API\DashboardController@getAllWosByPenjahit');
+Route::post('/penjahit', 'API\DashboardController@createPenjahit');
+Route::post('/penjahit/{nomor_hp}/edit', 'API\DashboardController@updatePenjahit');
+Route::post('/penjahit/{nomor_hp}/hapus', 'API\DashboardController@deletePenjahit');
