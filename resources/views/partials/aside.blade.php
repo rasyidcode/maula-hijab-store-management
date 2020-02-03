@@ -33,6 +33,12 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Barang</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="#" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Induk</p>
@@ -41,13 +47,13 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Barang</p>
+                        <p>Bahan</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Bahan</p>
+                        <p>Jenis Bahan</p>
                     </a>
                 </li>
             </ul>

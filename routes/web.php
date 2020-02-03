@@ -19,6 +19,10 @@ Route::get('/adminlte', function() {
     return view('pages.sample');
 });
 
+Route::get('/persediaan/jenis/bahan', function() {
+    return view('pages.jenis_bahan');
+});
+
 Route::get('/persediaan/induk', function() {
     return view('pages.induk');
 });

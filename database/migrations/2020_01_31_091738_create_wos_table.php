@@ -14,20 +14,19 @@ class CreateWosTable extends Migration
     public function up()
     {
         Schema::create('wos', function (Blueprint $table) {
-            $table->string('kode')->primary(); // gabungan antara NAMA_PENJAHIT + TANGGAL_KEMBALI
+            $table->bigIncrements('id'); // gabungan antara NAMA_PENJAHIT + TANGGAL_KEMBALI
             $table->string('kode_barang');
             $table->bigInteger('yard');
             $table->bigInteger('pcs');
             $table->timestamp('tanggal_diambil')->nullable();
             $table->timestamp('tanggal_kembali')->nullable();
-            $table->enum('status_barang', ['on_going', 'sebagian', 'selesai']);
-            $table->boolean('status_bayar');
             $table->bigInteger('jumlah_kembali');
-            $table->text('keterangan');
-            $table->string('nomor_hp_penjahit');
+            $table->boolean('status_bayar')->default(0); // false = belum bayar, true = sudah bayar
+            $table->timestamp('tanggal_bayar')->nullable();
+            $table->string('no_ktp_penjahit');
             $table->timestamps();
 
-            $table->foreign('nomor_hp_penjahit')->references('nomor_hp')->on('penjahit');
+            $table->foreign('no_ktp_penjahit')->references('no_ktp')->on('penjahit');
         });
     }
 

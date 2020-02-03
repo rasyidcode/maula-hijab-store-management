@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/jenis/bahan', 'API\DashboardController@getAllJenisBahan');
+Route::get('/jenis/bahan/{kode}', 'API\DashboardController@getJenisBahan');
+Route::post('/jenis/bahan', 'API\DashboardController@createJenisBahan');
+Route::post('/jenis/bahan/{kode}/edit', 'API\DashboardController@updateJenisBahan');
+Route::post('/jenis/bahan/{kode}/delete', 'API\DashboardController@deleteJenisBahan');
+
 Route::get('/bahan', 'API\DashboardController@get_all_bahan');
 Route::get('/bahan/{id}', 'API\DashboardController@get_bahan');
 Route::post('/bahan', 'API\DashboardController@create_bahan');

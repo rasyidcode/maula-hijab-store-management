@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
 
     <title>Dashboard - @yield('title')</title>
 
@@ -11,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.min.css') }}">
+    <!-- CDN Part -->
+    @yield('custom-css-cdn')
     <!-- Custom AdminLTE -->
     @yield('custom-css-adminlte')
     <!-- main css -->
@@ -44,7 +47,8 @@
     <!-- ./wrapper -->
 
     <!-- REQUIRED SCRIPTS -->
-
+    <!-- CDN Part -->
+    @yield('custom-js-cdn')
     <!-- jQuery -->
     <script src="{{ asset('admin-lte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
@@ -55,5 +59,6 @@
     <script src="{{ asset('admin-lte/dist/js/adminlte.min.js') }}"></script>
 
     @yield('custom-js')
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

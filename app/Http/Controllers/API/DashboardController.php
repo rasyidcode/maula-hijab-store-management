@@ -10,6 +10,7 @@ use App\Http\Controllers\Helper\GeneralHelper;
 use App\Http\Controllers\Helper\CrudHelper;
 use App\Http\Controllers\Helper\ValidatorConstantHelper;
 
+use App\Models\JenisBahan;
 use App\Models\Bahan;
 use App\Models\Induk;
 use App\Models\Barang;
@@ -17,6 +18,60 @@ use App\Models\Penjahit;
 use App\Models\Wos;
 
 class DashboardController extends Controller {
+
+    /* start jenis_bahan */
+    public function getAllJenisBahan() {
+        $allJenisBahan = CrudHelper::get_all(JenisBahan::class);
+        return GeneralHelper::send_response(200, "Berhasil", $allJenisBahan);
+    }
+
+    public function getJenisBahan(string $kode) {
+        $jenisBahan = CrudHelper::getBy(JenisBahan::class, 'kode', $kode);
+        return GeneralHelper::send_response(200, 'Berhasil', $jenisBahan);
+    }
+
+    public function createJenisBahan(Request $request) {
+        $data = $request->only(['kode', 'nama', 'warna']);
+        $validator = Validator::make(
+            $data,
+            ValidatorConstantHelper::RULES_JENIS_BAHAN,
+            ValidatorConstantHelper::MESSAGE_JENIS_BAHAN
+        );
+        if ($validator->fails()) {
+            return GeneralHelper::send_response(
+                422, 
+                "validation error", 
+                $validator->errors()
+            );
+        }
+        $jenisBahan = CrudHelper::create(JenisBahan::class, $data);
+        return GeneralHelper::send_response(200, 'Jenis bahan berhasil ditambahkan!', $jenisBahan);
+    }
+
+    public function updateJenisBahan(Request $request, string $kode) {
+        $data = $request->only(['kode', 'nama', 'warna']);
+        $validator = Validator::make(
+            $data,
+            ValidatorConstantHelper::RULES_JENIS_BAHAN2,
+            ValidatorConstantHelper::MESSAGE_JENIS_BAHAN2
+        );
+        if ($validator->fails()) {
+            return GeneralHelper::send_response(
+                422, 
+                "validation error", 
+                $validator->errors()
+            );
+        }
+        $jenisBahan = CrudHelper::updateBy(JenisBahan::class, 'kode', $kode, $data);
+        return GeneralHelper::send_response(200, 'Jenis bahan berhasil diperbaharui!', $jenisBahan);
+    }
+
+    public function deleteJenisBahan(string $kode) {
+        // TODO : check kalo ada yang pakai id ini, jangan dihapus
+        CrudHelper::deleteBy(JenisBahan::class, 'kode', $kode);
+        return GeneralHelper::send_response(200, 'Jenis bahan berhasil dihapus!', []);
+    }
+    /* end jenis bahan */
 
     /* start bahan */
     public function get_all_bahan() {
@@ -30,7 +85,7 @@ class DashboardController extends Controller {
     }
 
     public function create_bahan(Request $request) {
-        $data = $request->only(['nama_bahan', 'harga_bahan']);
+        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
         $validator = Validator::make(
             $data, 
             ValidatorConstantHelper::RULES_BAHAN, 
@@ -43,12 +98,13 @@ class DashboardController extends Controller {
                 $validator->errors()
             );
         }
+        $data['value'] = $data['harga'] * $data['yard'];
         $bahan = CrudHelper::create(Bahan::class, $data);
         return GeneralHelper::send_response(201, "Bahan berhasil ditambahkan", $bahan);
     }
 
     public function update_bahan(Request $request, int $id) {
-        $data = $request->only(['nama_bahan', 'harga_bahan']);
+        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
         $validator = Validator::make(
             $data, 
             ValidatorConstantHelper::RULES_BAHAN, 
@@ -61,6 +117,7 @@ class DashboardController extends Controller {
                 $validator->errors()
             );
         }
+        $data['value'] = $data['harga'] * $data['yard'];
         $bahan = CrudHelper::update(Bahan::class, $id, $data);
         return GeneralHelper::send_response(200, "Bahan berhasil diperbaharui", $bahan);
     }

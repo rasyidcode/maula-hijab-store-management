@@ -4,15 +4,43 @@ namespace App\Http\Controllers\Helper;
 
 class ValidatorConstantHelper {
 
+    public const RULES_JENIS_BAHAN = [
+        'kode' => 'required|unique:jenis_bahan',
+        'nama' => 'required',
+        'warna' => 'required'
+    ];
+    public const RULES_JENIS_BAHAN2 = [
+        'kode' => 'required',
+        'nama' => 'required',
+        'warna' => 'required'
+    ];
+
+    public const MESSAGE_JENIS_BAHAN = [
+        'kode.required' => 'Kode tidak boleh kosong',
+        'kode.unique' => 'Kode ini sudah digunakan',
+        'nama.required' => 'Nama tidak boleh kosong',
+        'warna.required' => 'Warna tidak boleh kosong'
+    ];
+    public const MESSAGE_JENIS_BAHAN2 = [
+        'kode.required' => 'Kode tidak boleh kosong',
+        'nama.required' => 'Nama tidak boleh kosong',
+        'warna.required' => 'Warna tidak boleh kosong'
+    ];
+
     public const RULES_BAHAN = [
-        'nama_bahan' => 'required',
-        'harga_bahan' => 'required|numeric'
+        'kode_jenis_bahan' => 'required',
+        'harga' => 'required|numeric',
+        'yard' => 'required|numeric',
+        'tanggal_masuk' => 'required'
     ];
 
     public const MESSAGES_BAHAN = [
-        'nama_bahan.required' => 'Nama barang tidak boleh kosong',
-        'harga_bahan.required' => 'Harga barang tidak boleh kosong',
-        'harga_bahan.numeric' => 'Harga barang harus angka'
+        'kode_jenis_bahan.required' => 'Kode jenis bahan tidak boleh kosong',
+        'harga.required' => 'Harga tidak boleh kosong',
+        'harga.numeric' => 'Harga harus berupa angka',
+        'yard.required' => 'Yard tidak boleh kosong',
+        'yard.numeric' => 'Yard harus berupa angka',
+        'tanggal_masuk.required' => 'Tanggal masuk tidak boleh kosong'
     ];
 
     public const RULES_INDUK = [

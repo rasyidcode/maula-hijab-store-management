@@ -17,13 +17,11 @@ class CreateBarangTable extends Migration
             $table->string('kode')->primary();
             $table->string('kode_induk');
             $table->string('warna');
-            $table->bigInteger('stok');
+            $table->bigInteger('stok_ready');
             $table->bigInteger('treshold');
-            $table->bigInteger('id_bahan')->unsigned();
             $table->timestamps();
 
             $table->foreign('kode_induk')->references('kode')->on('induk');
-            $table->foreign('id_bahan')->references('id')->on('bahan');
         });
     }
 

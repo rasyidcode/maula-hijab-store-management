@@ -254,4 +254,13 @@ class General {
             document.getElementById(options.table_id).children[1].appendChild(tr)
         })
     }
+
+    static spaceRemover(text) {
+        const texts = text.split(" ")
+        let result = ""
+        texts.forEach(function(item) {
+            result += item
+        })
+        return result
+    }
 }

@@ -10,7 +10,7 @@ class Bahan extends Model {
 
     protected $guarded = [];
 
-    public function barang() {
-        return $this->hasMany('App\Models\Barang', "id_bahan", "id");
+    public function jenis_bahan() {
+        return $this->belongsTo(JenisBahan::class, 'kode_jenis_bahan', 'kode');
     }
 }

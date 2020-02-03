@@ -15,9 +15,12 @@ class CreateIndukTable extends Migration
     {
         Schema::create('induk', function (Blueprint $table) {
             $table->string('kode')->primary();
-            $table->string('nama_produk');
             $table->bigInteger('harga_jahit');
-            $table->bigInteger('hpp');
+            $table->bigInteger('harga_basic');
+            $table->bigInteger('hpp_shopee');
+            $table->bigInteger('hpp_lazada');
+            $table->bigInteger('harga_dfs_shopee');
+            $table->bigInteger('harga_dfs_lazada');
             $table->timestamps();
         });
     }

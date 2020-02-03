@@ -15,9 +15,15 @@ class CreateBahanTable extends Migration
     {
         Schema::create('bahan', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nama_bahan');
-            $table->bigInteger('harga_bahan');
+            $table->string('kode_jenis_bahan');
+            $table->bigInteger('harga');
+            $table->bigInteger('yard');
+            $table->timestamp('tanggal_masuk');
+            $table->bigInteger('value');
+            $table->boolean('status_potong')->default(0); // false => ready, true => sudah dipotong
             $table->timestamps();
+
+            $table->foreign('kode_jenis_bahan')->references('kode')->on('jenis_bahan');
         });
     }
 
