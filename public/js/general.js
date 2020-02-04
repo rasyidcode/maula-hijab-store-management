@@ -263,4 +263,65 @@ class General {
         })
         return result
     }
+
+    static convertToReadableFormat(date) {
+        const newDate = new Date(date)
+        const day = General.getHari(newDate.getDay())
+        const dayOfMonth = newDate.getDate()
+        const month = General.getBulan(newDate.getMonth())
+        const year = newDate.getFullYear()
+        const hour = newDate.getHours()
+        const minute = newDate.getMinutes()
+        const ampm = hour > 12 ? "PM" : "AM"
+
+        return `${day}, ${dayOfMonth} ${month} ${year}, ${hour}:${minute} ${ampm}`
+    }
+
+    static getHari(hari) {
+        switch(hari) {
+            case 0:
+                return "Minggu"
+            case 1:
+                return "Senin"
+            case 2:
+                return "Selasa"
+            case 3:
+                return "Rabu"
+            case 4:
+                return "Kamis"
+            case 5:
+                return "Jumat"
+            default:
+                return "Sabtu"
+        }
+    }
+
+    static getBulan(month) {
+        switch(month) {
+            case 0:
+                return "Januari"
+            case 1:
+                return "Februari"
+            case 2:
+                return "Maret"
+            case 3:
+                return "April"
+            case 4:
+                return "Mei"
+            case 5:
+                return "Juni"
+            case 6:
+                return "Juli"
+            case 7:
+                return "Agustus"
+            case 8:
+                return "September"
+            case 9:
+                return "Oktober"
+            case 10:
+                return "November"
+            default:
+                return "Desember"
+        }
+    }
 }

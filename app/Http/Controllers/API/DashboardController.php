@@ -71,6 +71,11 @@ class DashboardController extends Controller {
         CrudHelper::deleteBy(JenisBahan::class, 'kode', $kode);
         return GeneralHelper::send_response(200, 'Jenis bahan berhasil dihapus!', []);
     }
+
+    public function getJenisBahanCompleted(string $kode) {
+        $jenisBahan = JenisBahan::with("bahan")->where('kode', $kode)->first();
+        return GeneralHelper::send_response(200, "Berhasil", $jenisBahan);
+    }
     /* end jenis bahan */
 
     /* start bahan */

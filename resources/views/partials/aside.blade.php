@@ -27,25 +27,19 @@
             <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                    Persediaan
+                    Inventory
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+            <li class="nav-item">
+                    <a href="{{ route('list_jenis_bahan') }}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Barang</p>
+                        <p>Jenis Bahan</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Induk</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('list_bahan') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Bahan</p>
                     </a>
@@ -53,7 +47,13 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Jenis Bahan</p>
+                        <p>Barang</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Induk</p>
                     </a>
                 </li>
             </ul>

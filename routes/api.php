@@ -22,6 +22,7 @@ Route::get('/jenis/bahan/{kode}', 'API\DashboardController@getJenisBahan');
 Route::post('/jenis/bahan', 'API\DashboardController@createJenisBahan');
 Route::post('/jenis/bahan/{kode}/edit', 'API\DashboardController@updateJenisBahan');
 Route::post('/jenis/bahan/{kode}/delete', 'API\DashboardController@deleteJenisBahan');
+Route::get('/jenis/bahan/{kode}/completed', 'API\DashboardController@getJenisBahanCompleted');
 
 Route::get('/bahan', 'API\DashboardController@get_all_bahan');
 Route::get('/bahan/{id}', 'API\DashboardController@get_bahan');

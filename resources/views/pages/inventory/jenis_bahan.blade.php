@@ -133,6 +133,39 @@
 </div>
 <!-- /.modal -->
 
+<div class="modal fade" id="modal_edit_jenis_bahan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit jenis bahan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form_edit_jenis_bahan" role="form">
+                <div class="modal-body">
+                    <input id="kode2" type="hidden" type="text">
+                    <div class="form-group">
+                        <label for="nama2">Nama</label>
+                        <input id="nama2" type="text" class="form-control" placeholder="Ex : Diamond" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="warna2">Warna</label>
+                        <input id="warna2" type="text" class="form-control" placeholder="Ex : Merah" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
 @endsection
 
 @section('custom-css-adminlte')

@@ -19,21 +19,23 @@ Route::get('/adminlte', function() {
     return view('pages.sample');
 });
 
-Route::get('/persediaan/jenis/bahan', function() {
-    return view('pages.jenis_bahan');
+Route::group(['prefix' => 'inventory'], function() {
+    Route::get('/jenis/bahan', 'UI\DashboardController@listJenisBahan')->name("list_jenis_bahan");
+    Route::get('/bahan', 'UI\DashboardController@listBahan')->name("list_bahan");
 });
 
-Route::get('/persediaan/induk', function() {
-    return view('pages.induk');
-});
 
-Route::get('/persediaan/induk/tambah', function() {
-    return view('pages.induk_add');
-});
+// Route::get('/persediaan/induk', function() {
+//     return view('pages.induk');
+// });
 
-Route::get('/persediaan/induk/{kode}/edit', function(string $kode) {
-    return view('pages.induk_edit');
-});
+// Route::get('/persediaan/induk/tambah', function() {
+//     return view('pages.induk_add');
+// });
+
+// Route::get('/persediaan/induk/{kode}/edit', function(string $kode) {
+//     return view('pages.induk_edit');
+// });
 
 Route::get('/persediaan/bahan', function() {
     return view('pages.bahan');

@@ -12,7 +12,7 @@ class JenisBahan {
             kode: this.kode,
             nama: this.nama,
             warna: this.warna,
-            created_at: this.created_at
+            created_at: General.convertToReadableFormat(this.created_at)
         }
     }
 }
