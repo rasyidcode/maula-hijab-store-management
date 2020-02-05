@@ -19377,8 +19377,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/jamilchan/jamil/MaulaHijab-PersediaanDanPenjahit/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/jamilchan/jamil/MaulaHijab-PersediaanDanPenjahit/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\my-work\side-work\abcode\MaulaHijabWeb\maulahijab-management\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\my-work\side-work\abcode\MaulaHijabWeb\maulahijab-management\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

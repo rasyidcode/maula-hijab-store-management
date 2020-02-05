@@ -28,7 +28,8 @@ Route::get('/bahan', 'API\DashboardController@get_all_bahan');
 Route::get('/bahan/{id}', 'API\DashboardController@get_bahan');
 Route::post('/bahan', 'API\DashboardController@create_bahan');
 Route::post('/bahan/{id}/edit', 'API\DashboardController@update_bahan');
-Route::post('/bahan/{id}/hapus', 'API\DashboardController@delete_bahan');
+Route::post('/bahan/{id}/delete', 'API\DashboardController@delete_bahan');
+Route::post('/bahan/{id}/status', 'API\DashboardController@ganti_status_potong');
 
 Route::get('/induk', 'API\DashboardController@get_all_induk');
 Route::get('/induk/{id}', 'API\DashboardController@get_induk');

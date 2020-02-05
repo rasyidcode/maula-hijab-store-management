@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function listJenisBahan() {
-        return view('pages.jenis_bahan');
+        return view('pages.inventory.jenis_bahan');
     }
 
     public function listBahan() {
-        return view('pages.bahan');
+        return view('pages.inventory.bahan');
     }
 
 }

@@ -273,8 +273,10 @@ class General {
         const hour = newDate.getHours()
         const minute = newDate.getMinutes()
         const ampm = hour > 12 ? "PM" : "AM"
+        const hourText = this.countDigits(hour) <= 1 ? `0${hour}` : hour
+        const minuteText = this.countDigits(hour) <= 1 ? `0${minute}` : minute
 
-        return `${day}, ${dayOfMonth} ${month} ${year}, ${hour}:${minute} ${ampm}`
+        return `${day}, ${dayOfMonth} ${month} ${year}, ${hourText}:${minuteText} ${ampm}`
     }
 
     static getHari(hari) {
@@ -323,5 +325,17 @@ class General {
             default:
                 return "Desember"
         }
+    }
+
+    static countDigits(n) {
+        let count = 0
+        if (n >= 1) ++count
+
+        while (n / 10 >= 1) {
+            n /= 10;
+            ++count;
+        }
+
+        return count;
     }
 }

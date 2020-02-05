@@ -127,6 +127,14 @@ class DashboardController extends Controller {
         return GeneralHelper::send_response(200, "Bahan berhasil diperbaharui", $bahan);
     }
 
+    public function ganti_status_potong(Request $request, int $id) {
+        $bahan = Bahan::find($id)->first();
+        $bahan->status_potong = $request->status_potong;
+        $bahan->save();
+
+        return GeneralHelper::send_response(200, "Status bahan telah diubah!", $bahan);
+    }
+
     public function delete_bahan(int $id) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
         CrudHelper::delete(Bahan::class, $id);

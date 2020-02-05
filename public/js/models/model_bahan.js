@@ -1,21 +1,30 @@
 class ModelBahan {
-    constructor(id, nama_bahan, harga_bahan, created_at, updated_at) {
-        this.id = id
-        this.nama_bahan = nama_bahan
-        this.harga_bahan = harga_bahan
+
+    constructor(id, kodejb, harga, yard, tanggal_masuk, value, status_potong, created_at, updated_at) {
+        this.id = id,
+        this.kodejb = kodejb
+        this.harga = harga
+        this.yard = yard
+        this.tanggal_masuk = tanggal_masuk
+        this.value = value
+        this.status_potong = status_potong == 1 ? true : false,
         this.created_at = created_at
         this.updated_at = updated_at
     }
 
+    setNumbering(no) {
+        this.no = no
+    }
+
     getUIData() {
         return {
-            id: this.id,
-            nama_bahan: this.nama_bahan,
-            harga_bahan: {
-                value: this.harga_bahan,
-                type: IntType.MONEY
-            },
-            created_at: this.created_at
+            no: `${this.no}.`,
+            tanggal_masuk: General.convertToReadableFormat(this.tanggal_masuk),
+            kodejb: this.kodejb,
+            harga: General.rupiahFormat(this.harga.toString(), ""),
+            yard: this.yard,
+            value: General.rupiahFormat(this.value.toString(), ""),
+            status: this.status_potong
         }
     }
 }

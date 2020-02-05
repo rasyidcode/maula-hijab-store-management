@@ -36,26 +36,21 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
+                                    <th>Tanggal Masuk</th>
                                     <th>Kode</th>
-                                    <th>Harga</th>
                                     <th>Yard</th>
+                                    <th>Harga</th>
+                                    <th>Value</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                            {{-- <tfoot>
-                                <tr>
-                                    <th>Kode Jenis Bahan</th>
-                                    <th>Nama</th>
-                                    <th>Warna</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </tfoot> --}}
                         </table>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_jenis_bahan"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_bahan"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -66,25 +61,21 @@
 </div>
 <!-- /.content -->
 
-<div class="modal fade" id="modal_create_jenis_bahan">
+<div class="modal fade" id="modal_create_bahan">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Tambah jenis bahan</h4>
+                <h4 class="modal-title">Tambah bahan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form_create_jenis_bahan" role="form">
+            <form id="form_create_bahan" role="form">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input id="nama" type="text" class="form-control" placeholder="Ex : Diamond" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="warna">Warna</label>
-                        <input id="warna" type="text" class="form-control" placeholder="Ex : Merah" required>
-                    </div>
+                    {{-- select kode jenis bahan pakai select2.js --}}
+                    {{-- harga pakai field biasa --}}
+                    {{-- yard pakai field biasa --}}
+                    {{-- tanggal masuk pakai datetime picker --}}
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -98,7 +89,7 @@
 </div>
 <!-- /.modal -->
 
-<div class="modal fade" id="modal_show_jenis_bahan">
+{{-- <div class="modal fade" id="modal_show_jenis_bahan">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -131,9 +122,9 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+<!-- /.modal --> --}}
 
-<div class="modal fade" id="modal_edit_jenis_bahan">
+{{-- <div class="modal fade" id="modal_edit_jenis_bahan">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,7 +155,7 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
+<!-- /.modal --> --}}
 
 @endsection
 
@@ -193,5 +184,5 @@
 @section('custom-js')
 <script src="{{ asset('js/general.js') }}"></script>
 <script src="{{ asset('js/models/model_bahan.js') }}"></script>
-<script src="{{ asset('js/bahan.js') }}"></script>
+<script src="{{ asset('js/bahan2.js') }}"></script>
 @endsection
