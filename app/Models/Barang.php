@@ -14,4 +14,8 @@ class Barang extends Model {
     public function induk() {
         return $this->belongsTo(Induk::class, 'kode_induk', 'kode');
     }
+
+    public function wos() {
+        return $this->hasMany(Wos::class, 'kode_barang', 'kode');
+    }
 }

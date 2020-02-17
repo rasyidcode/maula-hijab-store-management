@@ -15,8 +15,8 @@ class CreatePenjahitTable extends Migration
     {
         Schema::create('penjahit', function (Blueprint $table) {
             $table->string('no_ktp')->primary();
-            $table->string('nomor_hp');
             $table->string('nama_lengkap');
+            $table->string('no_hp');
             $table->string('alamat');
             $table->timestamps();
         });

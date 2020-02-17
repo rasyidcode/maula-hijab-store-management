@@ -17,146 +17,26 @@ use App\Models\Barang;
 use App\Models\Penjahit;
 use App\Models\Wos;
 
+// TODO: JANGAN ADA DATA YANG DIHAPUS, BUAT SATU TABEL UNTUK MERECORD SEMUA DATA
+// TODO: Load data order by created_at, yang paling baru paling atas
 class DashboardController extends Controller {
-
-    /* start jenis_bahan */
-    public function getAllJenisBahan() {
-        $allJenisBahan = CrudHelper::get_all(JenisBahan::class);
-        return GeneralHelper::send_response(200, "Berhasil", $allJenisBahan);
-    }
-
-    public function getJenisBahan(string $kode) {
-        $jenisBahan = CrudHelper::getBy(JenisBahan::class, 'kode', $kode);
-        return GeneralHelper::send_response(200, 'Berhasil', $jenisBahan);
-    }
-
-    public function createJenisBahan(Request $request) {
-        $data = $request->only(['kode', 'nama', 'warna']);
-        $validator = Validator::make(
-            $data,
-            ValidatorConstantHelper::RULES_JENIS_BAHAN,
-            ValidatorConstantHelper::MESSAGE_JENIS_BAHAN
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $jenisBahan = CrudHelper::create(JenisBahan::class, $data);
-        return GeneralHelper::send_response(200, 'Jenis bahan berhasil ditambahkan!', $jenisBahan);
-    }
-
-    public function updateJenisBahan(Request $request, string $kode) {
-        $data = $request->only(['kode', 'nama', 'warna']);
-        $validator = Validator::make(
-            $data,
-            ValidatorConstantHelper::RULES_JENIS_BAHAN2,
-            ValidatorConstantHelper::MESSAGE_JENIS_BAHAN2
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $jenisBahan = CrudHelper::updateBy(JenisBahan::class, 'kode', $kode, $data);
-        return GeneralHelper::send_response(200, 'Jenis bahan berhasil diperbaharui!', $jenisBahan);
-    }
-
-    public function deleteJenisBahan(string $kode) {
-        // TODO : check kalo ada yang pakai id ini, jangan dihapus
-        CrudHelper::deleteBy(JenisBahan::class, 'kode', $kode);
-        return GeneralHelper::send_response(200, 'Jenis bahan berhasil dihapus!', []);
-    }
-
-    public function getJenisBahanCompleted(string $kode) {
-        $jenisBahan = JenisBahan::with("bahan")->where('kode', $kode)->first();
-        return GeneralHelper::send_response(200, "Berhasil", $jenisBahan);
-    }
-    /* end jenis bahan */
-
-    /* start bahan */
-    public function get_all_bahan() {
-        $all_bahan = CrudHelper::get_all(Bahan::class);
-        return GeneralHelper::send_response(200, "Berhasil", $all_bahan);
-    }
-
-    public function get_bahan(int $id) {
-        $bahan = CrudHelper::get(Bahan::class, $id);
-        return GeneralHelper::send_response(200, "Berhasil", $bahan);
-    }
-
-    public function create_bahan(Request $request) {
-        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
-        $validator = Validator::make(
-            $data, 
-            ValidatorConstantHelper::RULES_BAHAN, 
-            ValidatorConstantHelper::MESSAGES_BAHAN
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $data['value'] = $data['harga'] * $data['yard'];
-        $bahan = CrudHelper::create(Bahan::class, $data);
-        return GeneralHelper::send_response(201, "Bahan berhasil ditambahkan", $bahan);
-    }
-
-    public function update_bahan(Request $request, int $id) {
-        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
-        $validator = Validator::make(
-            $data, 
-            ValidatorConstantHelper::RULES_BAHAN, 
-            ValidatorConstantHelper::MESSAGES_BAHAN
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $data['value'] = $data['harga'] * $data['yard'];
-        $bahan = CrudHelper::update(Bahan::class, $id, $data);
-        return GeneralHelper::send_response(200, "Bahan berhasil diperbaharui", $bahan);
-    }
-
-    public function ganti_status_potong(Request $request, int $id) {
-        $bahan = Bahan::find($id)->first();
-        $bahan->status_potong = $request->status_potong;
-        $bahan->save();
-
-        return GeneralHelper::send_response(200, "Status bahan telah diubah!", $bahan);
-    }
-
-    public function delete_bahan(int $id) {
-        // TODO : check kalo ada yang pakai id ini, jangan dihapus
-        CrudHelper::delete(Bahan::class, $id);
-        return GeneralHelper::send_response(200, "Bahan berhasil dihapus", []);
-    }
-    /* end bahan */
-
     /* start induk */
+    public function getAllInduk() {
+        $allInduk = CrudHelper::get_all(Induk::class);
+        return GeneralHelper::send_response(200, "Berhasil!", $allInduk);
+    }
     public function get_all_induk() {
         $all_induk = CrudHelper::get_all(Induk::class, ["kode", "nama_produk", "harga_jahit", "hpp", "created_at"]);
         return GeneralHelper::send_response(200, "Berhasil", $all_induk);
     }
-
     public function get_induk(string $kode) {
         $induk = CrudHelper::getBy(Induk::class, 'kode', $kode);
         return GeneralHelper::send_response(200, "Berhasil", $induk);
     }
-
     public function create_induk(Request $request) {
-        $data = $request->only(['kode', 'nama_produk', 'harga_jahit', 'hpp']);
+        $data = $request->only(['kode', 'harga_jahit', 'harga_basic', 'hpp_shopee', 'hpp_lazada', 'dfs_shopee', 'dfs_lazada']);
         $validator = Validator::make(
-            $data, 
+            $data,
             ValidatorConstantHelper::RULES_INDUK, 
             ValidatorConstantHelper::MESSAGES_INDUK
         );
@@ -168,13 +48,12 @@ class DashboardController extends Controller {
             );
         } 
         $induk = CrudHelper::create(Induk::class, $data);
-        return GeneralHelper::send_response(201, "Induk berhasil ditambahkan", $induk);
+        return GeneralHelper::send_response(201, 'Induk berhasil ditambahkan!', $induk);
     }
-
     public function update_induk(Request $request, string $kode) {
-        $data = $request->only(['kode', 'nama_produk', 'harga_jahit', 'hpp']);
+        $data = $request->only(['kode', 'harga_jahit', 'harga_basic', 'hpp_shopee', 'hpp_lazada', 'dfs_shopee', 'dfs_lazada']);
         $validator = Validator::make(
-            $data, 
+            $data,
             ValidatorConstantHelper::RULES_INDUK2, 
             ValidatorConstantHelper::MESSAGES_INDUK2
         );
@@ -188,76 +67,12 @@ class DashboardController extends Controller {
         $induk = CrudHelper::updateBy(Induk::class, 'kode', $kode, $data);
         return GeneralHelper::send_response(200, "Induk berhasil diperbaharui", $induk);
     }
-
     public function delete_induk(string $kode) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
         CrudHelper::deleteBy(Induk::class, 'kode', $kode);
         return GeneralHelper::send_response(200, "Induk berhasil dihapus", []);
     }
     /* end induk */
-
-    /* start barang */
-    public function get_all_barang() {
-        $all_barang = CrudHelper::get_all(Barang::class);
-        return GeneralHelper::send_response(200, "Berhasil", $all_barang);
-    }
-
-    public function get_all_barang_detailed() {
-        $all_detailed_barang = CrudHelper::get_all_with2(Barang::class, "induk", "bahan");
-        return GeneralHelper::send_response(200, "Berhasil", $all_detailed_barang);
-    }
-
-    public function get_barang(string $kode) {
-        $barang = CrudHelper::getBy(Barang::class, "kode", $kode);
-        return GeneralHelper::send_response(200, "Berhasil", $barang);
-    }
-
-    public function get_barang_detailed(string $kode) {
-        $detailed_barang = CrudHelper::getBy2(Barang::class, "induk", "bahan", $kode);
-        return GeneralHelper::send_response(200, "Berhasil", $detailed_barang);
-    }
-
-    public function create_barang(Request $request)  {
-        $data = $request->only(["kode", "kode_induk", "warna", "stok", "treshold", "id_bahan"]);
-        $validator = Validator::make(
-            $data,
-            ValidatorConstantHelper::RULES_BARANG,
-            ValidatorConstantHelper::MESSAGES_BARANG
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $barang = CrudHelper::create(Barang::class, $data);
-        return GeneralHelper::send_response(201, "Barang berhasil ditambahkan", $barang);
-    }
-
-    public function update_barang(Request $request, string $kode)  {
-        $data = $request->only(["kode", "kode_induk", "warna", "stok", "treshold", "id_bahan"]);
-        $validator = Validator::make(
-            $data,
-            ValidatorConstantHelper::RULES_BARANG,
-            ValidatorConstantHelper::MESSAGES_BARANG
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $barang = CrudHelper::updateBy(Barang::class, "kode", $kode, $data);
-        return GeneralHelper::send_response(200, "Barang berhasil diperbaharui", $barang);
-    }
-
-    public function delete_barang(string $kode) {
-        CrudHelper::deleteBy(Barang::class, "kode", $kode);
-        return GeneralHelper::send_response(200, "Barang berhasil dihapus", []);
-    }
-    /* end barang */
 
     /* start penjahit */
     public function getAllPenjahit() {
@@ -270,8 +85,8 @@ class DashboardController extends Controller {
         return GeneralHelper::send_response(200, 'Berhasil', $allPenjahit);
     }
 
-    public function getPenjahit(string $nomor_hp) {
-        $penjahit = CrudHelper::getBy(Penjahit::class, 'nomor_hp', $nomor_hp);
+    public function getPenjahit(string $no_ktp) {
+        $penjahit = CrudHelper::getBy(Penjahit::class, 'no_ktp', $no_ktp);
         return GeneralHelper::send_response(200, 'Berhasil!', $penjahit);
     }
 
@@ -281,7 +96,7 @@ class DashboardController extends Controller {
     }
 
     public function createPenjahit(Request $request) {
-        $data = $request->only(['nomor_hp', 'nama_lengkap', 'alamat']);
+        $data = $request->only(['no_ktp', 'nama_lengkap', 'no_hp', 'alamat']);
 
         $validator = Validator::make(
             $data,
@@ -298,11 +113,11 @@ class DashboardController extends Controller {
         }
 
         $penjahit = CrudHelper::create(Penjahit::class, $data);
-        return GeneralHelper::send_response(200, 'Penjahit telah ditambahkan', $penjahit);
+        return GeneralHelper::send_response(200, 'Penjahit telah ditambahkan!', $penjahit);
     }
 
-    public function updatePenjahit(Request $request, string $nomor_hp) {
-        $data = $request->only(['nomor_hp', 'nama_lengkap', 'alamat']);
+    public function updatePenjahit(Request $request, string $no_ktp) {
+        $data = $request->only(['no_ktp', 'nama_lengkap', 'no_hp', 'alamat']);
 
         $validator = Validator::make(
             $data,
@@ -318,12 +133,13 @@ class DashboardController extends Controller {
             );
         }
 
-        $penjahit = CrudHelper::updateBy2(Penjahit::class, 'nomor_hp', $nomor_hp, $data);
-        return GeneralHelper::send_response(200, 'Penjahit telah diperbaharui', $penjahit);
+        $penjahit = CrudHelper::updateBy(Penjahit::class, 'no_ktp', $no_ktp, $data);
+        return GeneralHelper::send_response(200, 'Penjahit telah diperbaharui!', $penjahit);
     }
 
-    public function deletePenjahit(string $nomor_hp) {
-        CrudHelper::deleteBy(Penjahit::class, "nomor_hp", $nomor_hp);
+    public function deletePenjahit(string $no_ktp) {
+        /* check terlebih dahulu, jangan dihapus apabila ada yang pakai */
+        CrudHelper::deleteBy(Penjahit::class, "no_ktp", $no_ktp);
         return GeneralHelper::send_response(200, "Penjahit berhasil dihapus", []);
     }
     /* end panjahit */

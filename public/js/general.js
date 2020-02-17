@@ -1,5 +1,10 @@
 const IntType = Object.freeze({"MONEY": 0, "STANDARD": 1})
-
+const StatusWos = Object.freeze({
+    "BELUM_DIAMBIL": 0,
+    "SUDAH_DIAMBIL": 1,
+    "DIKEMBALIKAN_SETENGAH": 2,
+    "COMPLETED": 3
+})
 class General {
     
     static sendRequest(data, route, method, headers, onsuccess = null, onerror = null) {
@@ -30,7 +35,8 @@ class General {
     }
 
     static rupiahFormat(number, prefix) {
-        let numberString = number.replace(/[^,\d]/g, '').toString()
+        let n = number.toString()
+        let numberString = n.replace(/[^,\d]/g, '').toString()
         let split = numberString.split(',')
         let left = split[0].length % 3
         let rupiah = split[0].substr(0, left)
@@ -337,5 +343,42 @@ class General {
         }
 
         return count;
+    }
+
+    static convertToDatetimeSql(datetime) {
+        const date = datetime.split('/')
+        const hourmin = date[2].split(' ')
+        const hourmin2 = hourmin[1].split('.')
+
+        return `${hourmin[0]}-${date[1]}-${date[0]} ${hourmin2[0]}:${hourmin2[1]}:00`
+    }
+
+    static convertToMomentFormat(datetime) {
+        moment.locale('id')
+        // const date = datetime.split('-')[2].split(' ')[0]
+        // const month = datetime.split('-')[1]
+        // const year = datetime.split('-')[0]
+        // const hour = datetime.split('-')[2].split(' ')[1].split(':')[0]
+        // const minute = datetime.split('-')[2].split(' ')[1].split(':')[1]
+        return moment(new Date(datetime)).format('LLLL')
+    }
+
+    static resetElementsField(elements) {
+        elements.forEach(function(item) {
+            if (item.type === 'text') {
+                $(item.selector).val('')
+            } else if (item.type === 'select') {
+                const firstData = 0
+                $(item.selector).val(firstData).trigger('change')
+            } else if (item.type === 'datetimepicker') {
+                moment.locale('id')
+                $(item.selector).find('input').val(moment().format('DD/MM/YYYY HH.mm'))
+            }
+        })
+    }
+
+    static resetSelect2(selector) {
+        $(selector).html('')
+        $(selector).append(new Option('Pilih', '0', false, false)).trigger('change')
     }
 }

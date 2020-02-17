@@ -1,56 +1,46 @@
+// TODO: tambah stok onprogress
 class ModelBarang {
     constructor(
         kode,
         kode_induk,
         warna,
-        stok,
+        stok_ready,
+        stok_on_progress,
         treshold,
-        id_bahan,
         created_at,
         updated_at,
-        induk,
-        bahan
     ) {
         this.kode = kode
         this.kode_induk = kode_induk
         this.warna = warna
-        this.stok = stok
+        this.stok_ready = stok_ready
+        this.stok_on_progress = stok_on_progress
         this.treshold = treshold
-        this.id_bahan = id_bahan
         this.created_at = created_at
         this.updated_at = updated_at
-        this.induk = induk
-        this.bahan = bahan
     }
 
-    getMoneyField() {
-        return {
-            value: this.induk.hpp * this.stok,
-            type: IntType.MONEY
-        }
+    setNumbering(no) {
+        this.no = no
     }
 
     getUIData() {
         return {
+            no: `${this.no}.`,
             kode: this.kode,
-            nama_produk: this.induk.nama_produk,
+            kode_induk: this.kode_induk,
             warna: this.warna,
-            bahan: this.bahan.nama_bahan,
-            stok: {
-                value: this.stok,
-                type: IntType.STANDARD,
-                has_style: false
-            },
-            treshold: {
-                value: this.treshold,
-                type: IntType.STANDARD,
-                has_style: true
-            },
-            total_modal: {
-                value: this.induk.hpp * this.stok,
-                type: IntType.MONEY,
-                has_style: false
-            }
+            stok_ready: this.stok_ready,
+            stok_on_progress: this.stok_on_progress,
+            treshold: this.treshold,
+            created_at: General.convertToMomentFormat(this.created_at)
         }
     }
+
+    // async getStokOnProgress(kode_barang) {
+    //     const url = `/api/wos/${kode_barang}/on_progress/`
+    //     const res = await axios.get(url)
+    //     const onprogress = parseInt(res.data.data.total_pcs) - parseInt(res.data.data.total_jumlah_kembali)
+    //     return onprogress
+    // }
 }

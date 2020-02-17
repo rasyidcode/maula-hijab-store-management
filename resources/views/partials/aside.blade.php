@@ -23,42 +23,112 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
             with font-awesome or any other icon font library -->
-        <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+        <li class="nav-item has-treeview {{ Request::is('inventory/*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('inventory/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-list"></i>
                 <p>
                     Inventory
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview">
-            <li class="nav-item">
-                    <a href="{{ route('list_jenis_bahan') }}" class="nav-link active">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Jenis Bahan</p>
-                    </a>
-                </li>
                 <li class="nav-item">
-                    <a href="{{ route('list_bahan') }}" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Bahan</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('barang') }}" class="nav-link {{ Request::is('inventory/barang') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Barang</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('list_bahan') }}" class="nav-link {{ Request::is('inventory/bahan') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Bahan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('list_jenis_bahan') }}" class="nav-link {{ Request::is('inventory/jenis/bahan') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Jenis Bahan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('induk') }}" class="nav-link {{ Request::is('inventory/induk') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Induk</p>
                     </a>
                 </li>
             </ul>
         </li>
+        <li class="nav-item has-treeview {{ Request::is('produksi/*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('produksi/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-box-open"></i>
+                <p>
+                    Produksi
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('wos') }}" class="nav-link {{ Request::is('produksi/wos') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Work Order Sheet</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('penjahit') }}" class="nav-link {{ Request::is('produksi/penjahit') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Penjahit</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('pembayaran') }}" class="nav-link {{ Request::is('produksi/pembayaran') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Pembayaran</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item has-treeview {{ Request::is('penjualan/*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('penjualan/*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-store"></i>
+                <p>
+                    Penjualan
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('wos') }}" class="nav-link {{ Request::is('penjualan/lazada') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Lazada</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('penjahit') }}" class="nav-link {{ Request::is('penjualan/shopee') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Shopee</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('pembayaran') }}" class="nav-link {{ Request::is('penjualan/tokopedia') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tokopedia</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('pembayaran') }}" class="nav-link {{ Request::is('penjualan/blibli') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>BliBli</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+                <p>Logout</p>
+            </a>
+        </li>
+        <!-- <li class="nav-item">
             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>Data Penjahit</p>
@@ -72,7 +142,7 @@
                 <span class="right badge badge-danger">New</span>
             </p>
             </a>
-        </li>
+        </li> -->
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

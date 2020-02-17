@@ -13,6 +13,6 @@ class Penjahit extends Model
     protected $guarded = [];
 
     public function wos() {
-        return $this->hasMany('App\Models\Wos', 'nomor_hp_penjahit', 'nomor_hp');
+        return $this->hasMany('App\Models\Wos', 'no_ktp_penjahit', 'no_ktp');
     }
 }

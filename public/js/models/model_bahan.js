@@ -18,11 +18,12 @@ class ModelBahan {
 
     getUIData() {
         return {
+            id: this.id,
             no: `${this.no}.`,
-            tanggal_masuk: General.convertToReadableFormat(this.tanggal_masuk),
+            tanggal_masuk: General.convertToMomentFormat(this.tanggal_masuk),
             kodejb: this.kodejb,
-            harga: General.rupiahFormat(this.harga.toString(), ""),
             yard: this.yard,
+            harga: General.rupiahFormat(this.harga.toString(), ""),
             value: General.rupiahFormat(this.value.toString(), ""),
             status: this.status_potong
         }

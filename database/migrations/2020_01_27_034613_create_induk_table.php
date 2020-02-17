@@ -19,8 +19,8 @@ class CreateIndukTable extends Migration
             $table->bigInteger('harga_basic');
             $table->bigInteger('hpp_shopee');
             $table->bigInteger('hpp_lazada');
-            $table->bigInteger('harga_dfs_shopee');
-            $table->bigInteger('harga_dfs_lazada');
+            $table->bigInteger('dfs_shopee');
+            $table->bigInteger('dfs_lazada');
             $table->timestamps();
         });
     }

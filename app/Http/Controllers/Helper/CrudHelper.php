@@ -44,7 +44,12 @@ class CrudHelper {
 
     public static function get_wos_by_penjahit(string $model, string $model_1, string $key, int $value) : object {
         if (CrudHelper::checkClass($model)) {
-            return $model::with($model_1)->where($key, $value)->first();
+            $data = $model::with($model_1)->where($key, $value)->first();
+            if ($data != null) {
+                return $data;
+            } else {
+                return (object)[];
+            }
         } else {
             return (object)[];
         }
@@ -60,7 +65,12 @@ class CrudHelper {
 
     public static function getBy(string $model, string $key, string $value) : object {
         if (CrudHelper::checkClass($model)) {
-            return $model::where($key, '=', $value)->first();
+            $data = $model::where($key, '=', $value)->first();
+            if ($data != null) {
+                return $data;
+            } else {
+                return (object)[];
+            }
         } else {
             return (object)[];
         }
@@ -94,7 +104,7 @@ class CrudHelper {
     public static function updateBy(string $model, string $key, string $value, array $data) : object {
         if (CrudHelper::checkClass($model)) {
             $model::where($key, '=', $value)->update($data);
-            return CrudHelper::getBy($model, $key, $data['kode']);
+            return CrudHelper::getBy($model, $key, $data[$key]);
         } else {
             return (object)[];
         }
@@ -103,7 +113,7 @@ class CrudHelper {
     public static function updateBy2(string $model, string $key, string $value, array $data) : object {
         if (CrudHelper::checkClass($model)) {
             $model::where($key, '=', $value)->update($data);
-            return CrudHelper::getBy($model, $key, $data['nomor_hp']);
+            return CrudHelper::getBy($model, $key, $data[$key]);
         } else {
             return (object)[];
         }

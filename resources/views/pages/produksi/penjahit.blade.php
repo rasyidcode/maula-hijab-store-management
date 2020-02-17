@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'List Jenis Bahan')
+@section('title', 'List Penjahit')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">List Jenis Bahan</h1>
+                <h1 class="m-0 text-dark">List Penjahit</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">List Jenis Bahan</li>
+                    <li class="breadcrumb-item active">List Penjahit</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -28,34 +28,28 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Jenis Bahan</h3>
+                        <h3 class="card-title">List Penjahit</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="list_jenis_bahan" class="table table-bordered">
+                        <table id="list_penjahit" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Kode</th>
-                                    <th>Nama</th>
-                                    <th>Warna</th>
+                                    <th>No.</th>
+                                    <th>No. KTP</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Nomor HP</th>
+                                    <th>Alamat</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                            {{-- <tfoot>
-                                <tr>
-                                    <th>Kode Jenis Bahan</th>
-                                    <th>Nama</th>
-                                    <th>Warna</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </tfoot> --}}
                         </table>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_jenis_bahan"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_penjahit"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -66,24 +60,32 @@
 </div>
 <!-- /.content -->
 
-<div class="modal fade" id="modal_create_jenis_bahan">
+<div class="modal fade" id="modal_create_penjahit">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Tambah jenis bahan</h4>
+                <h4 class="modal-title">Tambah Penjahit</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form_create_jenis_bahan" role="form">
+            <form id="form_create_penjahit" role="form">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input id="nama" type="text" class="form-control" placeholder="Ex : Diamond" required>
+                        <label for="no_ktp">No. KTP</label>
+                        <input id="no_ktp" type="text" class="form-control" placeholder="Ex : 113330011100" required>
                     </div>
                     <div class="form-group">
-                        <label for="warna">Warna</label>
-                        <input id="warna" type="text" class="form-control" placeholder="Ex : Merah" required>
+                        <label for="nama_lengkap">Nama Lengkap</label>
+                        <input id="nama_lengkap" type="text" class="form-control" placeholder="Ex : Ahmad Jamil Al Rasyid" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="no_hp">Nomor HP</label>
+                        <input id="no_hp" type="text" class="form-control" placeholder="Ex : 081226836303" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea class="form-control" id="alamat" cols="30" rows="10" placeholder="Ex : Jln. Rasamala No. 10C, Condongcatur, Yogyakarta" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -92,13 +94,10 @@
                 </div>
             </form>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
 
-<div class="modal fade" id="modal_show_jenis_bahan">
+<div class="modal fade" id="modal_show_penjahit">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -109,29 +108,26 @@
             </div>
             <div class="modal-body">
                 <dl class="row">
-                    <dt class="col-sm-4">Kode</dt>
-                        <dd id="dt_kode" class="col-sm-8">Test</dd>
-                    <dt class="col-sm-4">Nama</dt>
-                        <dd id="dt_nama" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Warna</dt>
-                        <dd id="dt_warna" class="col-sm-8"></dd>
+                    <dt class="col-sm-4">No. KTP</dt>
+                        <dd id="dt_no_ktp" class="col-sm-8"></dd>
+                    <dt class="col-sm-4">Nama Lengkap</dt>
+                        <dd id="dt_nama_lengkap" class="col-sm-8"></dd>
+                    <dt class="col-sm-4">No. HP</dt>
+                        <dd id="dt_no_hp" class="col-sm-8"></dd>
+                    <dt class="col-sm-4">Alamat</dt>
+                        <dd id="dt_alamat" class="col-sm-8"></dd>
                     <dt class="col-sm-4">Tanggal dibuat</dt>
                         <dd id="dt_created_at" class="col-sm-8"></dd> <!-- Rabu, 14 April 2019, 06:05 AM -->
                     <dt class="col-sm-4">Tanggal diupdate</dt>
                         <dd id="dt_updated_at" class="col-sm-8"></dd> <!-- Rabu, 15 April 2019, 06:05 AM -->
-                    <dt class="col-sm-4">Jumlah digunakan</dt>
-                        <dd id="dt_used_count" class="col-sm-8"></dd>
                 </dl>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
 
 <div class="modal fade" id="modal_edit_jenis_bahan">
     <div class="modal-dialog modal-md">
@@ -169,6 +165,6 @@
 @endsection
 
 @section('custom-js')
-<script src="{{ asset('js/models/model_jenis_bahan.js') }}"></script>
-<script src="{{ asset('js/inventory/jenis_bahan.js') }}"></script>
+<script src="{{ asset('js/models/model_penjahit.js') }}"></script>
+<script src="{{ asset('js/produksi/penjahit.js') }}"></script>
 @endsection

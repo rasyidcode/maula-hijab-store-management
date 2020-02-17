@@ -22,53 +22,12 @@ Route::get('/adminlte', function() {
 Route::group(['prefix' => 'inventory'], function() {
     Route::get('/jenis/bahan', 'UI\DashboardController@listJenisBahan')->name("list_jenis_bahan");
     Route::get('/bahan', 'UI\DashboardController@listBahan')->name("list_bahan");
+    Route::get('/induk', 'UI\DashboardController@induk')->name('induk');
+    Route::get('/barang', 'UI\DashboardController@barang')->name('barang');
 });
 
-
-// Route::get('/persediaan/induk', function() {
-//     return view('pages.induk');
-// });
-
-// Route::get('/persediaan/induk/tambah', function() {
-//     return view('pages.induk_add');
-// });
-
-// Route::get('/persediaan/induk/{kode}/edit', function(string $kode) {
-//     return view('pages.induk_edit');
-// });
-
-Route::get('/persediaan/bahan', function() {
-    return view('pages.bahan');
-});
-
-Route::get('/persediaan/bahan/tambah', function() {
-    return view('pages.bahan_add');
-});
-
-Route::get('/persediaan/bahan/{id}/edit', function(string $kode) {
-    return view('pages.bahan_edit');
-});
-
-Route::get('/persediaan/barang', function() {
-    return view('pages.barang');
-});
-
-Route::get('/persediaan/barang/tambah', function() {
-    return view('pages.barang_add');
-});
-
-Route::get('/persediaan/barang/{kode}/edit', function() {
-    return view('pages.barang_edit');
-});
-
-Route::get('/penjahit', function() {
-    return view('pages.penjahit');
-});
-
-Route::get('/wos', function() {
-    return view('pages.wos');
-});
-
-Route::get('/error', function() {
-    return view('pages.error');
+Route::group(['prefix' => 'produksi'], function() {
+    Route::get('/wos', 'UI\DashboardController@wos')->name('wos');
+    Route::get('/penjahit', 'UI\DashboardController@penjahit')->name('penjahit');
+    Route::get('/pembayaran', 'UI\DashboardController@pembayaran')->name('pembayaran');
 });
