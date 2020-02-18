@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers\Helper;
 
-class ValidatorConstantHelper {
+class ValidatorHelper {
 
-    public const RULES_JENIS_BAHAN = [
-        'kode' => 'required|unique:jenis_bahan',
-        'nama' => 'required',
-        'warna' => 'required'
-    ];
-    public const RULES_JENIS_BAHAN2 = [
-        'kode' => 'required',
-        'nama' => 'required',
-        'warna' => 'required'
-    ];
-    public const MESSAGE_JENIS_BAHAN = [
-        'kode.required' => 'Kode tidak boleh kosong',
-        'kode.unique' => 'Kode ini sudah digunakan',
-        'nama.required' => 'Nama tidak boleh kosong',
-        'warna.required' => 'Warna tidak boleh kosong'
-    ];
-    public const MESSAGE_JENIS_BAHAN2 = [
-        'kode.required' => 'Kode tidak boleh kosong',
-        'nama.required' => 'Nama tidak boleh kosong',
-        'warna.required' => 'Warna tidak boleh kosong'
-    ];
+    public static function rulesBahan(bool $isCreate) : array {
+        return [
+            'kode' => $isCreate ? 'required|unique:jenis_bahan' : 'required',
+            'nama' => 'required',
+            'warna' => 'required'
+        ];
+    }
+
+    public static function messagesBahan(bool $isCreate) : array {
+        return $isCreate ? [
+            'kode.required' => 'Kode tidak boleh kosong',
+            'kode.unique' => 'Kode ini sudah digunakan',
+            'nama.required' => 'Nama tidak boleh kosong',
+            'warna.required' => 'Warna tidak boleh kosong'
+        ] : [
+            'kode.required' => 'Kode tidak boleh kosong',
+            'nama.required' => 'Nama tidak boleh kosong',
+            'warna.required' => 'Warna tidak boleh kosong'
+        ];
+    }
 
     public const RULES_BAHAN = [
         'kode_jenis_bahan' => 'required',

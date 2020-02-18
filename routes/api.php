@@ -17,14 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/jenis/bahan', 'API\JenisBahanController@getAllJenisBahan');
-Route::get('/jenis/bahan/{kode}', 'API\JenisBahanController@getJenisBahan');
-Route::post('/jenis/bahan', 'API\JenisBahanController@createJenisBahan');
-Route::post('/jenis/bahan/{kode}/edit', 'API\JenisBahanController@updateJenisBahan');
-Route::post('/jenis/bahan/{kode}/delete', 'API\JenisBahanController@deleteJenisBahan');
-Route::get('/jenis/bahan/{kode}/completed', 'API\JenisBahanController@getJenisBahanCompleted');
-Route::get('/jenis/bahan/get/nama', 'API\JenisBahanController@getAvailNamaBahan');
-Route::get('/jenis/bahan/get/warna', 'API\JenisBahanController@getAvailWarna');
+Route::group(['prefix' => '/jenis_bahan'], function() {
+    Route::get('/', 'API\JenisBahanController@index');
+    Route::get('/all/completed', 'API\JenisBahanController@getAllWithBahan');
+    Route::get('/{kode}', 'API\JenisBahanController@get');
+    Route::post('/', 'API\JenisBahanController@create');
+    Route::post('/{kode}/edit', 'API\JenisBahanController@update');
+    Route::post('/{kode}/delete', 'API\JenisBahanController@delete');
+    Route::get('/{kode}/completed', 'API\JenisBahanController@getOneWithBahan');
+    Route::get('/get/nama', 'API\JenisBahanController@getListNamaBahan');
+    Route::get('/get/warna', 'API\JenisBahanController@getListWarnaBahan');
+});
 
 Route::get('/bahan', 'API\BahanController@get_all_bahan');
 Route::post('/bahan/new', 'API\BahanController@getAllBahan');
