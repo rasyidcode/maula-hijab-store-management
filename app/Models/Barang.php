@@ -11,6 +11,18 @@ class Barang extends Model {
 
     protected $guarded = [];
 
+    public function scopeGetByKode($query, string $kode) {
+        return $query->where('kode', $kode);
+    }
+
+    public function scopeUpdate($query, string $kode, array $data) {
+        $query->where('kode', $kode)->update($data);
+    }
+
+    public function scopeDelete($query, string $kode) {
+        $query->where('kode', $kode)->delete();
+    }
+
     public function induk() {
         return $this->belongsTo(Induk::class, 'kode_induk', 'kode');
     }

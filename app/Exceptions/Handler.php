@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use App\Exceptions\JenisBahanNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -50,6 +52,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return response()->json([
+                "status" => 405,
+                "message" => "Method not allowed on this route!" 
+            ], 405);
+        } else if ($exception instanceof JenisBahanNotFoundException) {
+            return $exception->render($request);
+        } else if ($exception instanceof Illuminate\Database\QueryException) {
+            return response()->json([
+                "status" => 500,
+                "message" => "Something wrong with database",
+                "error" => $exception->getMessage() 
+            ], 500);
+        }
+
         return parent::render($request, $exception);
     }
 }

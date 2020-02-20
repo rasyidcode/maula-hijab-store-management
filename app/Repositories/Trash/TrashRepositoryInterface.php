@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Trash;
 
-interface TrashRepositoyInterface {
+interface TrashRepositoryInterface {
 
     /**
      * method untuk mendapatkan semua `trash`

@@ -12,6 +12,18 @@ class Induk extends Model
 
     protected $guarded = [];
 
+    public function scopeGetByKode($query, string $kode) {
+        return $query->where('kode', $kode);
+    }
+
+    public function scopeUpdate($query, string $kode, array $data) {
+        $query->where('kode', $kode)->update($data);
+    }
+
+    public function scopeDelete($query, string $kode) {
+        $query->where('kode', $kode)->delete();
+    }
+
     public function barang() {
         return $this->hasMany(Barang::class, 'kode_induk', 'kode');
     }

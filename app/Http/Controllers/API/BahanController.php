@@ -5,121 +5,123 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use DB;
+use Carbon\Carbon;
 
-use App\Http\Controllers\Helper\GeneralHelper;
-use App\Http\Controllers\Helper\CrudHelper;
-use App\Http\Controllers\Helper\ValidatorConstantHelper;
-
-use App\Models\Bahan;
+use App\Http\Controllers\Helper\GeneralHelper as Helper;
+use App\Http\Controllers\Helper\ValidatorHelper;
+use App\Repositories\Bahan\BahanRepositoryInterface as BahanRepo;
+use App\Repositories\JenisBahan\JenisBahanRepositoryInterface as JenisBahanRepo;
+use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
 
 class BahanController extends Controller {
     
-    public function get_all_bahan() {
-        $all_bahan = CrudHelper::get_all(Bahan::class);
-        return GeneralHelper::send_response(200, "Berhasil", $all_bahan);
+    protected $bahan;
+    protected $jenisBahan;
+    protected $trash;
+
+    public function __construct(BahanRepo $bahanRepo, JenisBahanRepo $jenisBahanRepo, TrashRepo $trashRepo) {
+        $this->bahan = $bahanRepo;
+        $this->jenisBahan = $jenisBahanRepo;
+        $this->trash = $trashRepo;
     }
 
-    public function getAllBahan() {
-        $statusPotong = Request::get('status_potong');
-        die($statusPotong);
-        $allNotCatBahan = Bahan::where('status_potong', 0)->get();
-        return GeneralHelper::send_response(200, "Bahan yang belum dipotong.", $allNotCatBahan);
+    public function index() {
+        $data = $this->bahan->all();
+        return Helper::send_response(200, "Berhasil", $data);
     }
 
-    public function get_bahan(int $id) {
-        $bahan = CrudHelper::get(Bahan::class, $id);
-        return GeneralHelper::send_response(200, "Berhasil", $bahan);
+    // public function getAllBahan() {
+    //     $statusPotong = Request::get('status_potong');
+    //     die($statusPotong);
+    //     $allNotCatBahan = Bahan::where('status_potong', 0)->get();
+    //     return GeneralHelper::send_response(200, "Bahan yang belum dipotong.", $allNotCatBahan);
+    // }
+
+    public function get(int $id) {
+        $data = $this->bahan->get($id);
+        if ($data != null)
+            return Helper::send_response(200, "Berhasil", $data);
+        else
+            return Helper::send_response(404, 'Bahan tidak ditemukan!', null);
+        
     }
 
-    /**
-     * TODO: bikin fungsi untuk mendapatkan list yard yang tersedia 
-     * berdasarkan nama & warna jenis_bahan yang sudah dipilih sebelumnya 
-     * dan belum dipotong 
-     **/
     public function getOnlyYard(Request $request) {
         $nama = $request->input('nama');
         $warna = $request->input('warna');
 
-        $yards = Bahan::select('id', 'yard')
-            ->where('kode_jenis_bahan', 'like', "%{$nama}%")
-            ->where('kode_jenis_bahan', 'like', "%{$warna}")
-            ->where('status_potong', '=', false)
-            ->get();
-
-        return GeneralHelper::send_response(200, 'Berhasil', $yards);
+        $data = $this->bahan->getYard($nama, $warna);
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 
-    public function create_bahan(Request $request) {
-        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
-        $validator = Validator::make(
-            $data, 
-            ValidatorConstantHelper::RULES_BAHAN, 
-            ValidatorConstantHelper::MESSAGES_BAHAN
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $data['value'] = $data['harga'] * $data['yard'];
-        $bahan = CrudHelper::create(Bahan::class, $data);
-        return GeneralHelper::send_response(201, "Bahan berhasil ditambahkan", $bahan);
+    public function create(Request $request) {
+        $userInput = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
+
+        $this->isJenisBahanExist($userInput['kode_jenis_bahan']);
+
+        $validator = Validator::make($userInput, ValidatorHelper::rulesBahan(true), ValidatorHelper::messagesBahan());
+
+        if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
+
+        $userInput['value'] = $userInput['harga'] * $userInput['yard'];
+        $data = $this->bahan->create($userInput);
+        return Helper::send_response(201, "Bahan berhasil ditambahkan", $data);
     }
 
-    public function update_bahan(Request $request, int $id) {
-        $data = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
-        $validator = Validator::make(
-            $data, 
-            ValidatorConstantHelper::RULES_BAHAN, 
-            ValidatorConstantHelper::MESSAGES_BAHAN
-        );
-        if ($validator->fails()) {
-            return GeneralHelper::send_response(
-                422, 
-                "validation error", 
-                $validator->errors()
-            );
-        }
-        $data['value'] = $data['harga'] * $data['yard'];
-        $bahan = CrudHelper::update(Bahan::class, $id, $data);
-        return GeneralHelper::send_response(200, "Bahan berhasil diperbaharui", $bahan);
+    public function edit(Request $request, int $id) {
+        $userInput = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
+
+        $this->isJenisBahanExist($userInput['kode_jenis_bahan']);
+
+        $validator = Validator::make($userInput, ValidatorHelper::rulesBahan(false), ValidatorHelper::messagesBahan());
+        if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
+
+        $userInput['value'] = $userInput['harga'] * $userInput['yard'];
+        $data = $this->bahan->edit($id, $userInput);
+        return Helper::send_response(200, "Bahan berhasil diperbaharui", $data);
     }
 
-    public function ganti_status_potong(Request $request, int $id) {
-        $bahan = Bahan::find($id)->first();
-        $bahan->status_potong = $request->status_potong;
-        $bahan->save();
-
-        return GeneralHelper::send_response(200, "Status bahan telah diubah!", $bahan);
+    public function setStatusPotong(Request $request, int $id) {
+        $data = $this->bahan->setStatusPotong($id, $request->status_potong);
+        return Helper::send_response(200, "Status bahan telah diubah!", $data);
     }
 
-    public function delete_bahan(int $id) {
+    public function remove(int $id) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
-        // TODO : data yang dihapus tidak benar2 dihapus, melainkan akan disimpan dalam
-        //        satu tabel yang nantinya memuat informasi tentang data yang dihapus
-        //        sehingga nantinya user mempunyai kontrol untuk mengundo data yang sudah dihapus
-        CrudHelper::delete(Bahan::class, $id);
-        return GeneralHelper::send_response(200, "Bahan berhasil dihapus", []);
+        $deletedData = $this->bahan->remove($id);
+        $newTrash = [
+            'content' => (string) $deletedData,
+            'model' => $this->bahan->getModelName(),
+            'method' => __METHOD__,
+            'class' => __CLASS__,
+            'line_number' => (__LINE__ - 6),
+            'namespace' => __NAMESPACE__,
+            'file' => __FILE__,
+            'dir' => __DIR__,
+            'deleted_date' => Carbon::now()->format('Y-m-d'),
+            'deleted_time' => Carbon::now()->format('H:i:s')
+        ];
+        $this->trash->create($newTrash);
+        return Helper::send_response(200, "Bahan berhasil dihapus", []);
     }
 
     public function checkStatusPotong(int $id) {
-        $bahan = Bahan::find($id);
-        $response = new \stdClass();
-        $response->status_potong = $bahan->status_potong == 1 ? true : false;
-        return GeneralHelper::send_response(200, 'Berhasil', $response);
+        $data = $this->bahan->checkStatusPotong();
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 
-    /**
-     * check bahan yang belum dipotong ada atau tidak
-     */
     public function checkBahanReady() {
-        $bahan = Bahan::where('status_potong', false)->get();
+        $size = $this->bahan->countBahanBelumDiPotong();
         $response = new \stdClass();
-        $response->is_ready = count($bahan) > 0 ? true : false;
-        return GeneralHelper::send_response(200, 'Berhasil', $response);
+        $response->is_ready = size > 0 ? true : false;
+        return Helper::send_response(200, 'Berhasil', $response);
+    }
+
+    private function isJenisBahanExist(string $kode) {
+        $checkData = $this->jenisBahan->get($kode);
+        if ($checkData == null) {
+            throw new \App\Exceptions\JenisBahanNotFoundException;
+        }
     }
 
 }

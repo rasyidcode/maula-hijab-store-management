@@ -68,7 +68,7 @@ class LoggerCrudRepository implements LoggerCrudRepositoryInterface {
      * @return object
      */
     public function update(int $id, array $data) : object {
-        LoggerCrud::Update($id, $data);
+        LoggerCrud::update($id, $data);
         $updatedLoggerCrud = $this->get($id);
         return $updatedLoggerCrud;
     }
@@ -79,7 +79,7 @@ class LoggerCrudRepository implements LoggerCrudRepositoryInterface {
      * @return object
      */
     public function delete(int $id) : object {
-        LoggerCrud::Delete($id);
+        LoggerCrud::delete($id);
         $res = new \stdClass();
         $res->message = "Logger Crud dengan id: {$id}, berhasil dihapus";
         return $res;

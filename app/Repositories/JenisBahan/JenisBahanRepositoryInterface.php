@@ -8,7 +8,7 @@ interface JenisBahanRepositoryInterface {
      * method untuk mendapatkan nama model
      * @return string
      */
-    public function getClassName() : string;
+    public function getModelName() : string;
 
     /**
      * method untuk mendapatkan semua jenis_bahan
@@ -21,20 +21,20 @@ interface JenisBahanRepositoryInterface {
      * @param string
      * @return object
      */
-    public function get(string $kode) : object;
+    public function get(string $kode) : ?object;
 
     /**
      * method untuk mendapatkan list nama_bahan
      * @return object
      */
-    public function getListNamaBahan() : object;
+    public function getListNamaBahan(?string $warna = null) : object;
 
     /**
      * method untuk mendapatkan list warna berdasarkan nama
      * @param string
      * @return object
      */
-    public function getListWarna(string $nama) : object;
+    public function getListWarnaBahan(?string $nama = null) : object;
 
     /**
      * method untuk mendapatkan jenis_bahan dan juga relasinya yaitu 'bahan'
@@ -62,12 +62,19 @@ interface JenisBahanRepositoryInterface {
      * @param object
      * @return object
      */
-    public function update(string $kode, array $jenisBahan) : object;
+    public function edit(string $kode, array $jenisBahan) : object;
 
     /**
      * method untuk menghapus jenis_bahan
      * @param int
      * @return object
      */
-    public function delete(string $kode) : object;
+    public function remove(string $kode) : object;
+
+    /**
+     * method untuk mengecheck nama `jenis_bahan` ada atau tidak
+     * @param string
+     * @return bool
+     */
+    public function isNamaBahanExist(string $name) : bool;
 }

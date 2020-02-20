@@ -13,16 +13,16 @@ class JenisBahan extends Model
     protected $guarded = [];
 
     /* START OF SCOPE */
-    public function scopeGetByKode($query, string $kode) {
+    public function scopeGetOne($query, string $kode) {
         return $query->where('kode', $kode);
     }
 
-    public function scopeUpdateByKode($query, string $kode, array $data) {
-        return $query->where('kode', $kode)->update($data);
+    public function scopeEdit($query, string $kode, array $data) {
+        $query->where('kode', $kode)->update($data);
     }
 
-    public function scopeDeleteByKode($query, string $kode) {
-        return $query->where('kode', $kode)->delete();
+    public function scopeRemove($query, string $kode) {
+        $query->where('kode', $kode)->delete();
     }
 
     public function scopeGetWithBahan($query, string $kode) {

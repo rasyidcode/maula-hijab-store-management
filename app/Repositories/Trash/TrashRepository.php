@@ -3,16 +3,15 @@
 namespace App\Repositories\Trash;
 
 use App\Models\Trash;
-use App\Repositories\Trash\TrashRepositoyInterface;
 
-class RepositoryInterface implements TrashRepositoyInterface {
+class TrashRepository implements TrashRepositoryInterface {
 
     /**
      * method untuk mendapatkan semua `trash`
      * @return object
      */
     public function all() : object {
-
+        return Trash::all();
     }
 
     /**
@@ -21,7 +20,7 @@ class RepositoryInterface implements TrashRepositoyInterface {
      * @return object
      */
     public function get(int $id) : object {
-
+        return Trash::find($id);
     }
 
     /**
@@ -30,7 +29,9 @@ class RepositoryInterface implements TrashRepositoyInterface {
      * @return object
      */
     public function create(array $data) : object {
-
+        $ts = Trash::create($data);
+        $createdData = $this->get($ts->id);
+        return $createdData;
     }
 
     /**
@@ -40,7 +41,9 @@ class RepositoryInterface implements TrashRepositoyInterface {
      * @return object
      */
     public function update(int $id, array $data) : object {
-
+        Trash::update($id, $data);
+        $updatedData = $this->get($id);
+        return $updatedData;
     }
 
     /**
@@ -49,7 +52,12 @@ class RepositoryInterface implements TrashRepositoyInterface {
      * @return object
      */
     public function delete(int $id) : object {
-        
+        $deletedData = $this->get($id);
+        Trash::delete($id);
+        $res = new \stdClass();
+        $res->message = "Data telah dihapus!";
+        $res->data = $deletedData;
+        return $res;
     }
 
 }

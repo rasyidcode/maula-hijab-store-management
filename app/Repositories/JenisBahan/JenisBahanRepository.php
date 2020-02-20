@@ -5,7 +5,6 @@ namespace App\Repositories\JenisBahan;
 use DB;
 
 use App\Models\JenisBahan;
-use App\Http\Controllers\Helper\GeneralHelper as Helper;
 
 class JenisBahanRepository implements JenisBahanRepositoryInterface {
 
@@ -13,7 +12,7 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * method untuk mendapatkan nama model
      * @return string
      */
-    public function getClassName() : string {
+    public function getModelName() : string {
         return JenisBahan::class;
     }
 
@@ -22,7 +21,7 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @return object
      */
     public function all() : object {
-        $data = JenisBahan::all();
+        $data = JenisBahan::orderBy('created_at', 'desc')->get();
         return $data;
     }
 
@@ -31,20 +30,30 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @param string
      * @return object
      */
-    public function get(string $kode) : object {
-        $data = JenisBahan::getByKode($kode)->first();
+    public function get(string $kode) : ?object {  
+        $data = JenisBahan::getOne($kode)->first();
         return $data;
     }
 
     /**
      * methond untuk mendapatkan list nama_bahan
+     * @param string_or_null
      * @return object
      */
-    public function getListNamaBahan() : object {
-        $data = DB::table('jenis_bahan')
-            ->select('nama')
-            ->groupBy('nama')
-            ->get();
+    public function getListNamaBahan(?string $warna = null) : object {
+        if ($warna != null) {
+            $data = DB::table('jenis_bahan')
+                ->select('nama')
+                ->groupBy('nama')
+                ->where('warna', '=', "${warna}")
+                ->get();
+        } else {
+            $data = DB::table('jenis_bahan')
+                ->select('nama')
+                ->groupBy('nama')
+                ->get();
+        }
+        
         return $data;
     }
 
@@ -53,12 +62,19 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @param string
      * @return object
      */
-    public function getListWarna(string $nama) : object {
-        $data = DB::table('jenis_bahan')
-            ->select('warna')
-            ->groupBy('warna')
-            ->where('nama', '=', "{$nama}")
-            ->get();
+    public function getListWarnaBahan(?string $nama = null) : object {
+        if ($nama != null) {
+            $data = DB::table('jenis_bahan')
+                ->select('warna')
+                ->groupBy('warna')
+                ->where('nama', '=', "{$nama}")
+                ->get();
+        } else {
+            $data = DB::table('jenis_bahan')
+                ->select('warna')
+                ->groupBy('warna')
+                ->get();
+        }
         return $data;
     }
 
@@ -87,9 +103,9 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @return object
      */
     public function create(array $data) : object {
-        JenisBahan::create($jenis_bahan);
-        $createJenisBahan = $this->get($data->kode);
-        return $createJenisBahan;
+        JenisBahan::create($data);
+        $createdData = $this->get($data['kode']);
+        return $createdData;
     }
 
     /**
@@ -99,10 +115,10 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @param object
      * @return object
      */
-    public function update(string $kode, array $jenisBahan) : object {
-        JenisBahan::updateByKode($kode, $jenisBahan);
-        $updatedJenisBahan = $this->get($jenisBahan->kode);
-        return $updatedJenisBahan;
+    public function edit(string $kode, array $data) : object {
+        JenisBahan::edit($kode, $data);
+        $updatedData = $this->get($data['kode']);
+        return $updatedData;
     }
 
     /**
@@ -111,10 +127,22 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @param int
      * @return object
      */
-    public function delete(string $kode) : object {
+    public function remove(string $kode) : object {
         $deletedData = $this->get($kode)->first();
-        JenisBahan::deleteByKode($kode);
+        JenisBahan::remove($kode);
         
         return $deletedData;
+    }
+
+    /**
+     * method untuk mengecheck nama `jenis_bahan` ada atau tidak
+     * @param string
+     * @return bool
+     */
+    public function isNamaBahanExist(string $name) : bool {
+        $data = $this->getListNamaBahan();
+
+        if (count($data) > 0) return true;
+        else return false;
     }
 }
