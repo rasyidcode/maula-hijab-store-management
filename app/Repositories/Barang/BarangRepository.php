@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Barang;
 
+use DB;
+
 use App\Models\Barang;
 
 class BarangRepository implements BarangRepositoryInterface {
@@ -19,8 +21,8 @@ class BarangRepository implements BarangRepositoryInterface {
      * @param kode
      * @return object
      */
-    public function get(string $kode) : object {
-        return Barang::get($kode)->first();
+    public function get(string $kode) : ?object {
+        return Barang::getByKode($kode)->first();
     }
 
     /**
@@ -29,8 +31,8 @@ class BarangRepository implements BarangRepositoryInterface {
      * @return object
      */
     public function create(array $data) : object {
-        $brg = Barang::create($data);
-        $createdBarang = $this->get($brg->kode);
+        Barang::create($data);
+        $createdBarang = $this->get($data['kode']);
         return $createdBarang;
     }
 
@@ -40,9 +42,9 @@ class BarangRepository implements BarangRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(string $kode, array $data) : object {
-        Barang::update($data);
-        $updatedBarang = $this->get($kode);
+    public function edit(string $kode, array $data) : object {
+        Barang::edit($kode, $data);
+        $updatedBarang = $this->get($data['kode']);
         return $updatedBarang;
     }
 
@@ -51,9 +53,9 @@ class BarangRepository implements BarangRepositoryInterface {
      * @param string
      * @return object
      */
-    public function delete(string $kode) : object {
+    public function remove(string $kode) : object {
         $deletedData = $this->get($kode);
-        Barang::delete($kode);
+        Barang::remove($kode);
         return $deletedData;
     }
 
@@ -67,15 +69,52 @@ class BarangRepository implements BarangRepositoryInterface {
 
     /**
      * method untuk menghitung jumlah stok yang on_progress
-     * @return integer
+     * @return object
      */
-    public function countOnProgress() : integer {
+    public function allWithOnProgress() : object {
         $data = DB::table('barang')
             ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
             ->select('barang.*', DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'))
             ->groupBy('barang.kode')
             ->get();
         
+        return $data;
+    }
+
+    /**
+     * method untuk mendapatkan satu `barang` dan juga on_progressnya
+     * @param string
+     * @return object
+     */
+    public function oneWithOnProgress(string $kode) : object {
+        $data = DB::table('barang')
+            ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
+            ->select('barang.*', DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'))
+            ->groupBy('barang.kode')
+            ->where('kode', '=', $kode)
+            ->get();
+        
+        return $data;
+    }
+
+    /**
+     * method untuk mendapatkan semua `barang` dan juga relasinya
+     * @return object
+     */
+    public function allWithInduk() : object {
+        $data = Barang::with('induk')->get();
+        return $data;
+    }
+
+    /**
+     * method untuk mendapatkan satu `barang` dan juga relasinya
+     * @param string
+     * @return object
+     */
+    public function oneWithInduk(string $kode) : object {
+        $data = Barang::with('induk')
+            ->where('kode', '=', $kode)
+            ->first();
         return $data;
     }
 

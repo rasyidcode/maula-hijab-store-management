@@ -13,7 +13,7 @@ class CreateJenisBahanTable extends Migration
      */
     public function up()
     {
-        Schema::create('jenis_bahan', function (Blueprint $table) {
+        Schema::create('kain', function (Blueprint $table) {
             $table->string('kode')->primary(); // generate => KODE+WARNA
             $table->string('nama');
             $table->string('warna');
@@ -28,6 +28,6 @@ class CreateJenisBahanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jenis_bahan');
+        Schema::dropIfExists('kain');
     }
 }

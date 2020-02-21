@@ -11,24 +11,11 @@ interface PenjahitRepositoryInterface {
     public function all() : object;
 
     /**
-     * method untuk mendapatkan semua `penjahit` dan juga `wos`nya
-     * @return object
-     */
-    public function allWithWos() : object;
-
-    /**
      * method untuk mendapatkan `penjahit`
      * @param string
      * @return object
      */
-    public function get(string $noKtp) : object;
-
-    /**
-     * method untuk mendapatkan `penjahit` dan juga semua `wos`nya
-     * @param string
-     * @return object
-     */
-    public function oneWithWos(string $noKtp) : object;
+    public function get(string $noKtp) : ?object;
 
     /**
      * method untuk membuat `penjahit`
@@ -43,19 +30,32 @@ interface PenjahitRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(string $noKtp, array $data) : object;
+    public function edit(string $noKtp, array $data) : object;
 
     /**
      * method untuk mendelete `penjahit`
      * @param string
      * @return object
      */
-    public function delete(string $noKtp) : object;
+    public function remove(string $noKtp) : object;
 
     /**
      * method untuk mendapatkan nama model
      * @return string
      */
     public function getModelName() : string;
+
+    /**
+     * method untuk mendapatkan semua `penjahit` dan juga `wos`nya
+     * @return object
+     */
+    public function allWithWos() : object;
+
+    /**
+     * method untuk mendapatkan `penjahit` dan juga semua `wos`nya
+     * @param string
+     * @return object
+     */
+    public function oneWithWos(string $noKtp) : object;
     
 }

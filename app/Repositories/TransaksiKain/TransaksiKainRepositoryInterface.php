@@ -66,12 +66,19 @@ interface BahanRepositoryInterface {
      * @param integer
      * @return object
      */
-    public function checkStatusPotong($id) : object;
+    public function checkStatusPotong(int $id) : object;
 
     /**
      * method untuk mendapatkan jumlah bahan yang belum dipotong `bahan`
-     * @return integer
+     * @return int
      */
-    public function countBahanBelumDiPotong() : integer;
+    public function countBahanBelumDiPotong() : int;
+
+    /**
+     * method untuk mendapatkan yard `bahan` berdasarkan id
+     * @param int
+     * @return int
+     */
+    public function getBahanYard(int $id) : int;
 
 }

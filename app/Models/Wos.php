@@ -22,16 +22,17 @@ class Wos extends Model {
             ->orderBy('created_at', 'desc');
     }
 
-    public function scopeUpdate($query, int $id, array $data) {
+    public function scopeEdit($query, int $id, array $data) {
         $query->where('id', $id)->update($data);
     }
 
-    public function scopeDelete($query, int $id) {
+    public function scopeRemove($query, int $id) {
         $query->where('id', $id)->delete();
     }
 
     public function scopeWosToPay($query) : object {
         return $query
+            ->select('nama_penjahit', 'tanggal_bayar', 'kode_barang', 'nama_bahan', 'pcs', 'status_bayar')
             ->where('status_jahit', true)
             ->where('status_bayar', false)
             ->get();

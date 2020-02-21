@@ -16,11 +16,11 @@ class Induk extends Model
         return $query->where('kode', $kode);
     }
 
-    public function scopeUpdate($query, string $kode, array $data) {
+    public function scopeEdit($query, string $kode, array $data) {
         $query->where('kode', $kode)->update($data);
     }
 
-    public function scopeDelete($query, string $kode) {
+    public function scopeRemove($query, string $kode) {
         $query->where('kode', $kode)->delete();
     }
 

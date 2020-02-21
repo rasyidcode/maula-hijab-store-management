@@ -15,11 +15,11 @@ class Barang extends Model {
         return $query->where('kode', $kode);
     }
 
-    public function scopeUpdate($query, string $kode, array $data) {
+    public function scopeEdit($query, string $kode, array $data) {
         $query->where('kode', $kode)->update($data);
     }
 
-    public function scopeDelete($query, string $kode) {
+    public function scopeRemove($query, string $kode) {
         $query->where('kode', $kode)->delete();
     }
 
@@ -29,5 +29,9 @@ class Barang extends Model {
 
     public function wos() {
         return $this->hasMany(Wos::class, 'kode_barang', 'kode');
+    }
+
+    public function kain() {
+        return $this->hasOne(Kain::class, 'kode_kain', 'kode');
     }
 }

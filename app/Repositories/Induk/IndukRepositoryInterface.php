@@ -15,7 +15,7 @@ interface IndukRepositoryInterface {
      * @param string
      * @return object
      */
-    public function get(string $kode) : object;
+    public function get(string $kode) : ?object;
 
     /**
      * method untuk membuat induk
@@ -30,14 +30,14 @@ interface IndukRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(string $kode, array $data) : object;
+    public function edit(string $kode, array $data) : object;
 
     /**
      * method untuk mendelete induk
      * @param string
      * @return object
      */
-    public function delete(string $kode) : object;
+    public function remove(string $kode) : object;
 
     /**
      * method untuk mendapatkan nama model

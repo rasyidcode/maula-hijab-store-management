@@ -97,7 +97,7 @@ class ValidatorHelper {
 
     public static function rulesPenjahit(bool $isCreate) : array {
         return [
-            'no_ktp' => 'required|unique:penjahit',
+            'no_ktp' => $isCreate ? 'required|unique:penjahit' : 'required',
             'nama_lengkap' => 'required',
             'no_hp' => 'required',
             'alamat' => 'required',

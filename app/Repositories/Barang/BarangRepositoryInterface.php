@@ -15,7 +15,7 @@ interface BarangRepositoryInterface {
      * @param kode
      * @return object
      */
-    public function get(string $kode) : object;
+    public function get(string $kode) : ?object;
 
     /**
      * method untuk membuat barang
@@ -30,14 +30,14 @@ interface BarangRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(string $kode, array $data) : object;
+    public function edit(string $kode, array $data) : object;
 
     /**
      * method untuk mendelete barang
      * @param string
      * @return object
      */
-    public function delete(string $kode) : object;
+    public function remove(string $kode) : object;
 
     /**
      * method untuk mendapatkan nama model
@@ -46,9 +46,29 @@ interface BarangRepositoryInterface {
     public function getModelName() : string;
 
     /**
-     * method untuk menghitung jumlah stok yang on_progress
-     * @return integer
+     * method untuk mendapatkan semua `barang` dan juga yang lagi on_progress
+     * @param string
+     * @return object
      */
-    public function countOnProgress() : integer;
+    public function allWithOnProgress() : object;
 
+    /**
+     * method untuk mendapatkan satu `barang` dan juga on_progressnya
+     * @param string
+     * @return object
+     */
+    public function oneWithOnProgress(string $kode) : object;
+
+    /**
+     * method untuk mendapatkan semua `barang` dan juga relasinya
+     * @return object
+     */
+    public function allWithInduk() : object;
+
+    /**
+     * method untuk mendapatkan satu `barang` dan juga relasinya
+     * @param string
+     * @return object
+     */
+    public function oneWithInduk(string $kode) : object;
 }

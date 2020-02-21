@@ -38,29 +38,29 @@ class BahanController extends Controller {
     // }
 
     public function get(int $id) {
+        Helper::isBahanExist($this->bahan, $id);
         $data = $this->bahan->get($id);
-        if ($data != null)
-            return Helper::send_response(200, "Berhasil", $data);
-        else
-            return Helper::send_response(404, 'Bahan tidak ditemukan!', null);
-        
+        return Helper::send_response(200, "Berhasil", $data);
     }
 
     public function getOnlyYard(Request $request) {
         $nama = $request->input('nama');
         $warna = $request->input('warna');
 
-        $data = $this->bahan->getYard($nama, $warna);
-        return Helper::send_response(200, 'Berhasil', $data);
+        if ($nama != null && $warna != null) {
+            $data = $this->bahan->getYard($nama, $warna);
+            return Helper::send_response(200, 'Berhasil', $data);
+        } else {
+            return Helper::send_response(422, 'Nama dan baha tidak boleh kosong', null);
+        }
     }
 
     public function create(Request $request) {
         $userInput = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
 
-        $this->isJenisBahanExist($userInput['kode_jenis_bahan']);
+        Helper::isJenisBahanExist($this->jenisBahan, $userInput['kode_jenis_bahan']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBahan(true), ValidatorHelper::messagesBahan());
-
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
 
         $userInput['value'] = $userInput['harga'] * $userInput['yard'];
@@ -71,7 +71,7 @@ class BahanController extends Controller {
     public function edit(Request $request, int $id) {
         $userInput = $request->only(['kode_jenis_bahan', 'harga', 'yard', 'tanggal_masuk']);
 
-        $this->isJenisBahanExist($userInput['kode_jenis_bahan']);
+        Helper::isJenisBahanExist($this->jenisBahan, $userInput['kode_jenis_bahan']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBahan(false), ValidatorHelper::messagesBahan());
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
@@ -82,12 +82,23 @@ class BahanController extends Controller {
     }
 
     public function setStatusPotong(Request $request, int $id) {
-        $data = $this->bahan->setStatusPotong($id, $request->status_potong);
+        $userInput = $request->only(['status_potong']);
+        $validator = Validator::make(
+            $userInput, 
+            ['status_potong' => 'required|boolean'], 
+            ['status_potong.required' => 'Status potong tidak boleh kosong!',
+             'status_potong.boolean' => 'Status potong harus berupa boolean!']);
+        if ($validator->fails()) {
+            return Helper::send_response(422, 'Validator error', $validator->errors());
+        }
+        Helper::isBahanExist($this->bahan, $id);
+        $data = $this->bahan->setStatusPotong($id, $userInput['status_potong']);
         return Helper::send_response(200, "Status bahan telah diubah!", $data);
     }
 
     public function remove(int $id) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
+        Helper::isBahanExist($this->bahan, $id);
         $deletedData = $this->bahan->remove($id);
         $newTrash = [
             'content' => (string) $deletedData,
@@ -106,22 +117,16 @@ class BahanController extends Controller {
     }
 
     public function checkStatusPotong(int $id) {
-        $data = $this->bahan->checkStatusPotong();
+        Helper::isBahanExist($this->bahan, $id);
+        $data = $this->bahan->checkStatusPotong($id);
         return Helper::send_response(200, 'Berhasil', $data);
     }
 
     public function checkBahanReady() {
         $size = $this->bahan->countBahanBelumDiPotong();
         $response = new \stdClass();
-        $response->is_ready = size > 0 ? true : false;
+        $response->is_ready = $size > 0 ? true : false;
         return Helper::send_response(200, 'Berhasil', $response);
-    }
-
-    private function isJenisBahanExist(string $kode) {
-        $checkData = $this->jenisBahan->get($kode);
-        if ($checkData == null) {
-            throw new \App\Exceptions\JenisBahanNotFoundException;
-        }
     }
 
 }

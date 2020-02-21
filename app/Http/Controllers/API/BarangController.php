@@ -11,15 +11,18 @@ use App\Http\Controllers\Helper\GeneralHelper as Helper;
 use App\Http\Controllers\Helper\ValidatorHelper;
 
 use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
+use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
 use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
 
 class BarangController extends Controller {
 
     protected $barang;
+    protected $induk;
     protected $trash;
 
-    public function __construct(BarangRepo $barangRepo, TrashRepo $trashRepo) {
+    public function __construct(BarangRepo $barangRepo, IndukRepo $indukRepo, TrashRepo $trashRepo) {
         $this->barang = $barangRepo;
+        $this->induk = $indukRepo;
         $this->trash = $trashRepo;
     }
 
@@ -28,44 +31,39 @@ class BarangController extends Controller {
         return Helper::send_response(200, "Berhasil", $data);
     }
 
-    public function allWithBahan() {
-        $data = $this->barang->allWithBahan();
-        return Helper::send_response(200, "Berhasil", $data);
-    }
-
     public function get(string $kode) {
+        Helper::isBarangExist($this->barang, $kode);
         $data = $this->barang->get($kode);
-        return Helper::send_response(200, "Berhasil", $data);
-    }
-
-    public function oneWithBahan(string $kode) {
-        $data = $this->barang->oneWithBahan($kode);
         return Helper::send_response(200, "Berhasil", $data);
     }
 
     public function create(Request $request)  {
         $userInput = $request->only(["kode", "kode_induk", "warna", "stok_ready", "treshold"]);
+        Helper::isIndukExist($this->induk, $userInput['kode_induk']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(true), ValidatorHelper::messagesBarang());
-        if ($validator->fails()) return GeneralHelper::send_response(422, "validation error", $validator->errors());
+        if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
 
-        $data = $this->induk->create($userInput);
+        $data = $this->barang->create($userInput);
         return Helper::send_response(201, "Barang berhasil ditambahkan", $data);
     }
 
-    public function update(Request $request, string $kode)  {
+    public function edit(Request $request, string $kode)  {
+        Helper::isBarangExist($this->barang, $kode);
         $userInput = $request->only(["kode", "kode_induk", "warna", "stok_ready", "treshold"]);
+        Helper::isIndukExist($this->induk, $userInput['kode_induk']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(false), ValidatorHelper::messagesBarang());
-        if ($validator->fails()) return GeneralHelper::send_response(422, "validation error", $validator->errors());
+        if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
 
-        $data = $this->barang->update($kode, $userInput);
+        $data = $this->barang->edit($kode, $userInput);
 
         return Helper::send_response(200, "Barang berhasil diperbaharui!", $data);
     }
 
-    public function delete(string $kode) {
-        $deletedData = $this->barang->delete($kode);
+    public function remove(string $kode) {
+        Helper::isBarangExist($this->barang, $kode);
+        $deletedData = $this->barang->remove($kode);
 
         $newTrash = [
             'content' => (string) $deletedData,
@@ -84,8 +82,25 @@ class BarangController extends Controller {
         return Helper::send_response(200, "Barang berhasil dihapus", []);
     }
 
-    public function countOnProgress() {
-        $data = $this->barang->countOnProgress();
+    public function allWithOnProgress() {
+        $data = $this->barang->allWithOnProgress();
         return Helper::send_response(200, 'Berhasil', $data);
+    }
+
+    public function oneWithOnProgress(string $kode) {
+        Helper::isBarangExist($this->barang, $kode);
+        $data = $this->barang->oneWithOnProgress($kode);
+        return Helper::send_response(200, 'Berhasil', $data);
+    }
+
+    public function allWithInduk() {
+        $data = $this->barang->allWithInduk();
+        return Helper::send_response(200, "Berhasil", $data);
+    }
+
+    public function oneWithInduk(string $kode) {
+        Helper::isBarangExist($this->barang, $kode);
+        $data = $this->barang->oneWithInduk($kode);
+        return Helper::send_response(200, "Berhasil", $data);
     }
 }

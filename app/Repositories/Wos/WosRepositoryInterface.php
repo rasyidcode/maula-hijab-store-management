@@ -15,7 +15,7 @@ interface WosRepositoryInterface {
      * @param int
      * @return object
      */
-    public function get(int $id) : object;
+    public function get(int $id) : ?object;
 
     /**
      * method untuk mendapatkan semua `wos` dan relasinya
@@ -43,14 +43,14 @@ interface WosRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(int $id, array $data) : object;
+    public function edit(int $id, array $data) : object;
 
     /**
      * method untuk menghapus `wos`
      * @param int
      * @return object
      */
-    public function delete(int $id) : object;
+    public function remove(int $id) : object;
 
     /**
      * method untuk mendapatkan `wos` yang sudah completed dan belum dibayar
@@ -71,4 +71,10 @@ interface WosRepositoryInterface {
      * @return object
      */
     public function onProgress(string $kodeBarang) : object;
+
+    /**
+     * method untuk mendapatkan nama model
+     * @return string
+     */
+    public function getModelName() : string;
 }

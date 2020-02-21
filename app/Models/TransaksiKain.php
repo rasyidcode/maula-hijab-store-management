@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Bahan extends Model {
+class TransaksiKain extends Model {
 
-    protected $table = "bahan";
+    protected $table = "transaksi_kain";
 
     protected $guarded = [];
 
@@ -21,7 +21,7 @@ class Bahan extends Model {
     public function scopeGetYard($query, string $nama, string $warna, bool $statusPotong) : object {
         return $query->select('id', 'yard')
             ->where('kode_jenis_bahan', 'like', "%{$nama}%")
-            ->where('kode_jenis_bahan', 'like', "%{$warna}")
+            ->where('kode_jenis_bahan', 'like', "%{$warna}%")
             ->where('status_potong', '=', $statusPotong)
             ->get();
     }
@@ -30,8 +30,12 @@ class Bahan extends Model {
         return $query->where('status_potong', false);
     }
 
+    public function scopeSetStatusPotong($query, int $id, bool $value) {
+        $query->find($id)->update(['status_potong' => $value]);
+    }
+
     public function jenis_bahan() {
-        return $this->belongsTo(JenisBahan::class, 'kode_jenis_bahan', 'kode');
+        return $this->belongsTo(Kain::class, 'kode_kain', 'kode');
     }
 
     public function wos() {

@@ -13,9 +13,9 @@ class CreateBahanTable extends Migration
      */
     public function up()
     {
-        Schema::create('bahan', function (Blueprint $table) {
+        Schema::create('transaksi_kain', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('kode_jenis_bahan');
+            $table->string('kode_kain');
             $table->bigInteger('yard');
             $table->bigInteger('harga');
             $table->timestamp('tanggal_masuk');
@@ -23,7 +23,7 @@ class CreateBahanTable extends Migration
             $table->boolean('status_potong')->default(0); // false => ready, true => sudah dipotong
             $table->timestamps();
 
-            $table->foreign('kode_jenis_bahan')->references('kode')->on('jenis_bahan');
+            $table->foreign('kode_kain')->references('kode')->on('kain');
         });
     }
 
@@ -34,6 +34,6 @@ class CreateBahanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahan');
+        Schema::dropIfExists('transaksi_kain');
     }
 }

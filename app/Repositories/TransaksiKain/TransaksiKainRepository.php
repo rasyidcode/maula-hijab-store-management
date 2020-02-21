@@ -33,7 +33,7 @@ class BahanRepository implements BahanRepositoryInterface {
      * @return object
      */
     public function getYard(string $nama, string $warna) : object {
-        $data = Bahan::getYard($nama, $warna, false);
+        $data = Bahan::getYard($nama, $warna, 0);
         return $data;
     }
 
@@ -95,7 +95,7 @@ class BahanRepository implements BahanRepositoryInterface {
      * @param integer
      * @return object
      */
-    public function checkStatusPotong($id) : object {
+    public function checkStatusPotong(int $id) : object {
         $data = $this->get($id);
         $response = new \stdClass();
         $response->status_potong = $data->status_potong == 1 ? true : false;
@@ -104,11 +104,22 @@ class BahanRepository implements BahanRepositoryInterface {
 
     /**
      * method untuk mendapatkan jumlah bahan yang belum dipotong `bahan`
-     * @return integer
+     * @return int
      */
-    public function countBahanBelumDiPotong() : integer {
+    public function countBahanBelumDiPotong() : int {
         $data = Bahan::getBahanReady()->get();
         $count = count($data);
         return $count;
+        
+    }
+
+    /**
+     * method untuk mendapatkan yard `bahan` berdasarkan id
+     * @param int
+     * @return int
+     */
+    public function getBahanYard(int $id) : int {
+        $data = $this->get($id);
+        return $data->yard;
     }
 }

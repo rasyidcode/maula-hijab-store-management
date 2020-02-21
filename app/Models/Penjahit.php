@@ -12,15 +12,15 @@ class Penjahit extends Model
 
     protected $guarded = [];
 
-    public function scopeGet($query, string $noKtp) : object {
+    public function scopeGetBy($query, string $noKtp) : object {
         return $query->where('no_ktp', $noKtp);
     }
 
-    public function scopeUpdate($query, string $noKtp, array $data) {
+    public function scopeEdit($query, string $noKtp, array $data) {
         $query->where('no_ktp', $noKtp)->update($data);
     }
 
-    public function scopeDelete($query, string $noKtp) {
+    public function scopeRemove($query, string $noKtp) {
         $query->where('no_ktp', $noKtp)->delete();
     }
 

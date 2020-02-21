@@ -33,7 +33,7 @@ class APIServiceProvider extends ServiceProvider
             'App\Repositories\Barang\BarangRepository'
         );
         $this->app->bind(
-            'App\Repositories\Penjahit\PenjahitepositoryInterface',
+            'App\Repositories\Penjahit\PenjahitRepositoryInterface',
             'App\Repositories\Penjahit\PenjahitRepository'
         );
         $this->app->bind(

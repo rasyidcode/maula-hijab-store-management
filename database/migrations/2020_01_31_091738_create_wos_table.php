@@ -16,7 +16,7 @@ class CreateWosTable extends Migration
         Schema::create('wos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kode_barang');
-            $table->bigInteger('id_bahan')->unsigned();
+            $table->bigInteger('id_transaksi_kain')->unsigned();
             $table->bigInteger('yard');
             $table->bigInteger('pcs');
             $table->timestamp('tanggal_ambil')->nullable();
@@ -30,7 +30,7 @@ class CreateWosTable extends Migration
 
             $table->foreign('no_ktp_penjahit')->references('no_ktp')->on('penjahit');
             $table->foreign('kode_barang')->references('kode')->on('barang');
-            $table->foreign('id_bahan')->references('id')->on('bahan');
+            $table->foreign('id_transaksi_kain')->references('id')->on('transaksi_kain');
         });
     }
 

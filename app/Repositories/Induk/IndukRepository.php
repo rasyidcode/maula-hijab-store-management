@@ -19,7 +19,7 @@ class IndukRepository implements IndukRepositoryInterface {
      * @param string
      * @return object
      */
-    public function get(string $kode) : object {
+    public function get(string $kode) : ?object {
         $data = Induk::getByKode($kode)->first();
         return $data;
     }
@@ -41,9 +41,9 @@ class IndukRepository implements IndukRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(string $kode, array $data) : object {
-        Induk::update($kode, $data);
-        $updatedData = $this->get($kode);
+    public function edit(string $kode, array $data) : object {
+        Induk::edit($kode, $data);
+        $updatedData = $this->get($data['kode']);
         return $updatedData;
     }
 
@@ -52,9 +52,9 @@ class IndukRepository implements IndukRepositoryInterface {
      * @param string
      * @return object
      */
-    public function delete(string $kode) : object {
+    public function remove(string $kode) : object {
         $deletedData = $this->get($kode);
-        Induk::delete($kode);
+        Induk::remove($kode);
         return $deletedData;
     }
 

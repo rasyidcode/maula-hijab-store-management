@@ -19,7 +19,7 @@ class WosRepository implements WosRepositoryInterface {
      * @param int
      * @return object
      */
-    public function get(int $id) : object {
+    public function get(int $id) : ?object {
         return Wos::find($id);
     }
 
@@ -59,8 +59,8 @@ class WosRepository implements WosRepositoryInterface {
      * @param array
      * @return object
      */
-    public function update(int $id, array $data) : object {
-        Wos::update($id, $data);
+    public function edit(int $id, array $data) : object {
+        Wos::edit($id, $data);
         $updatedData = $this->get($id);
         return $updatedData;
     }
@@ -70,9 +70,9 @@ class WosRepository implements WosRepositoryInterface {
      * @param int
      * @return object
      */
-    public function delete(int $id) : object {
+    public function remove(int $id) : object {
         $deletedData = $this->get($id);
-        Wos::delete($id);
+        Wos::remove($id);
         return $deletedData;
     }
 
@@ -90,8 +90,8 @@ class WosRepository implements WosRepositoryInterface {
      * @param array
      * @return object
      */
-    public function pay(array $data) {
-
+    public function pay(array $data) : object {
+        // pay wos
     }
 
     public function onProgress(string $kodeBarang) : object {
@@ -101,6 +101,14 @@ class WosRepository implements WosRepositoryInterface {
             ->get();
 
         return $data;
+    }
+
+    /**
+     * method untuk mendapatkan nama model
+     * @return string
+     */
+    public function getModelName() : string {
+        return Bahan::class;
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Repositories\Penjahit;
 
 use App\Models\Penjahit;
 
-class PenjahitRepository implements PenjahitRepositoryInteface {
+class PenjahitRepository implements PenjahitRepositoryInterface {
 
     /**
      * method untuk mendapatkan semua `penjahit`
@@ -15,29 +15,12 @@ class PenjahitRepository implements PenjahitRepositoryInteface {
     }
 
     /**
-     * method untuk mendapatkan semua `penjahit` dan juga `wos`nya
-     * @return object
-     */
-    public function allWithWos() : object {
-        return Penjahit::allWithWos()->get();
-    }
-
-    /**
      * method untuk mendapatkan `penjahit`
      * @param string
      * @return object
      */
-    public function get(string $noKtp) : object {
-        return Penjahit::get($noKtp)->first();
-    }
-
-    /**
-     * method untuk mendapatkan `penjahit` dan juga semua `wos`nya
-     * @param string
-     * @return object
-     */
-    public function oneWithWos(string $noKtp) : object {
-        return Penjahit::oneWithWos($noKtp)->first();
+    public function get(string $noKtp) : ?object {
+        return Penjahit::getBy($noKtp)->first();
     }
 
     /**
@@ -57,8 +40,8 @@ class PenjahitRepository implements PenjahitRepositoryInteface {
      * @param array
      * @return object
      */
-    public function update(string $noKtp, array $data) : object {
-        Penjahit::update($noKtp, $data);
+    public function edit(string $noKtp, array $data) : object {
+        Penjahit::edit($noKtp, $data);
         $updatedData = $this->get($noKtp);
         return $updatedData;
     }
@@ -68,9 +51,9 @@ class PenjahitRepository implements PenjahitRepositoryInteface {
      * @param string
      * @return object
      */
-    public function delete(string $noKtp) : object {
+    public function remove(string $noKtp) : object {
         $deletedData = $this->get($noKtp);
-        Penjahit::delete($noKtp);
+        Penjahit::remove($noKtp);
         return $deletedData;
     }
 
@@ -81,5 +64,23 @@ class PenjahitRepository implements PenjahitRepositoryInteface {
     public function getModelName() : string {
         return Penjahit::class;
     }
+
+    /**
+     * method untuk mendapatkan semua `penjahit` dan juga `wos`nya
+     * @return object
+     */
+    public function allWithWos() : object {
+        return Penjahit::allWithWos()->get();
+    }
+
+    /**
+     * method untuk mendapatkan `penjahit` dan juga semua `wos`nya
+     * @param string
+     * @return object
+     */
+    public function oneWithWos(string $noKtp) : object {
+        return Penjahit::oneWithWos($noKtp)->first();
+    }
+
 
 }
