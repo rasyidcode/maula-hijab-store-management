@@ -24,12 +24,17 @@ class Kain extends Model {
         $query->where('kode', $kode)->delete();
     }
 
-    public function scopeGetWithTransaksiKain($query, string $kode) {
-        return $query->with('transaksi_kain')->where('kode', $kode);
+    public function scopeOneWithRelations($query, string $kode) {
+        return $query
+            ->with('transaksi_kain')
+            ->with('barang')
+            ->where('kode', $kode);
     }
 
-    public function scopeGetAllWithTransaksiKain($query) {
-        return $query->with('transaksi_kain');
+    public function scopeAllWithRelations($query) {
+        return $query
+            ->with('transaksi_kain')
+            ->with('barang');
     }
     /* END OF SCOPE */
 

@@ -1,80 +1,97 @@
 <?php
 
-namespace App\Repositories\JenisBahan;
+namespace App\Repositories\Kain;
 
 use DB;
 
-use App\Models\JenisBahan;
+use App\Models\Kain;
 
-class JenisBahanRepository implements JenisBahanRepositoryInterface {
-
-    /**
-     * method untuk mendapatkan nama model
-     * @return string
-     */
-    public function getModelName() : string {
-        return JenisBahan::class;
-    }
+class KainRepository implements KainRepositoryInterface {
 
     /**
-     * method untuk mendapatkan semua jenis_bahan
+     * method untuk mendapatkan semua `kain`
      * @return object
      */
     public function all() : object {
-        $data = JenisBahan::orderBy('created_at', 'desc')->get();
+        $data = Kain::orderBy('created_at', 'desc')->get();
         return $data;
     }
 
     /**
-     * method untuk mendapatkan jenis_bahan berdasarkan kode
+     * method untuk mendapatkan `kain` berdasarkan kode
      * @param string
      * @return object
      */
     public function get(string $kode) : ?object {  
-        $data = JenisBahan::getOne($kode)->first();
+        $data = Kain::getOne($kode)->first();
         return $data;
     }
 
     /**
-     * methond untuk mendapatkan list nama_bahan
-     * @param string_or_null
+     * method untuk membuat `kain`
+     * @param object
      * @return object
      */
-    public function getListNamaBahan(?string $warna = null) : object {
-        if ($warna != null) {
-            $data = DB::table('jenis_bahan')
-                ->select('nama')
-                ->groupBy('nama')
-                ->where('warna', '=', "${warna}")
-                ->get();
-        } else {
-            $data = DB::table('jenis_bahan')
-                ->select('nama')
-                ->groupBy('nama')
-                ->get();
-        }
-        
-        return $data;
+    public function create(array $data) : object {
+        Kain::create($data);
+        $createdData = $this->get($data['kode']);
+        return $createdData;
     }
 
     /**
-     * methond untuk mendapatkan list warna berdasarkan nama
+     * method untuk memperbaharui `kain`
      * @param string
+     * @param object
      * @return object
      */
-    public function getListWarnaBahan(?string $nama = null) : object {
-        if ($nama != null) {
-            $data = DB::table('jenis_bahan')
-                ->select('warna')
-                ->groupBy('warna')
-                ->where('nama', '=', "{$nama}")
-                ->get();
-        } else {
-            $data = DB::table('jenis_bahan')
-                ->select('warna')
-                ->groupBy('warna')
-                ->get();
-        }
+    public function edit(string $kode, array $data) : object {
+        Kain::edit($kode, $data);
+        $updatedData = $this->get($data['kode']);
+        return $updatedData;
+    }
+
+    /**
+     * method untuk menghapus `kain`
+     * TODO: sebelum dihapus, harus di record terlebih dahulu
+     * @param int
+     * @return object
+     */
+    public function remove(string $kode) : object {
+        $deletedData = $this->get($kode)->first();
+        Kain::remove($kode);
+        return $deletedData;
+    }
+
+    /**
+     * method untuk mengecheck nama `kain` ada atau tidak
+     * @param string
+     * @return bool
+     */
+    public function isNamaKainExist(string $name) : bool {
+        $data = $this->listNamaKain();
+
+        if (count($data) > 0) return true;
+        else return false;
+    }
+
+    /**
+     * method untuk mengecheck warna `kain` ada atau tidak
+     * @param string
+     * @return bool
+     */
+    public function isWarnaKainExist(string $warna) : bool {
+        $data = $this->listWarnaKain();
+
+        if (count($data) > 0) return true;
+        else return false;
+    }
+
+    /**
+     * method untuk mendapatkan semua jenis_bahan dan juga relasinya 'bahan'
+     * @return object
+     */
+    public function allWithRelations() : object {
+        $data = Kain::allWithRelations()->get();
         return $data;
     }
 
@@ -83,66 +100,59 @@ class JenisBahanRepository implements JenisBahanRepositoryInterface {
      * @param kode
      * @return object
      */
-    public function oneWithBahan(string $kode) : object {
-        $data = JenisBahan::getWithBahan($kode)->first();
+    public function oneWithRelations(string $kode) : object {
+        $data = Kain::oneWithRelations($kode)->first();
         return $data;
     }
 
     /**
-     * method untuk mendapatkan semua jenis_bahan dan juga relasinya 'bahan'
+     * method untuk mendapatkan list kain
+     * @param string_or_null
      * @return object
      */
-    public function allWithBahan() : object {
-        $data = JenisBahan::getAllWithBahan()->get();
-        return $data;
-    }
-
-    /**
-     * method untuk membuat jenis_bahan
-     * @param object
-     * @return object
-     */
-    public function create(array $data) : object {
-        JenisBahan::create($data);
-        $createdData = $this->get($data['kode']);
-        return $createdData;
-    }
-
-    /**
-     * method untuk memperbaharui jenis_bahan
-     * TODO: sebelum diperbaharui, harus di record terlebih dahulu
-     * @param string
-     * @param object
-     * @return object
-     */
-    public function edit(string $kode, array $data) : object {
-        JenisBahan::edit($kode, $data);
-        $updatedData = $this->get($data['kode']);
-        return $updatedData;
-    }
-
-    /**
-     * method untuk menghapus jenis_bahan
-     * TODO: sebelum dihapus, harus di record terlebih dahulu
-     * @param int
-     * @return object
-     */
-    public function remove(string $kode) : object {
-        $deletedData = $this->get($kode)->first();
-        JenisBahan::remove($kode);
+    public function listNamaKain(?string $warna = null) : object {
+        if ($warna != null) {
+            $data = DB::table('kain')
+                ->select('nama')
+                ->groupBy('nama')
+                ->where('warna', '=', "${warna}")
+                ->get();
+        } else {
+            $data = DB::table('kain')
+                ->select('nama')
+                ->groupBy('nama')
+                ->get();
+        }
         
-        return $deletedData;
+        return $data;
     }
 
     /**
-     * method untuk mengecheck nama `jenis_bahan` ada atau tidak
+     * method untuk mendapatkan list warna berdasarkan nama
      * @param string
-     * @return bool
+     * @return object
      */
-    public function isNamaBahanExist(string $name) : bool {
-        $data = $this->getListNamaBahan();
+    public function listWarnaKain(?string $nama = null) : object {
+        if ($nama != null) {
+            $data = DB::table('kain')
+                ->select('warna')
+                ->groupBy('warna')
+                ->where('nama', '=', "{$nama}")
+                ->get();
+        } else {
+            $data = DB::table('kain')
+                ->select('warna')
+                ->groupBy('warna')
+                ->get();
+        }
+        return $data;
+    }
 
-        if (count($data) > 0) return true;
-        else return false;
+    /**
+     * method untuk mendapatkan nama model
+     * @return string
+     */
+    public function getModelName() : string {
+        return Kain::class;
     }
 }

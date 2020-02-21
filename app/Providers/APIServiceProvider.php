@@ -17,8 +17,8 @@ class APIServiceProvider extends ServiceProvider
             'App\Repositories\Trash\TrashRepository'
         );
         $this->app->bind(
-            'App\Repositories\JenisBahan\JenisBahanRepositoryInterface',
-            'App\Repositories\JenisBahan\JenisBahanRepository'
+            'App\Repositories\Kain\KainRepositoryInterface',
+            'App\Repositories\Kain\KainRepository'
         );
         $this->app->bind(
             'App\Repositories\Bahan\BahanRepositoryInterface',
