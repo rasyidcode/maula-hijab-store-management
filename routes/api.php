@@ -96,4 +96,9 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('/payment/list', 'API\WosController@wosPayment'); // worked
         Route::post('/{id}/payment', 'API\WosController@pay'); // worked
     });
+
+    /* penjualan */
+    Route::group(['prefix' => 'penjualan'], function() {
+        Route::post('/test', 'API\PenjualanController@test');
+    });
 });
