@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Repositories\Bahan;
+namespace App\Repositories\TransaksiKain;
 
 use DB;
 
-use App\Models\Bahan;
+use App\Models\TransaksiKain;
 
-class BahanRepository implements BahanRepositoryInterface {
+class TransaksiKainRepository implements TransaksiKainRepositoryInterface {
 
     /**
-     * method untuk mendapatkan semua bahan
+     * method untuk mendapatkan semua `transaksi_kain`
      * @return object
      */
     public function all() : object {
-        return Bahan::all();
+        return TransaksiKain::all();
     }
 
     /**
@@ -22,7 +22,7 @@ class BahanRepository implements BahanRepositoryInterface {
      * @return object
      */
     public function get(int $id) : ?object {
-        return Bahan::find($id);
+        return TransaksiKain::find($id);
     }
 
     /**
@@ -33,51 +33,51 @@ class BahanRepository implements BahanRepositoryInterface {
      * @return object
      */
     public function getYard(string $nama, string $warna) : object {
-        $data = Bahan::getYard($nama, $warna, 0);
+        $data = TransaksiKain::getYard($nama, $warna, 0);
         return $data;
     }
 
     /**
-     * method untuk membuat bahan
+     * method untuk membuat `transaksi_kain`
      * @param array
      * @return object
      */
     public function create(array $data) : object {
-        $bhn = Bahan::create($data);
+        $bhn = TransaksiKain::create($data);
         $createdData = $this->get($bhn->id);
         return $createdData;
     }
 
     /**
-     * method untuk mengupdate bahan
+     * method untuk mengupdate `transaksi_kain`
      * @param integer
      * @param array
      * @return object
      */
     public function edit(int $id, array $data) : object {
-        Bahan::edit($id, $data);
+        TransaksiKain::edit($id, $data);
         $updatedData = $this->get($id);
         return $updatedData;
     }
 
     /**
-     * method untuk menghapus bahan
+     * method untuk menghapus `transaksi_kain`
      * @param integer
      * @return object
      */
     public function remove(int $id) : object {
         $deletedData = $this->get($id);
-        Bahan::remove($id);
+        TransaksiKain::remove($id);
         return $deletedData;
     }
 
     /**
-     * method untuk mengganti status_potong `bahan`
+     * method untuk mengganti status_potong `transaksi_kain`
      * @param bool
      * @return object
      */
     public function setStatusPotong(int $id, bool $value) : object {
-        Bahan::setStatusPotong($id, $value);
+        TransaksiKain::setStatusPotong($id, $value);
         $updatedData = $this->get($id);
         return $updatedData;
     }
@@ -87,11 +87,11 @@ class BahanRepository implements BahanRepositoryInterface {
      * @return string
      */
     public function getModelName() : string {
-        return Bahan::class;
+        return TransaksiKain::class;
     }
 
     /**
-     * method untuk mengecheck status_potong `bahan`
+     * method untuk mengecheck status_potong `transaksi_kain`
      * @param integer
      * @return object
      */
@@ -103,18 +103,18 @@ class BahanRepository implements BahanRepositoryInterface {
     }
 
     /**
-     * method untuk mendapatkan jumlah bahan yang belum dipotong `bahan`
+     * method untuk mendapatkan jumlah `transaksi_kain` yang belum dipotong
      * @return int
      */
-    public function countBahanBelumDiPotong() : int {
-        $data = Bahan::getBahanReady()->get();
+    public function countTransaksiKainBelumDiPotong() : int {
+        $data = TransaksiKain::transaksiKainReady()->get();
         $count = count($data);
         return $count;
         
     }
 
     /**
-     * method untuk mendapatkan yard `bahan` berdasarkan id
+     * method untuk mendapatkan yard `transaksi_kain` berdasarkan id
      * @param int
      * @return int
      */

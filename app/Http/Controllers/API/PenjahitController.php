@@ -57,11 +57,12 @@ class PenjahitController extends Controller {
     }
 
     public function edit(Request $request, string $no_ktp) {
-        Helper::isPenjahitExist($this->penjahit, $no_ktp);
         $userInput = $request->only(['no_ktp', 'nama_lengkap', 'no_hp', 'alamat']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesPenjahit(false), ValidatorHelper::messagesPenjahit());
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
+
+        Helper::isPenjahitExist($this->penjahit, $no_ktp);
 
         $data = $this->penjahit->edit($no_ktp, $userInput);
         return Helper::send_response(200, 'Penjahit telah diperbaharui!', $data);

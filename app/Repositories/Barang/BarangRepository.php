@@ -71,10 +71,14 @@ class BarangRepository implements BarangRepositoryInterface {
      * method untuk menghitung jumlah stok yang on_progress
      * @return object
      */
-    public function allWithOnProgress() : object {
+    public function allWithReadyAndProgress() : object {
         $data = DB::table('barang')
             ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
-            ->select('barang.*', DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'))
+            ->select(
+                'barang.*', 
+                DB::raw('(SUM(wos.pcs) - SUM(wos.jumlah_kembali)) as stok_on_progress'),
+                DB::raw('SUM(wos.jumlah_kembali) as stok_ready')
+            )
             ->groupBy('barang.kode')
             ->get();
         
@@ -86,13 +90,17 @@ class BarangRepository implements BarangRepositoryInterface {
      * @param string
      * @return object
      */
-    public function oneWithOnProgress(string $kode) : object {
+    public function oneWithReadyAndProgress(string $kode) : object {
         $data = DB::table('barang')
             ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
-            ->select('barang.*', DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'))
+            ->select(
+                'barang.*', 
+                DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'),
+                DB::raw('SUM(jumlah_kembali) as stok_ready')
+            )
             ->groupBy('barang.kode')
             ->where('kode', '=', $kode)
-            ->get();
+            ->first();
         
         return $data;
     }
@@ -101,8 +109,8 @@ class BarangRepository implements BarangRepositoryInterface {
      * method untuk mendapatkan semua `barang` dan juga relasinya
      * @return object
      */
-    public function allWithInduk() : object {
-        $data = Barang::with('induk')->get();
+    public function allWithRelations() : object {
+        $data = Barang::allWithRelations();
         return $data;
     }
 
@@ -111,10 +119,8 @@ class BarangRepository implements BarangRepositoryInterface {
      * @param string
      * @return object
      */
-    public function oneWithInduk(string $kode) : object {
-        $data = Barang::with('induk')
-            ->where('kode', '=', $kode)
-            ->first();
+    public function oneWithRelations(string $kode) : object {
+        $data = Barang::oneWithRelations($kode);
         return $data;
     }
 

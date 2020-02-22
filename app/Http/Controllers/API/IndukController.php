@@ -61,6 +61,7 @@ class IndukController extends Controller {
 
     public function remove(string $kode) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
+        Helper::isIndukExist($this->induk, $kode);
         $deletedData = $this->induk->remove($kode);
 
         $newTrash = [

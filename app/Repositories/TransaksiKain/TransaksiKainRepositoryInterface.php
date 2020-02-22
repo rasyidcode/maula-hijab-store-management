@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Repositories\Bahan;
+namespace App\Repositories\TransaksiKain;
 
-interface BahanRepositoryInterface {
+interface TransaksiKainRepositoryInterface {
 
     /**
-     * method untuk mendapatkan semua bahan
+     * method untuk mendapatkan semua `transaksi_kain`
      * @return object
      */
     public function all() : object;
 
     /**
-     * method untuk mendapatkan bahan
+     * method untuk mendapatkan `transaksi_kain`
      * @param integer
      * @return object
      */
     public function get(int $id) : ?object;
 
     /**
-     * method untuk mendapatkan id, yard berdasarkan nama dan warna bahan yang telah
+     * method untuk mendapatkan id, yard berdasarkan nama dan warna `transaksi_kain` yang telah
      * di input oleh user
      * @param string
      * @param string
@@ -27,14 +27,14 @@ interface BahanRepositoryInterface {
     public function getYard(string $nama, string $warna) : object;
 
     /**
-     * method untuk membuat bahan
+     * method untuk membuat `transaksi_kain`
      * @param array
      * @return object
      */
     public function create(array $data) : object;
 
     /**
-     * method untuk mengupdate bahan
+     * method untuk mengupdate `transaksi_kain`
      * @param integer
      * @param array
      * @return object
@@ -42,14 +42,14 @@ interface BahanRepositoryInterface {
     public function edit(int $id, array $data) : object;
 
     /**
-     * method untuk menghapus bahan
+     * method untuk menghapus `transaksi_kain`
      * @param integer
      * @return object
      */
     public function remove(int $id) : object;
 
     /**
-     * method untuk mengganti status_potong `bahan`
+     * method untuk mengganti status_potong `transaksi_kain`
      * @param bool
      * @return object
      */
@@ -62,20 +62,20 @@ interface BahanRepositoryInterface {
     public function getModelName() : string;
 
     /**
-     * method untuk mengecheck status_potong `bahan`
+     * method untuk mengecheck status_potong `transaksi_kain``
      * @param integer
      * @return object
      */
     public function checkStatusPotong(int $id) : object;
 
     /**
-     * method untuk mendapatkan jumlah bahan yang belum dipotong `bahan`
+     * method untuk mendapatkan jumlah `transaksi_kain` yang belum dipotong `transaksi_kain``
      * @return int
      */
-    public function countBahanBelumDiPotong() : int;
+    public function countTransaksiKainBelumDiPotong() : int;
 
     /**
-     * method untuk mendapatkan yard `bahan` berdasarkan id
+     * method untuk mendapatkan yard `transaksi_kain`` berdasarkan id
      * @param int
      * @return int
      */

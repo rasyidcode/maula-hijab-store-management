@@ -42,7 +42,7 @@ class PenjahitRepository implements PenjahitRepositoryInterface {
      */
     public function edit(string $noKtp, array $data) : object {
         Penjahit::edit($noKtp, $data);
-        $updatedData = $this->get($noKtp);
+        $updatedData = $this->get($data['no_ktp']);
         return $updatedData;
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Wos;
 
+use DB;
+
 use App\Models\Wos;
 
 class WosRepository implements WosRepositoryInterface {
@@ -27,8 +29,8 @@ class WosRepository implements WosRepositoryInterface {
      * method untuk mendapatkan semua `wos` dan relasinya
      * @return object
      */
-    public function withRelations() : object {
-        $data = Wos::withRelations()->get();
+    public function allWithRelations() : object {
+        $data = Wos::allWithRelations()->get();
         return $data;
     }
 
@@ -37,8 +39,8 @@ class WosRepository implements WosRepositoryInterface {
      * @param int
      * @return object
      */
-    public function withRelation(int $id) : object {
-        $data = Wos::withRelation($id)->first();
+    public function oneWithRelations(int $id) : object {
+        $data = Wos::oneWithRelations($id)->first();
         return $data;
     }
 
@@ -80,18 +82,38 @@ class WosRepository implements WosRepositoryInterface {
      * method untuk mendapatkan `wos` yang sudah completed dan belum dibayar
      * @return object
      */
-    public function wosToPay() : object {
-        $data = Wos::wosToPay();
+    public function wosPayment() : object {
+        $data = DB::table('wos')
+            ->join('penjahit', 'penjahit.no_ktp', '=', 'wos.no_ktp_penjahit')
+            ->join('barang', 'barang.kode', '=', 'wos.kode_barang')
+            ->join('transaksi_kain', 'transaksi_kain.id', 'wos.id_transaksi_kain')
+            ->join('induk', 'barang.kode_induk', '=', 'induk.kode')
+            ->select(
+                'wos.tanggal_bayar',
+                'penjahit.nama_lengkap', 
+                'barang.kode as kode_barang', 
+                'transaksi_kain.kode_kain', 
+                'wos.status_bayar',
+                'wos.pcs',
+                'induk.harga_jahit',
+                DB::raw('(wos.pcs * induk.harga_jahit) as total_pembayaran')
+            )
+            ->where('status_jahit', true)
+            ->get();
+
         return $data;
     }
 
     /**
      * method untuk membayar `wos`
+     * @param int
      * @param array
      * @return object
      */
-    public function pay(array $data) : object {
-        // pay wos
+    public function pay(int $id, array $data) : object {
+        Wos::where('id', $id)->update($data);
+        $updatedWos = $this->get($id);
+        return $updatedWos;
     }
 
     public function onProgress(string $kodeBarang) : object {
@@ -108,7 +130,7 @@ class WosRepository implements WosRepositoryInterface {
      * @return string
      */
     public function getModelName() : string {
-        return Bahan::class;
+        return Wos::class;
     }
 
 }

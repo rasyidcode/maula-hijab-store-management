@@ -50,25 +50,25 @@ interface BarangRepositoryInterface {
      * @param string
      * @return object
      */
-    public function allWithOnProgress() : object;
+    public function allWithReadyAndProgress() : object;
 
     /**
      * method untuk mendapatkan satu `barang` dan juga on_progressnya
      * @param string
      * @return object
      */
-    public function oneWithOnProgress(string $kode) : object;
+    public function oneWithReadyAndProgress(string $kode) : object;
 
     /**
      * method untuk mendapatkan semua `barang` dan juga relasinya
      * @return object
      */
-    public function allWithInduk() : object;
+    public function allWithRelations() : object;
 
     /**
      * method untuk mendapatkan satu `barang` dan juga relasinya
      * @param string
      * @return object
      */
-    public function oneWithInduk(string $kode) : object;
+    public function oneWithRelations(string $kode) : object;
 }

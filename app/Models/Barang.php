@@ -23,6 +23,21 @@ class Barang extends Model {
         $query->where('kode', $kode)->delete();
     }
 
+    public function scopeAllWithRelations($query) : object {
+        return $query
+            ->with('induk')
+            ->with('kain')
+            ->get();
+    }
+
+    public function scopeOneWithRelations($query, string $kode) : object {
+        return $query
+            ->with('induk')
+            ->with('kain')
+            ->where('kode', $kode)
+            ->first();
+    }
+
     public function induk() {
         return $this->belongsTo(Induk::class, 'kode_induk', 'kode');
     }
@@ -32,6 +47,6 @@ class Barang extends Model {
     }
 
     public function kain() {
-        return $this->hasOne(Kain::class, 'kode_kain', 'kode');
+        return $this->belongsTo(Kain::class, 'kode_kain', 'kode');
     }
 }

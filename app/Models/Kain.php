@@ -39,7 +39,7 @@ class Kain extends Model {
     /* END OF SCOPE */
 
     public function transaksi_kain() {
-        return $this->hasMany(Bahan::class, 'kode_kain', 'kode');
+        return $this->hasMany(TransaksiKain::class, 'kode_kain', 'kode');
     }
 
     public function barang() {

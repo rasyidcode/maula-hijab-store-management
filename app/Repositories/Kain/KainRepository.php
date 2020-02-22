@@ -22,7 +22,7 @@ class KainRepository implements KainRepositoryInterface {
      * @param string
      * @return object
      */
-    public function get(string $kode) : ?object {  
+    public function get(string $kode) : ?object {
         $data = Kain::getOne($kode)->first();
         return $data;
     }

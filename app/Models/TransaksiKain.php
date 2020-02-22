@@ -20,13 +20,13 @@ class TransaksiKain extends Model {
 
     public function scopeGetYard($query, string $nama, string $warna, bool $statusPotong) : object {
         return $query->select('id', 'yard')
-            ->where('kode_jenis_bahan', 'like', "%{$nama}%")
-            ->where('kode_jenis_bahan', 'like', "%{$warna}%")
+            ->where('kode_kain', 'like', "%{$nama}%")
+            ->where('kode_kain', 'like', "%{$warna}%")
             ->where('status_potong', '=', $statusPotong)
             ->get();
     }
 
-    public function scopeGetBahanReady($query) {
+    public function scopeTransaksiKainReady($query) {
         return $query->where('status_potong', false);
     }
 
@@ -34,11 +34,11 @@ class TransaksiKain extends Model {
         $query->find($id)->update(['status_potong' => $value]);
     }
 
-    public function jenis_bahan() {
+    public function kain() {
         return $this->belongsTo(Kain::class, 'kode_kain', 'kode');
     }
 
     public function wos() {
-        return $this->hasMany(Wos::class, 'id_bahan', 'id');
+        return $this->hasOne(Wos::class, 'id_transaksi_kain', 'id');
     }
 }

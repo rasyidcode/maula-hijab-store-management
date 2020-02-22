@@ -21,8 +21,8 @@ class APIServiceProvider extends ServiceProvider
             'App\Repositories\Kain\KainRepository'
         );
         $this->app->bind(
-            'App\Repositories\Bahan\BahanRepositoryInterface',
-            'App\Repositories\Bahan\BahanRepository'
+            'App\Repositories\TransaksiKain\TransaksiKainRepositoryInterface',
+            'App\Repositories\TransaksiKain\TransaksiKainRepository'
         );
         $this->app->bind(
             'App\Repositories\Induk\IndukRepositoryInterface',

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 use App\Http\Controllers\Helper\GeneralHelper as Helper;
 use App\Http\Controllers\Helper\ValidatorHelper;
-use App\Repositories\Kain\KainBahanRepositoryInterface as KainRepo;
+use App\Repositories\Kain\KainRepositoryInterface as KainRepo;
 use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
 
 # TODO: get semua jenis bahan tapi hanya menampilkan kodenya saja
@@ -31,7 +31,7 @@ class KainController extends Controller {
     }
 
     public function get(string $kode) {
-        $this->isKainExist($kode);
+        Helper::isKainExist($this->kain, $kode);
         $data = $this->kain->get($kode);
         return Helper::send_response(200, 'Berhasil!', $data);
     }
@@ -49,7 +49,7 @@ class KainController extends Controller {
     public function edit(Request $request, string $kode) {
         $userInput = $request->only(['kode', 'nama', 'warna']);
 
-        $this->isKainExist($kode);
+        Helper::isKainExist($this->kain, $kode);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesKain(false), ValidatorHelper::messagesKain());
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
@@ -60,7 +60,7 @@ class KainController extends Controller {
 
     public function remove(string $kode) {
         // TODO : check kalo ada yang pakai id ini, jangan dihapus
-        $this->isKainExist($kode);
+        Helper::isKainExist($this->kain, $kode);
         
         $data = $this->kain->remove($kode);
         $newTrash = [
@@ -85,7 +85,7 @@ class KainController extends Controller {
     }
 
     public function oneWithRelations(string $kode) {
-        $this->isJenisBahanExist($kode);
+        Helper::isKainExist($this->kain, $kode);
         $one = $this->kain->oneWithRelations($kode);
         return Helper::send_response(200, 'Berhasil', $one);
     }

@@ -9,14 +9,18 @@ class Wos extends Model {
     protected $table = "wos";
     protected $guarded = [];
 
-    public function scopeWithRelations($query) : object {
-        return $query->with('barang')->with('bahan')->with('penjahit')->orderBy('created_at', 'desc');
-    }
-
-    public function scopeWithRelation($query, int $id) : object {
+    public function scopeAllWithRelations($query) : object {
         return $query
             ->with('barang')
-            ->with('bahan')
+            ->with('transaksi_kain')
+            ->with('penjahit')
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function scopeOneWithRelations($query, int $id) : object {
+        return $query
+            ->with('barang')
+            ->with('transaksi_kain')
             ->with('penjahit')
             ->where('id', $id)
             ->orderBy('created_at', 'desc');
@@ -32,7 +36,7 @@ class Wos extends Model {
 
     public function scopeWosToPay($query) : object {
         return $query
-            ->select('nama_penjahit', 'tanggal_bayar', 'kode_barang', 'nama_bahan', 'pcs', 'status_bayar')
+            ->select('nama_lengkap', 'tanggal_bayar', 'kode_barang', 'nama_bahan', 'pcs', 'status_bayar')
             ->where('status_jahit', true)
             ->where('status_bayar', false)
             ->get();
@@ -46,7 +50,7 @@ class Wos extends Model {
         return $this->belongsTo(Barang::class, 'kode_barang', 'kode');
     }
 
-    public function bahan() {
-        return $this->belongsTo(Bahan::class, 'id_bahan', 'id');
+    public function transaksi_kain() {
+        return $this->belongsTo(TransaksiKain::class, 'id_transaksi_kain', 'id');
     }
 }

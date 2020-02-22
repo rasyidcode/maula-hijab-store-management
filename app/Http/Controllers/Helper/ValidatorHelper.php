@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Helper;
 
 class ValidatorHelper {
 
-    public static function rulesJenisBahan(bool $isCreate) : array {
+    public static function rulesKain(bool $isCreate) : array {
         return [
-            'kode' => $isCreate ? 'required|unique:jenis_bahan' : 'required',
+            'kode' => $isCreate ? 'required|unique:kain' : 'required',
             'nama' => 'required',
             'warna' => 'required'
         ];
     }
 
-    public static function messagesJenisBahan() : array {
+    public static function messagesKain() : array {
         return [
             'kode.required' => 'Kode tidak boleh kosong',
             'kode.unique' => 'Kode ini sudah digunakan',
@@ -21,18 +21,18 @@ class ValidatorHelper {
         ];
     }
 
-    public static function rulesBahan() : array {
+    public static function rulesTransaksiKain() : array {
         return [
-            'kode_jenis_bahan' => 'required',
+            'kode_kain' => 'required',
             'harga' => 'required|numeric',
             'yard' => 'required|numeric',
             'tanggal_masuk' => 'required'
         ];
     }
 
-    public static function messagesBahan() : array {
+    public static function messagesTransaksiKain() : array {
         return [
-            'kode_jenis_bahan.required' => 'Kode jenis bahan tidak boleh kosong',
+            'kode_kain.required' => 'Kode jenis bahan tidak boleh kosong',
             'harga.required' => 'Harga tidak boleh kosong',
             'harga.numeric' => 'Harga harus berupa angka',
             'yard.required' => 'Yard tidak boleh kosong',
@@ -76,8 +76,7 @@ class ValidatorHelper {
         return [
             'kode' => $isCreate ? 'required|unique:barang' : 'required',
             'kode_induk' => 'required',
-            'warna' => 'required',
-            'stok_ready' => 'required|numeric',
+            'kode_kain' => 'required',
             'treshold' => 'required|numeric'
         ];
     }
@@ -87,9 +86,7 @@ class ValidatorHelper {
             'kode.required' => 'Kode tidak boleh kosong',
             'kode.unique' => 'Kode sudah terpakai',
             'kode_induk.required' => 'Kode induk tidak boleh kosong',
-            'warna.required' => 'Warna tidak boleh kosong',
-            'stok_ready.required' => 'Stok tidak boleh kosong',
-            'stok_ready.numeric' => 'Stok harus berupa angka',
+            'kode_kain.required' => 'Kode kain tidak boleh kosong',
             'treshold.required' => 'Treshold tidak boleh kosong',
             'treshold.numeric' => 'Treshold harus berupa angka'
         ];
@@ -117,8 +114,7 @@ class ValidatorHelper {
     public static function rulesWos() : array {
         return [
             'kode_barang' => 'required',
-            'id_bahan' => 'required',
-            'yard' => 'required|numeric',
+            'id_transaksi_kain' => 'required',
             'pcs' => 'required|numeric'
         ];
     }
@@ -126,9 +122,7 @@ class ValidatorHelper {
     public static function messagesWos() : array {
         return [
             'kode_barang.required' => 'Kode barang tidak boleh kosong!',
-            'id_bahan.required' => 'Id bahan tidak boleh kosong!',
-            'yard.required' => 'Yard tidak boleh kosong!',
-            'yard.numeric' => 'Yard harus berupa angka!',
+            'id_transaksi_kain.required' => 'Id bahan tidak boleh kosong!',
             'pcs.required' => 'Pcs tidak boleh kosong!',
             'pcs.numeric' => 'Pcs harus berupa angka!'
         ];

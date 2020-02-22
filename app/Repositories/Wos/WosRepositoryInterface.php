@@ -21,14 +21,14 @@ interface WosRepositoryInterface {
      * method untuk mendapatkan semua `wos` dan relasinya
      * @return object
      */
-    public function withRelations() : object;
+    public function allWithRelations() : object;
 
     /**
      * method untuk mendapatkan `wos` dan relasinya
      * @param int
      * @return object
      */
-    public function withRelation(int $id) : object;
+    public function oneWithRelations(int $id) : object;
 
     /**
      * method untuk membuat `wos`
@@ -56,14 +56,14 @@ interface WosRepositoryInterface {
      * method untuk mendapatkan `wos` yang sudah completed dan belum dibayar
      * @return object
      */
-    public function wosToPay() : object;
+    public function wosPayment() : object;
 
     /**
      * method untuk membayar `wos`
      * @param array
      * @return object
      */
-    public function pay(array $data) : object;
+    public function pay(int $id, array $data) : object;
 
     /**
      * method untuk mendapatkan `wos` yang lagi di progress

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Helper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
-use App\Repositories\Bahan\BahanRepositoryInterface as BahanRepo;
-use App\Repositories\JenisBahan\JenisBahanRepositoryInterface as JenisBahanRepo;
+use App\Repositories\TransaksiKain\TransaksiKainRepositoryInterface as TransaksiKainRepo;
+use App\Repositories\Kain\KainRepositoryInterface as KainRepo;
 use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
 use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
 use App\Repositories\Penjahit\PenjahitRepositoryInterface as PenjahitRepo;
@@ -30,17 +30,17 @@ class GeneralHelper {
         }
     }
 
-    public static function isJenisBahanExist(JenisBahanRepo $jenisBahanRepo, string $kode) {
-        $checkData = $jenisBahanRepo->get($kode);
+    public static function isKainExist(KainRepo $kainRepo, string $kode) {
+        $checkData = $kainRepo->get($kode);
         if ($checkData == null) {
-            throw new \App\Exceptions\JenisBahanNotFoundException;
+            throw new \App\Exceptions\KainNotFoundException;
         }
     }
 
-    public static function isBahanExist(BahanRepo $bahanRepo, int $id) {
-        $checkData = $bahanRepo->get($id);
+    public static function isTransaksiKainExist(TransaksiKainRepo $transaksiKainRepo, int $id) {
+        $checkData = $transaksiKainRepo->get($id);
         if ($checkData == null) {
-            throw new \App\Exceptions\BahanNotFoundException;
+            throw new \App\Exceptions\TransaksiKainNotFoundException;
         }
     }
 

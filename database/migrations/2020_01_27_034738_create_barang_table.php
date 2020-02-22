@@ -17,7 +17,6 @@ class CreateBarangTable extends Migration
             $table->string('kode')->primary();
             $table->string('kode_kain');
             $table->string('kode_induk');
-            $table->bigInteger('stok_ready');
             $table->bigInteger('treshold');
             $table->timestamps();
 

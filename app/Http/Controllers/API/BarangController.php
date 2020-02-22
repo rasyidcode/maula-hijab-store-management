@@ -12,17 +12,20 @@ use App\Http\Controllers\Helper\ValidatorHelper;
 
 use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
 use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
+use App\Repositories\Kain\KainRepositoryInterface as KainRepo;
 use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
 
 class BarangController extends Controller {
 
     protected $barang;
     protected $induk;
+    protected $kain;
     protected $trash;
 
-    public function __construct(BarangRepo $barangRepo, IndukRepo $indukRepo, TrashRepo $trashRepo) {
+    public function __construct(BarangRepo $barangRepo, IndukRepo $indukRepo, KainRepo $kainRepo, TrashRepo $trashRepo) {
         $this->barang = $barangRepo;
         $this->induk = $indukRepo;
+        $this->kain = $kainRepo;
         $this->trash = $trashRepo;
     }
 
@@ -38,11 +41,13 @@ class BarangController extends Controller {
     }
 
     public function create(Request $request)  {
-        $userInput = $request->only(["kode", "kode_induk", "warna", "stok_ready", "treshold"]);
-        Helper::isIndukExist($this->induk, $userInput['kode_induk']);
+        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "treshold"]);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(true), ValidatorHelper::messagesBarang());
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
+
+        Helper::isIndukExist($this->induk, $userInput['kode_induk']);
+        Helper::isKainExist($this->kain, $userInput['kode_kain']);
 
         $data = $this->barang->create($userInput);
         return Helper::send_response(201, "Barang berhasil ditambahkan", $data);
@@ -50,7 +55,7 @@ class BarangController extends Controller {
 
     public function edit(Request $request, string $kode)  {
         Helper::isBarangExist($this->barang, $kode);
-        $userInput = $request->only(["kode", "kode_induk", "warna", "stok_ready", "treshold"]);
+        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "treshold"]);
         Helper::isIndukExist($this->induk, $userInput['kode_induk']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(false), ValidatorHelper::messagesBarang());
@@ -82,25 +87,25 @@ class BarangController extends Controller {
         return Helper::send_response(200, "Barang berhasil dihapus", []);
     }
 
-    public function allWithOnProgress() {
-        $data = $this->barang->allWithOnProgress();
+    public function allWithReadyAndProgress() {
+        $data = $this->barang->allWithReadyAndProgress();
         return Helper::send_response(200, 'Berhasil', $data);
     }
 
-    public function oneWithOnProgress(string $kode) {
+    public function oneWithReadyAndProgress(string $kode) {
         Helper::isBarangExist($this->barang, $kode);
-        $data = $this->barang->oneWithOnProgress($kode);
+        $data = $this->barang->oneWithReadyAndProgress($kode);
         return Helper::send_response(200, 'Berhasil', $data);
     }
 
-    public function allWithInduk() {
-        $data = $this->barang->allWithInduk();
+    public function allWithRelations() {
+        $data = $this->barang->allWithRelations();
         return Helper::send_response(200, "Berhasil", $data);
     }
 
-    public function oneWithInduk(string $kode) {
+    public function oneWithRelations(string $kode) {
         Helper::isBarangExist($this->barang, $kode);
-        $data = $this->barang->oneWithInduk($kode);
+        $data = $this->barang->oneWithRelations($kode);
         return Helper::send_response(200, "Berhasil", $data);
     }
 }

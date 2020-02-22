@@ -12,7 +12,7 @@ use App\Http\Controllers\Helper\ValidatorHelper;
 
 use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
 use App\Repositories\Wos\WosRepositoryInterface as WosRepo;
-use App\Repositories\Bahan\BahanRepositoryInterface as BahanRepo;
+use App\Repositories\TransaksiKain\TransaksiKainRepositoryInterface as TransaksiKainRepo;
 use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
 use App\Repositories\Penjahit\PenjahitRepositoryInterface as PenjahitRepo;
 
@@ -20,7 +20,7 @@ class WosController extends Controller {
 
     protected $trash;
     protected $wos;
-    protected $bahan;
+    protected $transaksiKain;
     protected $barang;
     protected $penjahit;
     
@@ -28,13 +28,13 @@ class WosController extends Controller {
     public function __construct(
         WosRepo $wosRepo, 
         TrashRepo $trashRepo, 
-        BahanRepo $bahanRepo, 
+        TransaksiKainRepo $transaksiKainRepo, 
         BarangRepo $barangRepo,
         PenjahitRepo $penjahitRepo
     ) {
         $this->wos = $wosRepo;
         $this->trash = $trashRepo;
-        $this->bahan = $bahanRepo;
+        $this->transaksiKain = $transaksiKainRepo;
         $this->barang = $barangRepo;
         $this->penjahit = $penjahitRepo;
     } 
@@ -44,12 +44,6 @@ class WosController extends Controller {
         return Helper::send_response(200, "Berhasil!", $data);
     }
 
-    public function allWithRelations() {
-        $data = $this->wos->withRelations();
-        // $data = Wos::with('barang')->with('bahan')->with('penjahit')->orderBy('created_at', 'ASC')->get();
-        return Helper::send_response(200, "Berhasil", $data);
-    }
-
     public function get(int $id) {
         Helper::isWosExist($this->wos, $id);
         $data = $this->wos->get($id);
@@ -57,16 +51,16 @@ class WosController extends Controller {
     }
 
     public function create(Request $request) {
-        $userInput = $request->only(['kode_barang', 'id_bahan', 'pcs']);
-
-        Helper::isBarangExist($this->barang, $userInput['kode_barang']);
-        Helper::isBahanExist($this->bahan, $userInput['id_bahan']);
-
-        $userInput['yard'] = $this->bahan->getBahanYard($userInput['id_bahan']);
-        $this->bahan->setStatusPotong($userInput['id_bahan'], true);
+        $userInput = $request->only(['kode_barang', 'id_transaksi_kain', 'pcs']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesWos(), ValidatorHelper::messagesWos());
         if ($validator->fails()) return Helper::send_response(422, "validator error", $validator->errors());
+
+        Helper::isBarangExist($this->barang, $userInput['kode_barang']);
+        Helper::isTransaksikainExist($this->transaksiKain, $userInput['id_transaksi_kain']);
+
+        $userInput['yard'] = $this->transaksiKain->getBahanYard($userInput['id_transaksi_kain']);
+        $this->transaksiKain->setStatusPotong($userInput['id_transaksi_kain'], true);
 
         $data = $this->wos->create($userInput);
         return Helper::send_response(200, 'Wos berhasil ditambahkan!', $data);
@@ -74,12 +68,12 @@ class WosController extends Controller {
 
     public function edit(Request $request, int $id) {
         Helper::isWosExist($this->wos, $id);
-        $userInput = $request->only(['kode_barang', 'id_bahan', 'pcs']);
+        $userInput = $request->only(['kode_barang', 'id_transaksi_kain', 'pcs']);
 
         Helper::isBarangExist($this->barang, $userInput['kode_barang']);
-        Helper::isBahanExist($this->bahan, $userInput['id_bahan']);
+        Helper::isTransaksikainExist($this->transaksiKain, $userInput['id_transaksi_kain']);
 
-        $userInput['yard'] = $this->bahan->getBahanYard($userInput['id_bahan']);
+        $userInput['yard'] = $this->transaksiKain->getBahanYard($userInput['id_transaksi_kain']);
         
         $validator = Validator::make($userInput, ValidatorHelper::rulesWos(), ValidatorHelper::messagesWos());
         if ($validator->fails()) return Helper::send_response(422, "validator error", $validator->errors());
@@ -247,19 +241,31 @@ class WosController extends Controller {
         return Helper::send_response(200, 'Berhasil', $data[0]);
     }
 
-    public function allWosToPay() {
-        $data = $this->wos->wosToPay();
+    public function allWithRelations() {
+        $data = $this->wos->allWithRelations();
+        return Helper::send_response(200, "Berhasil", $data);
+    }
+
+    public function oneWithRelations(int $id) {
+        Helper::isWosExist($this->wos, $id);
+        $data = $this->wos->oneWithRelations($id);
+        return Helper::send_response(200, 'Berhasil', $data);
+    }
+
+    public function wosPayment() {
+        $data = $this->wos->wosPayment();
         return Helper::send_response(200, 'Berhasil', $data);
     }
 
     public function pay(Request $request, int $id) {
         Helper::isWosExist($this->wos, $id);
-        $payDate = $request->tanggal_bayar;
+        $userInput = $request->only(['tanggal_bayar']);
 
         $validator = Validator::make($userInput, ['tanggal_bayar' => 'required'], ['tanggal_bayar.required' => 'Tanggal bayar tidak boleh kosong!']);
         if ($validator->fails()) return Helper::send_response(422, 'Validasi error!', $validator->errors());
 
-        $this->wos->pay($id, $payDate);
-        return Helper::send_response(200, 'Jahitan berhasil dibayar!', null);
+        $userInput['status_bayar'] = true;
+        $data = $this->wos->pay($id, $userInput);
+        return Helper::send_response(200, 'Jahitan berhasil dibayar!', $data);
     }
 }
