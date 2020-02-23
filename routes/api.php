@@ -99,6 +99,10 @@ Route::group(['prefix' => 'v1'], function() {
 
     /* penjualan */
     Route::group(['prefix' => 'penjualan'], function() {
+        Route::get('/shopee', 'API\PenjualanController@shopee');
+        Route::get('/lazada', 'API\PenjualanController@lazada');
+        Route::post('/upload', 'API\PenjualanController@upload');
+
         Route::post('/test', 'API\PenjualanController@test');
     });
 });
