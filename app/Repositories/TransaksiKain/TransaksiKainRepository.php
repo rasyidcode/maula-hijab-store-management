@@ -9,13 +9,21 @@ use App\Models\TransaksiKain;
 class TransaksiKainRepository implements TransaksiKainRepositoryInterface {
 
     /**
-     * method untuk mendapatkan semua `transaksi_kain`
+     * method untuk mendapatkan semua `kain`
+     * @param string
+     * @param string
      * @return object
      */
-    public function all() : object {
-        return TransaksiKain::all();
-    }
+    public function all(string $start, string $length) : object {
+        $start = intval($start);
+        $length = intval($length);
+        $data = TransaksiKain::orderBy('created_at', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
 
+        return $data;
+    }
     /**
      * method untuk mendapatkan bahan
      * @param integer
@@ -121,5 +129,51 @@ class TransaksiKainRepository implements TransaksiKainRepositoryInterface {
     public function getBahanYard(int $id) : int {
         $data = $this->get($id);
         return $data->yard;
+    }
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object {
+        $kain = TransaksiKain::query();
+        $start = intval($start);
+        $length = intval($length);
+
+        foreach($columns as $column) {
+            if ($column['searchable'] == 'true') {
+                $kain->orWhere($column['data'], 'like', "%{$searchVal}%");
+            }
+            $kain->skip($start)->take($length);
+        }
+
+        $data = $kain->get();
+        return $data;
+    }
+
+    /**
+     * method untuk menghitung total records `kain`
+     * @return int
+     */
+    public function countRecords() : int {
+        return count(TransaksiKain::all());
+    }
+
+    /**
+     * method untuk mendapatkan semua yard berdasarkan `kode_kain`
+     * @param string
+     * @return object
+     */
+    public function getYards(string $kodeKain) : object {
+        $data = TransaksiKain::select('id', 'yard')
+            ->where('kode_kain', $kodeKain)
+            ->where('status_potong', false)
+            ->get();
+        
+        return $data;
     }
 }

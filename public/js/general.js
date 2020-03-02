@@ -381,4 +381,9 @@ class General {
         $(selector).html('')
         $(selector).append(new Option('Pilih', '0', false, false)).trigger('change')
     }
+
+    static resetDatePicker(datepicker) {
+        moment.locale('id')
+        $(datepicker).find('input').val(moment().format('DD/MM/YYYY HH.mm'))
+    }
 }

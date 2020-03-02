@@ -25,6 +25,8 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
+                <!-- TODO: bikin daterangepicker berdasarkan tanggal_masuk, created_at, updated_at -->
+                <!-- TODO: bikin moneyrangepicker berdasarkan harga -->
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -36,7 +38,6 @@
                             <thead>
                                 <tr>
                                     <!-- <th>id</th> -->
-                                    <th>No.</th>
                                     <th>Kode</th>
                                     <th>Harga Jahit</th>
                                     <th>Harga basic</th>

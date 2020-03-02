@@ -28,8 +28,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Work Order Sheet</h3>
-                        <button id="btn_add_wos" type="button" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></button>
+                        <button id="button_create_wos" type="button" class="btn btn-primary btn-sm">
+                            <i class="fas fa-plus mr-3"></i>Tambah Wos
+                        </button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -81,27 +82,65 @@
                             <option value="0">Pilih</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="nama_bahan">Nama Bahan</label>
-                        <select id="nama_bahan" class="form-control" style="width: 100%;">
-                            <option value="0">Pilih</option>
-                        </select>
-                    </div>
                     <div style="display: none;" class="form-group">
-                        <label for="warna_bahan">Warna Bahan</label>
-                        <select id="warna_bahan" class="form-control" style="width: 100%;">
-                            <option value="0">Pilih</option>
-                        </select>
-                    </div>
-                    <div style="display: none;" class="form-group">
-                        <label for="yard_bahan">Yard</label>
-                        <select id="yard_bahan" class="form-control" style="width: 100%;">
+                        <label for="yard_kain">Yard</label>
+                        <select id="yard_kain" class="form-control" style="width: 100%;">
                             <option value="0">Pilih</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="pcs">Pcs</label>
                         <input id="pcs" type="number" class="form-control" placeholder="Ex : 20" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal edit wos -->
+<div class="modal fade" id="modal_edit_wos">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Wos</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form_edit_wos" role="form">
+                <input id="id_wos_edit" type="hidden" />
+                <input id="yard_id2" type="hidden" />
+                <div class="modal-body">
+                    {{-- <div class="form-group">
+                        <label for="kode_barang2">Pilih Barang</label>
+                        <select id="kode_barang2" class="form-control" style="width: 100%;">
+                            <option value="0">Pilih</option>
+                        </select>
+                    </div> --}}
+                    {{-- <div style="display: none;" class="form-group">
+                        <label for="yard_kain2">Yard</label>
+                        <select id="yard_kain2" class="form-control" style="width: 100%;">
+                            <option value="0">Pilih</option>
+                        </select>
+                    </div> --}}
+                    <div class="form-group">
+                        <label for="kode_barang2">Kode Barang</label>
+                        <input id="kode_barang2" type="text" class="form-control" placeholder="Ex : TPDL-Kuning" required disabled>
+                        <small id="kode_barang2_help" class="form-text text-muted">Kode barang tidak dapat di edit.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="yard_kain2">Yard</label>
+                        <input id="yard_kain2" type="number" class="form-control" placeholder="Ex : 20" required disabled>
+                        <small id="yard_kain2_help" class="form-text text-muted">Yard tidak dapat di edit.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pcs2">Pcs</label>
+                        <input id="pcs2" type="number" class="form-control" placeholder="Ex : 20" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -187,39 +226,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_edit_jenis_bahan">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Edit jenis bahan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="form_edit_jenis_bahan" role="form">
-                <div class="modal-body">
-                    <input id="kode2" type="hidden" type="text">
-                    <div class="form-group">
-                        <label for="nama2">Nama</label>
-                        <input id="nama2" type="text" class="form-control" placeholder="Ex : Diamond" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="warna2">Warna</label>
-                        <input id="warna2" type="text" class="form-control" placeholder="Ex : Merah" required>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-
 @endsection
 
 @section('custom-js')
@@ -228,9 +234,13 @@
 <script>
 $(function() {
     $('#kode_barang').select2({ theme: 'bootstrap4' })
-    $('#nama_bahan').select2({ theme: 'bootstrap4' })
-    $('#warna_bahan').select2({ theme: 'bootstrap4' })
-    $('#yard_bahan').select2({ theme: 'bootstrap4' })
+    $('#yard_kain').select2({ theme: 'bootstrap4' })
+
+    //$('#kode_barang2').select2({ theme: 'bootstrap4' })
+    //$('#yard_kain2').select2({ theme: 'bootstrap4' })
+
+    $('#no_ktp').select2({ theme: 'bootstrap4' })
+
     $.fn.datetimepicker.Constructor.Default = $.extend({}, 
     $.fn.datetimepicker.Constructor.Default, {
         icons: {

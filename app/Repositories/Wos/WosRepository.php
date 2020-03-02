@@ -133,4 +133,68 @@ class WosRepository implements WosRepositoryInterface {
         return Wos::class;
     }
 
+    /**
+     * method untuk mendapatkan jumlah wos
+     * @return object
+     */
+    public function countRecords() : string {
+        return count($this->all());
+    }
+
+    /**
+     * method untuk mendapatkan data dengan kode_barang tertentu ada atau tidak
+     * @param string
+     * @return object
+     */
+    public function isKodeBarangLinked(string $kode) : bool {
+        $data = Wos::where('kode_barang', $kode)->get();
+
+        if (count($data) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * method untuk mendapatkan semua `wos` untuk datatable
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function allDatatable(string $start, string $length) : object {
+        $start = intval($start);
+        $length = intval($length);
+
+        $data = DB::table('wos')
+            ->leftJoin('penjahit', 'penjahit.no_ktp', '=', 'wos.no_ktp_penjahit')
+            ->leftJoin('barang', 'barang.kode', '=', 'wos.kode_barang')
+            ->select(
+                'penjahit.nama_lengkap',
+                'barang.kode as kode_barang',
+                'wos.*',
+                DB::raw('(wos.yard / wos.pcs) as demand'),
+                DB::raw('(wos.pcs - wos.jumlah_kembali) as on_progress')
+            )
+            ->where('wos.status_jahit', 0)
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        return $data;
+    }
+
+    /**
+     * method untuk mendapatkan mendapatkan detail `wos` berdasarkan id
+     * @param int
+     * @return object
+     */
+    public function detail(int $id) : object {
+        $data = Wos::with('barang')
+            ->with('penjahit')
+            ->where('id', $id)
+            ->first();
+        return $data;
+    }
+
 }

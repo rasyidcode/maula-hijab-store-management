@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Helper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 use App\Repositories\TransaksiKain\TransaksiKainRepositoryInterface as TransaksiKainRepo;
 use App\Repositories\Kain\KainRepositoryInterface as KainRepo;
 use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
@@ -28,6 +30,16 @@ class GeneralHelper {
                 "data" => $data
             ], $code);
         }
+    }
+
+    public static function send_datatable_response(Request $request, int $recordsTotal, int $recordsFiltered, object $data) : JsonResponse {
+        return response()->json([
+            'draw' => $request->has('draw') ? intval($request->draw) : 0,
+            'recordsTotal' => intval($recordsTotal),
+            'recordsFiltered' => intval($recordsFiltered),
+            'data' => $data,
+            'request' => $request->all()
+        ]);
     }
 
     public static function isKainExist(KainRepo $kainRepo, string $kode) {

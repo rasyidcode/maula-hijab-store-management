@@ -89,4 +89,24 @@ class PenjahitController extends Controller {
 
         return Helper::send_response(200, "Penjahit berhasil dihapus", []);
     }
+
+    public function allDatatable(Request $request) {
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        $allData = $this->penjahit->all($start, $length);
+        $totalRecords = $this->penjahit->countRecords();
+        $totalFilteredRecords = $totalRecords;
+
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
+
+            $filteredData = $this->penjahit->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        }
+
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+    }
 }

@@ -30,6 +30,8 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('/{kode}/with/relations', 'API\KainController@oneWithRelations');  // worked
         Route::get('/get/nama', 'API\KainController@listNamaKain'); // worked
         Route::get('/get/warna', 'API\KainController@listWarnaKain'); // worked
+        Route::get('/{kode}/detail', 'API\KainController@get'); // TODO: with total_barang and total_transaksi_kain
+        Route::get('/get/kode', 'API\KainController@listKode');
     });
     
     /* transaksi_kain */
@@ -44,6 +46,7 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('/get/yard', 'API\TransaksiKainController@getOnlyYard'); //worked
         Route::get('/{id}/check/status_potong', 'API\TransaksiKainController@checkStatusPotong'); //worked
         Route::get('/check/ready', 'API\TransaksiKainController@checkTransaksiKainReady'); //worked
+        Route::get('/{id}/detail', 'API\TransaksiKainController@detail');
     });
 
     /* induk */
@@ -53,6 +56,8 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('/', 'API\IndukController@create'); // worked
         Route::post('/{id}/edit', 'API\IndukController@edit'); // worked
         Route::post('/{id}/remove', 'API\IndukController@remove'); // worked
+        Route::get('/get/kode', 'API\IndukController@listKode'); // worked
+        Route::get('/{id}/detail', 'API\IndukController@detail');
     });
 
     /* barang */
@@ -64,8 +69,10 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('/{kode}/remove', 'API\BarangController@remove'); // worked
         Route::get('/with/relations', 'API\BarangController@allWithRelations'); // worked
         Route::get('/{kode}/with/relations', 'API\BarangController@oneWithRelations'); // worked
-        Route::get('/with/ready_on_progress', 'API\BarangController@allWithReadyAndProgress'); // pending_check (need wos)
-        Route::get('/{kode}/with/ready_on_progress', 'API\BarangController@oneWithReadyAndProgress'); // pending_check (need wos)
+        Route::get('/with/on_progress', 'API\BarangController@allWithOnProgress'); // pending_check (need wos)
+        Route::get('/{kode}/with/on_progress', 'API\BarangController@oneWithOnProgress'); // pending_check (need wos)
+        Route::get('/{kode}/detail', 'API\BarangController@detail');
+        Route::get('/{kode}/transaksi_kain/yard', 'API\BarangController@getTransaksiKainYard');
     });
 
     /* penjahit */
@@ -77,6 +84,7 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('/{no_ktp}/remove', 'API\PenjahitController@remove'); // worked
         Route::get('/with/wos', 'API\PenjahitController@allWithWos'); // pending_check (need wos)
         Route::get('/{no_ktp}/wos', 'API\PenjahitController@oneWithWos'); // pending_check (need wos)
+        Route::get('/get/datatable', 'API\PenjahitController@allDatatable');
     });
 
     /* wos */
@@ -95,6 +103,8 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('/{kode_barang}/on_progress', 'API\WosController@getOnProgress'); // `belum dipake`
         Route::get('/payment/list', 'API\WosController@wosPayment'); // worked
         Route::post('/{id}/payment', 'API\WosController@pay'); // worked
+        Route::get('/get/datatable', 'API\WosController@allDatatable');
+        Route::get('/{id}/detail', 'API\WosController@detail');
     });
 
     /* penjualan */

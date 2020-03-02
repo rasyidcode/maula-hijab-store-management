@@ -22,9 +22,24 @@ class IndukController extends Controller {
         $this->trash = $trashRepo;
     }
 
-    public function index() {
-        $data = $this->induk->all();
-        return Helper::send_response(200, "Berhasil!", $data);
+    public function index(Request $request) {
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        $allData = $this->induk->all($start, $length);
+        $totalRecords = $this->induk->countRecords();
+        $totalFilteredRecords = $totalRecords;
+
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
+
+            $filteredData = $this->induk->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        }
+
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
     }
 
     // public function get_all_induk() {
@@ -79,5 +94,17 @@ class IndukController extends Controller {
         $this->trash->create($newTrash);
 
         return Helper::send_response(200, "Induk berhasil dihapus", []);
+    }
+
+    public function listKode() {
+        $data = $this->induk->listKode();
+        return Helper::send_response(200, 'Berhasil', $data);
+    }
+
+    public function detail(string $kode) {
+        Helper::isIndukExist($this->induk, $kode);
+
+        $data = $this->induk->detail($kode);
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 }

@@ -1,4 +1,4 @@
-class JenisBahan {
+class Kain {
     constructor(kode, nama, warna, created_at, updated_at) {
         this.kode = kode
         this.nama = nama

@@ -1,8 +1,8 @@
 class ModelBahan {
 
-    constructor(id, kodejb, harga, yard, tanggal_masuk, value, status_potong, created_at, updated_at) {
+    constructor(id, kode_kain, harga, yard, tanggal_masuk, value, status_potong, created_at, updated_at) {
         this.id = id,
-        this.kodejb = kodejb
+        this.kode_kain = kode_kain
         this.harga = harga
         this.yard = yard
         this.tanggal_masuk = tanggal_masuk

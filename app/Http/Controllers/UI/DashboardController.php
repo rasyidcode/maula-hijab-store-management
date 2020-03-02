@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function listJenisBahan() {
-        return view('pages.inventory.jenis_bahan');
+    public function kain() {
+        return view('pages.inventory.kain');
     }
 
-    public function listBahan() {
-        return view('pages.inventory.bahan');
+    public function transaksiKain() {
+        return view('pages.inventory.transaksi_kain');
     }
 
     public function induk() {

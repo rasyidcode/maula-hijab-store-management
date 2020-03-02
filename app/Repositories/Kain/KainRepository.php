@@ -10,10 +10,18 @@ class KainRepository implements KainRepositoryInterface {
 
     /**
      * method untuk mendapatkan semua `kain`
+     * @param string
+     * @param string
      * @return object
      */
-    public function all() : object {
-        $data = Kain::orderBy('created_at', 'desc')->get();
+    public function all(string $start, string $length) : object {
+        $start = intval($start);
+        $length = intval($length);
+        $data = Kain::orderBy('created_at', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
+
         return $data;
     }
 
@@ -154,5 +162,45 @@ class KainRepository implements KainRepositoryInterface {
      */
     public function getModelName() : string {
         return Kain::class;
+    }
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object {
+        $kain = Kain::query();
+        $start = intval($start);
+        $length = intval($length);
+
+        foreach($columns as $column) {
+            if ($column['searchable'] == 'true') {
+                $kain->orWhere($column['data'], 'like', "%{$searchVal}%");
+            }
+            $kain->skip($start)->take($length);
+        }
+
+        $data = $kain->get();
+        return $data;
+    }
+
+    /**
+     * method untuk menghitung total records `kain`
+     * @return int
+     */
+    public function countRecords() : int {
+        return count(Kain::all());
+    }
+
+    /**
+     * method untuk mendapatkan list kode `kain`
+     * @return object
+     */
+    public function listKode() : object {
+        return Kain::select('kode')->get();
     }
 }

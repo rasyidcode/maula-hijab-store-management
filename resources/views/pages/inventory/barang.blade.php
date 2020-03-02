@@ -36,13 +36,13 @@
                         <table id="list_barang" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
                                     <th>Kode</th>
+                                    <th>Kode Kain</th>
                                     <th>Kode Induk</th>
-                                    <th>Warna</th>
                                     <th>Stok Ready</th>
                                     <th>Stok On Progress</th>
                                     <th>Treshold</th>
+                                    <th>Status Produksi</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -52,7 +52,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_barang"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#modal_create_barang"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -64,7 +64,7 @@
 <!-- /.content -->
 
 <!-- Modal show barang -->
-<div class="modal fade" id="modal_show_barang">
+{{-- <div class="modal fade" id="modal_show_barang">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -96,7 +96,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <!-- Modal create barang -->
 <div class="modal fade" id="modal_create_barang">
@@ -113,7 +113,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Kode Induk</label>
+                                <label for="kode_induk">Kode Induk</label>
                                 <select id="kode_induk" class="form-control" style="width: 100%;">
                                     <option value="0">Pilih</option>
                                 </select>
@@ -121,8 +121,18 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="warna">Warna</label>
-                                <input id="warna" type="text" class="form-control" placeholder="Ex : Merah" required>
+                                <label for="nama_kain">Nama Kain</label>
+                                <select id="nama_kain" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: none;" class="col-12">
+                            <div class="form-group">
+                                <label for="warna_kain">Warna Kain</label>
+                                <select id="warna_kain" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-12">
@@ -159,9 +169,9 @@
                 </button>
             </div>
             <form id="form_edit_barang" role="form">
+                <input id="kodes" type="hidden" />
                 <div class="modal-body">
                     <div class="row">
-                        <input id="kodes2" type="hidden">
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="kode_induk2">Kode Induk</label>
@@ -172,8 +182,18 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="warna2">Warna</label>
-                                <input id="warna2" type="text" class="form-control" placeholder="Ex : Merah" required>
+                                <label for="nama_kain2">Nama Kain</label>
+                                <select id="nama_kain2" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: none;" class="col-12">
+                            <div class="form-group">
+                                <label for="warna_kain2">Warna Kain</label>
+                                <select id="warna_kain2" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-12">
@@ -206,7 +226,12 @@
 <script>
 $(function() {
     $('#kode_induk').select2({ theme: 'bootstrap4' })
+    $('#nama_kain').select2({ theme: 'bootstrap4' })
+    $('#warna_kain').select2({ theme: 'bootstrap4' })
+
     $('#kode_induk2').select2({ theme: 'bootstrap4' })
+    $('#nama_kain2').select2({ theme: 'bootstrap4' })
+    $('#warna_kain2').select2({ theme: 'bootstrap4' })
 })
 </script>
 @endsection

@@ -105,6 +105,9 @@ class WosController extends Controller {
         $userInput = $request->only(['tanggal_kembali', 'jumlah_kembali']);
 
         $wos = $this->wos->get($id);
+        $barang = $this->barang->get($wos->kode_barang);
+        $totalStokReady = $barang->stok_ready + $userInput['jumlah_kembali'];
+        
         if ($wos->tanggal_ambil === null) return Helper::send_response(422, 'Barang belum diambil!!!', null);
 
         $validateReturnedGoods = $userInput['jumlah_kembali'] + $wos->jumlah_kembali;
@@ -124,6 +127,8 @@ class WosController extends Controller {
             $userInput['tanggal_kembali'] = null;
         else
             $userInput['status_jahit'] = true;
+
+        $this->barang->addStok($wos->kode_barang, $totalStokReady);
         
         $data = $this->wos->edit($id, $userInput);
         return Helper::send_response(200, 'Wos berhasil dikembalikan!', $data);
@@ -233,7 +238,7 @@ class WosController extends Controller {
         ];
         $this->trash->create($newTrash);
 
-        return Helper::send_response(200, "Penjahit berhasil dihapus", []);
+        return Helper::send_response(200, "Wos berhasil dihapus", []);
     }
 
     public function onProgress(string $kodeBarang) {
@@ -267,5 +272,33 @@ class WosController extends Controller {
         $userInput['status_bayar'] = true;
         $data = $this->wos->pay($id, $userInput);
         return Helper::send_response(200, 'Jahitan berhasil dibayar!', $data);
+    }
+
+    public function allDatatable(Request $request) {
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        $allData = $this->wos->allDatatable($start, $length);
+        $totalRecords = $this->wos->countRecords();
+        $totalFilteredRecords = $totalRecords;
+
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
+
+            $filteredData = $this->wos->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        }
+
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+    }
+
+    public function detail(int $id) {
+        Helper::isWosExist($this->wos, $id);
+
+        $data = $this->wos->detail($id);
+
+        return Helper::send_response(200, "Berhasil", $data);
     }
 }

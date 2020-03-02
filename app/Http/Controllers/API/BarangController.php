@@ -14,24 +14,36 @@ use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
 use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
 use App\Repositories\Kain\KainRepositoryInterface as KainRepo;
 use App\Repositories\Trash\TrashRepositoryInterface as TrashRepo;
+use App\Repositories\Wos\WosRepositoryInterface as WosRepo;
+use App\Repositories\TransaksiKain\TransaksiKainRepository as TransaksiKainRepo;
 
 class BarangController extends Controller {
 
     protected $barang;
     protected $induk;
+    protected $wos;
     protected $kain;
     protected $trash;
+    protected $transaksiKain;
 
-    public function __construct(BarangRepo $barangRepo, IndukRepo $indukRepo, KainRepo $kainRepo, TrashRepo $trashRepo) {
+    public function __construct(
+        BarangRepo $barangRepo,
+        IndukRepo $indukRepo,
+        KainRepo $kainRepo,
+        WosRepo $wosRepo,
+        TrashRepo $trashRepo,
+        TransaksiKainRepo $transaksiKainRepo) {
         $this->barang = $barangRepo;
         $this->induk = $indukRepo;
         $this->kain = $kainRepo;
+        $this->wos = $wosRepo;
+        $this->transaksiKain = $transaksiKainRepo;
         $this->trash = $trashRepo;
     }
 
-    public function index() {
+    public function index(Request $request) {
         $data = $this->barang->all();
-        return Helper::send_response(200, "Berhasil", $data);
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 
     public function get(string $kode) {
@@ -41,7 +53,7 @@ class BarangController extends Controller {
     }
 
     public function create(Request $request)  {
-        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "treshold"]);
+        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "stok_ready", "treshold"]);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(true), ValidatorHelper::messagesBarang());
         if ($validator->fails()) return Helper::send_response(422, "validation error", $validator->errors());
@@ -55,7 +67,7 @@ class BarangController extends Controller {
 
     public function edit(Request $request, string $kode)  {
         Helper::isBarangExist($this->barang, $kode);
-        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "treshold"]);
+        $userInput = $request->only(["kode", "kode_induk", "kode_kain", "stok_ready", "treshold"]);
         Helper::isIndukExist($this->induk, $userInput['kode_induk']);
 
         $validator = Validator::make($userInput, ValidatorHelper::rulesBarang(false), ValidatorHelper::messagesBarang());
@@ -87,14 +99,45 @@ class BarangController extends Controller {
         return Helper::send_response(200, "Barang berhasil dihapus", []);
     }
 
-    public function allWithReadyAndProgress() {
-        $data = $this->barang->allWithReadyAndProgress();
-        return Helper::send_response(200, 'Berhasil', $data);
+    public function allWithOnProgress(Request $request) {
+        $countWos = $this->wos->countRecords();
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        if ($countWos > 0) {
+            $allData = $this->barang->allWithOnProgress($start, $length);
+            $totalRecords = $this->barang->countRecords();
+            $totalFilteredRecords = $totalRecords;
+
+            if ($request->has('search') && $search['value'] != '') {
+                $searchVal = $search['value'];
+
+                $filteredData = $this->barang->filterAll($columns, $searchVal, $start, $length);
+                return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+            }
+
+            return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+        } else {
+            $allData = $this->barang->allNoWos();
+            $totalRecords = $this->barang->countRecords();
+            $totalFilteredRecords = $totalRecords;
+
+            if ($request->has('search') && $search['value'] != '') {
+                $searchVal = $search['value'];
+
+                $filteredData = $this->barang->filterAllNoWos($columns, $searchVal, $start, $length);
+                return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+            }
+            
+            return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+        }
     }
 
-    public function oneWithReadyAndProgress(string $kode) {
+    public function oneWithOnProgress(string $kode) {
         Helper::isBarangExist($this->barang, $kode);
-        $data = $this->barang->oneWithReadyAndProgress($kode);
+        $data = $this->barang->oneWithOnProgress($kode);
         return Helper::send_response(200, 'Berhasil', $data);
     }
 
@@ -107,5 +150,21 @@ class BarangController extends Controller {
         Helper::isBarangExist($this->barang, $kode);
         $data = $this->barang->oneWithRelations($kode);
         return Helper::send_response(200, "Berhasil", $data);
+    }
+
+    public function detail(string $kode) {
+        Helper::isBarangExist($this->barang, $kode);
+
+        $data = $this->barang->detail($kode);
+        return Helper::send_response(200, 'Berhasil', $data);   
+    }
+
+    public function getTransaksiKainYard(string $kodeBarang) {
+        Helper::isBarangExist($this->barang, $kodeBarang);
+
+        $kodeKain = $this->barang->get($kodeBarang)->kode_kain;
+        $data = $this->transaksiKain->getYards($kodeKain);
+
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 }

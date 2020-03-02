@@ -1,48 +1,70 @@
 $(function() {
-    const routeList = window.location.origin + '/api/induk'
     const datatable = $('#list_induk').DataTable({
+        "processing": true,
+        "serverSide": true,
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        ajax: function(data, callback, settings) {
-            axios.get(routeList)
-                .then(function(res) {
-                    const allInduk = []
-                    res.data.data.forEach(function(induk, index) {
-                        const modelInduk = new ModelInduk(
-                            induk.kode,
-                            induk.harga_jahit,
-                            induk.harga_basic,
-                            induk.hpp_shopee,
-                            induk.hpp_lazada,
-                            induk.dfs_shopee,
-                            induk.dfs_lazada,
-                            induk.created_at,
-                            induk.updated_at
-                        )
-                        modelInduk.setNumbering(index + 1)
-                        allInduk.push(modelInduk.getUIData())
-                    })
-                    const dataInduk = {
-                        data: allInduk
-                    }
-                    callback(dataInduk)
-                })
-                .catch(function(err) {
-                    console.log(err)
-                })
-        },
+        // ajax: function(data, callback, settings) {
+        //     axios.get(routeList)
+        //         .then(function(res) {
+        //             const allInduk = []
+        //             res.data.data.forEach(function(induk, index) {
+        //                 const modelInduk = new ModelInduk(
+        //                     induk.kode,
+        //                     induk.harga_jahit,
+        //                     induk.harga_basic,
+        //                     induk.hpp_shopee,
+        //                     induk.hpp_lazada,
+        //                     induk.dfs_shopee,
+        //                     induk.dfs_lazada,
+        //                     induk.created_at,
+        //                     induk.updated_at
+        //                 )
+        //                 modelInduk.setNumbering(index + 1)
+        //                 allInduk.push(modelInduk.getUIData())
+        //             })
+        //             const dataInduk = {
+        //                 data: allInduk
+        //             }
+        //             callback(dataInduk)
+        //         })
+        //         .catch(function(err) {
+        //             console.log(err)
+        //         })
+        // },
+        ajax: '/api/v1/induk',
         columns: [
-            { data: 'no' },
             { data: 'kode' },
-            { data: 'harga_jahit' },
-            { data: 'harga_basic' },
-            { data: 'created_at' },
+            { 
+                data: 'harga_jahit' ,
+                searchable: false,
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return General.rupiahFormat(data, '')
+                }
+            },
+            { 
+                data: 'harga_basic',
+                searchable: false,
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return General.rupiahFormat(data, '')
+                }
+            },
+            { 
+                data: 'created_at',
+                searchable: false,
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return General.convertToMomentFormat(data)
+                }
+            },
             {
                 data: null,
                 orderable: false,
+                searchable: false,
                 className: 'text-center',
-                // TODO : ganti warna tombol mata jadi warning apabila diopen dan sebaliknya ke primary apabila diclose
                 defaultContent: '<button type="button" class="btn btn-primary btn-sm mr-2 detail"><i class="fas fa-eye"></i></button><button type="button" class="btn btn-info btn-sm mr-2"><i class="fas fa-pencil-alt"></i></button><button type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>'
             }
         ]
@@ -60,9 +82,8 @@ $(function() {
             hpp_lazada: General.removeRupiah($('#hpp_lazada').val()),
             dfs_lazada: General.removeRupiah($('#dfs_lazada').val())
         }
-        console.log(newInduk)
-        const route = window.location.origin + '/api/induk'
-        axios.post(route, newInduk)
+
+        axios.post('/api/v1/induk', newInduk)
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#kode', type: 'text' },
@@ -94,8 +115,8 @@ $(function() {
             dfs_lazada: General.removeRupiah($('#dfs_lazada2').val())
         }
         const kode = $('#kodes2').val()
-        const route = window.location.origin + `/api/induk/${kode}/edit`
-        axios.post(route, editedInduk)
+
+        axios.post(`/api/v1/induk/${kode}/edit`, editedInduk)
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#kodes2', type: 'text' },
@@ -126,16 +147,24 @@ $(function() {
                 row.child.hide()
                 tr.find('button.detail').removeClass('btn-warning').addClass('btn-primary')
             } else {
-                row.child(formattingDetail2(row.data())).show()
-                tr.find('button.detail').removeClass('btn-primary').addClass('btn-warning')
+                const kode = datatable.row($(this).parent()).data().kode
+
+                axios.get(`/api/v1/induk/${kode}/detail`)
+                    .then(function(res) {
+                        const data = res.data.data
+                        row.child(renderDetail(data)).show()
+                        tr.find('button.detail').removeClass('btn-primary').addClass('btn-warning')
+                    })
+                    .catch(function(err) {
+                        console.log(err)
+                    })
             }
         })
         /* handle tombol edit */
         $('#list_induk tbody').on('click', 'tr button.btn-info', function(e) {
             const kode = datatable.row($(this).parent()).data().kode
-            const url = window.location.origin + `/api/induk/${kode}`
 
-            axios.get(url)
+            axios.get(`/api/v1/induk/${kode}`)
                 .then(function(res) {
                     $('#kodes2').val(`${res.data.data.kode}`)
                     $('#kode2').val(`${res.data.data.kode}`)
@@ -156,9 +185,8 @@ $(function() {
             let result = confirm('Anda yakin ingin dihapus?')
             if (result) {
                 const kode = datatable.row($(this).parent().parent()).data().kode
-                const url = window.location.origin + `/api/induk/${kode}/delete`
 
-                axios.post(url)
+                axios.post(`/api/v1/induk/${kode}/remove`)
                     .then(function(res) {
                         General.showToast('success', res.data.message)
                         datatable.ajax.reload()
@@ -171,44 +199,57 @@ $(function() {
         })
     }
 
-    function formattingDetail(induk) {
-        return `<table class="table"><thead><tr><th colspan="2">Shopee</th><th colspan="2">Lazada</th></tr></thead><tbody><tr><td>Hpp:</td><td>${induk.shopee.hpp}</td><td>Hpp:</td><td>${induk.lazada.hpp}</td></tr></tbody></table>`
-    }
-
-    function formattingDetail2(induk) {
+    function renderDetail(induk) {
         return `<div class="row">
-            <div class="col-md-3">
-                <h3>Shopee</h3>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-4">HPP</dt>
-                        <dd class="col-sm-8">${induk.shopee.hpp}</dd>
-                    <dt class="col-sm-4">DFS</dt>
-                        <dd class="col-sm-8">${induk.shopee.dfs}</dd>
-                    <dt class="col-sm-4">Min FS</dt>
-                        <dd class="col-sm-8">${induk.shopee.min_fs}</dd>
-                    <dt class="col-sm-4">Campaign</dt>
-                        <dd class="col-sm-8">${induk.shopee.campaign}</dd>
-                    <dt class="col-sm-4">Ecer</dt>
-                        <dd class="col-sm-8">${induk.shopee.ecer}</dd>
-                </dl>
-            </div>
-            <div class="col-md-3">
-                <h3>Lazada</h3>
-                <hr />
-                <dl class="row">
-                    <dt class="col-sm-4">HPP</dt>
-                        <dd class="col-sm-8">${induk.lazada.hpp}</dd>
-                    <dt class="col-sm-4">DFS</dt>
-                        <dd class="col-sm-8">${induk.lazada.dfs}</dd>
-                    <dt class="col-sm-4">Min FS</dt>
-                        <dd class="col-sm-8">${induk.lazada.min_fs}</dd>
-                    <dt class="col-sm-4">Campaign</dt>
-                        <dd class="col-sm-8">${induk.lazada.campaign}</dd>
-                    <dt class="col-sm-4">Ecer</dt>
-                        <dd class="col-sm-8">${induk.lazada.ecer}</dd>
-                </dl>
-            </div>
-        </div>`
+                    <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4">Kode</dt>
+                            <dd class="col-sm-8">${induk.kode}</dd>
+                        <dt class="col-sm-4">Harga Basic</dt>
+                            <dd class="col-sm-8">${General.rupiahFormat(induk.harga_basic, '')}</dd>
+                        <dt class="col-sm-4">Harga Jahit</dt>
+                            <dd class="col-sm-8">${General.rupiahFormat(induk.harga_jahit, '')}</dd>
+                        <dt class="col-sm-4">Created At</dt>
+                            <dd class="col-sm-8">${General.convertToMomentFormat(induk.created_at, '')}</dd>
+                        <dt class="col-sm-4">Updated At</dt>
+                            <dd class="col-sm-8">${General.convertToMomentFormat(induk.updated_at, '')}</dd>
+                    </dl>
+                </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Shopee</h3>
+                        <hr />
+                        <dl class="row">
+                            <dt class="col-sm-4">HPP</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.hpp_shopee, '')}</dd>
+                            <dt class="col-sm-4">DFS</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.dfs_shopee, '')}</dd>
+                            <dt class="col-sm-4">Min FS</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.min_fs_shopee, '')}</dd>
+                            <dt class="col-sm-4">Campaign</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.campaign_shopee, '')}</dd>
+                            <dt class="col-sm-4">Ecer</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.ecer_shopee, '')}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <h3>Lazada</h3>
+                        <hr />
+                        <dl class="row">
+                            <dt class="col-sm-4">HPP</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.hpp_lazada, '')}</dd>
+                            <dt class="col-sm-4">DFS</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.dfs_lazada, '')}</dd>
+                            <dt class="col-sm-4">Min FS</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.min_fs_lazada, '')}</dd>
+                            <dt class="col-sm-4">Campaign</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.campaign_lazada, '')}</dd>
+                            <dt class="col-sm-4">Ecer</dt>
+                                <dd class="col-sm-8">${General.rupiahFormat(induk.ecer_lazada, '')}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6"></div>
+                </div>`
     }
 })

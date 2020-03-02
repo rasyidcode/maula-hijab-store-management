@@ -77,4 +77,32 @@ interface WosRepositoryInterface {
      * @return string
      */
     public function getModelName() : string;
+
+    /**
+     * method untuk mendapatkan jumlah wos
+     * @return object
+     */
+    public function countRecords() : string;
+
+    /**
+     * method untuk mendapatkan data dengan kode_barang tertentu ada atau tidak
+     * @param string
+     * @return bool
+     */
+    public function isKodeBarangLinked(string $kode) : bool;
+
+    /**
+     * method untuk mendapatkan semua `wos` untuk datatable
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function allDatatable(string $start, string $length) : object;
+
+    /**
+     * method untuk mendapatkan mendapatkan detail `wos` berdasarkan id
+     * @param int
+     * @return object
+     */
+    public function detail(int $id) : object;
 }

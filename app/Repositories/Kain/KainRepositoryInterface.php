@@ -6,9 +6,11 @@ interface KainRepositoryInterface {
 
     /**
      * method untuk mendapatkan semua `kain`
+     * @param string
+     * @param string
      * @return object
      */
-    public function all() : object;
+    public function all(string $start, string $length) : object;
 
     /**
      * method untuk mendapatkan `kain` berdasarkan kode
@@ -84,4 +86,26 @@ interface KainRepositoryInterface {
      * @return string
      */
     public function getModelName() : string;
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object;
+
+    /**
+     * method untuk menghitung total records `kain`
+     * @return int
+     */
+    public function countRecords() : int;
+
+    /**
+     * method untuk mendapatkan list kode `kain`
+     * @return object
+     */
+    public function listKode() : object;
 }

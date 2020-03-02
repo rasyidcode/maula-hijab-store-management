@@ -20,8 +20,8 @@ Route::get('/adminlte', function() {
 });
 
 Route::group(['prefix' => 'inventory'], function() {
-    Route::get('/jenis/bahan', 'UI\DashboardController@listJenisBahan')->name("list_jenis_bahan");
-    Route::get('/bahan', 'UI\DashboardController@listBahan')->name("list_bahan");
+    Route::get('/kain', 'UI\DashboardController@kain')->name("kain");
+    Route::get('/transaksi_kain', 'UI\DashboardController@transaksiKain')->name("transaksi_kain");
     Route::get('/induk', 'UI\DashboardController@induk')->name('induk');
     Route::get('/barang', 'UI\DashboardController@barang')->name('barang');
 });

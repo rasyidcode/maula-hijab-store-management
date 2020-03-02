@@ -82,5 +82,54 @@ class PenjahitRepository implements PenjahitRepositoryInterface {
         return Penjahit::oneWithWos($noKtp)->first();
     }
 
+    /**
+     * method untuk mendapatkan semua `penjahit` untuk datatable
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function allDatatable(string $start, string $length) : object {
+        $start = intval($start);
+        $length = intval($length);
+        $data = Penjahit::orderBy('created_at', 'desc')
+            ->skip($start)
+            ->take($length)
+            ->get();
 
+        return $data;
+    }
+
+    /**
+     * method untuk memfilter `penjahit` untuk datatable
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object {
+        $penjahit = Penjahit::query();
+        $start = intval($start);
+        $length = intval($length);
+
+        foreach($columns as $column) {
+            if ($column['searchable'] == 'true') {
+                $penjahit->orWhere($column['data'], 'like', "%{$searchVal}%");
+            }
+        }
+
+        $data = $penjahit->skip($start)
+            ->take($length)
+            ->get();
+
+        return $data;
+    }
+
+    /**
+     * method untuk menghitung total records `penjahit`
+     * @return int
+     */
+    public function countRecords() : int {
+        return count($this->all());
+    }
 }

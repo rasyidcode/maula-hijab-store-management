@@ -48,16 +48,17 @@ interface BarangRepositoryInterface {
     /**
      * method untuk mendapatkan semua `barang` dan juga yang lagi on_progress
      * @param string
+     * @param string
      * @return object
      */
-    public function allWithReadyAndProgress() : object;
+    public function allWithOnProgress(string $start, string $length) : object;
 
     /**
      * method untuk mendapatkan satu `barang` dan juga on_progressnya
      * @param string
      * @return object
      */
-    public function oneWithReadyAndProgress(string $kode) : object;
+    public function oneWithOnProgress(string $kode) : object;
 
     /**
      * method untuk mendapatkan semua `barang` dan juga relasinya
@@ -71,4 +72,62 @@ interface BarangRepositoryInterface {
      * @return object
      */
     public function oneWithRelations(string $kode) : object;
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object;
+
+    /**
+     * method untuk menghitung total records `barang`
+     * @return int
+     */
+    public function countRecords() : int;
+
+    /**
+     * method untuk mendapatkan semua barang dengan empty_on_progress
+     * @return object
+     */
+    public function allNoWos() : object;
+
+    /**
+     * method untuk mendapatkan semua field kode 
+     */
+
+    /**
+     * method untuk mendapatkan detail `barang`
+     * @param string
+     * @return object
+     */
+    public function detail(string $kode) : object;
+
+    /**
+     * method untuk mendapatkan barang yang empty_on_progress
+     * @param string
+     * @return object
+     */
+    public function oneNoWos(string $kode) : object;
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAllNoWos(array $columns, string $searchVal, string $start, string $length) : object;
+
+    /**
+     * method untuk menambahkan stok_ready
+     * @param string
+     * @param int
+     * @return object
+     */
+    public function addStok(string $kode, int $jumlah) : object;
 }

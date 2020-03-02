@@ -57,5 +57,29 @@ interface PenjahitRepositoryInterface {
      * @return object
      */
     public function oneWithWos(string $noKtp) : object;
+
+    /**
+     * method untuk mendapatkan semua `penjahit` untuk datatable
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function allDatatable(string $start, string $length) : object;
+
+    /**
+     * method untuk memfilter `penjahit` untuk datatable
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $serachVal, string $string, string $length) : object;
+
+    /**
+     * method untuk menghitung total records `penjahit`
+     * @return int
+     */
+    public function countRecords() : int;
     
 }

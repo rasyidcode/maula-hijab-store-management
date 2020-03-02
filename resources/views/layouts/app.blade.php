@@ -81,5 +81,6 @@
     @yield('custom-js')
     <script src="{{ asset('js/general.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    
 </body>
 </html>

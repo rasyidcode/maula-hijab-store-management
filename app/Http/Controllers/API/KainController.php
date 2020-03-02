@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Helper\GeneralHelper as Helper;
 use App\Http\Controllers\Helper\ValidatorHelper;
@@ -25,9 +26,24 @@ class KainController extends Controller {
         $this->trash = $trashRepo;
     }
 
-    public function index() {
-        $data = $this->kain->all();
-        return Helper::send_response(200, 'Berhasil!', $data);
+    public function index(Request $request) {
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        $allData = $this->kain->all($start, $length);
+        $totalRecords = $this->kain->countRecords();
+        $totalFilteredRecords = $totalRecords;
+
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
+
+            $filteredData = $this->kain->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        }
+
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
     }
 
     public function get(string $kode) {
@@ -118,5 +134,10 @@ class KainController extends Controller {
             $data = $this->kain->listWarnaKain();
             return Helper::send_response(200, 'Berhasil', $data);
         }
+    }
+
+    public function listKode() {
+        $data = $this->kain->listKode();
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 }

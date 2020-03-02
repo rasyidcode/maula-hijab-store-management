@@ -8,7 +8,7 @@ interface TransaksiKainRepositoryInterface {
      * method untuk mendapatkan semua `transaksi_kain`
      * @return object
      */
-    public function all() : object;
+    public function all(string $start, string $length) : object;
 
     /**
      * method untuk mendapatkan `transaksi_kain`
@@ -80,5 +80,28 @@ interface TransaksiKainRepositoryInterface {
      * @return int
      */
     public function getBahanYard(int $id) : int;
+
+    /**
+     * method untuk memfilter semua columns
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @return object
+     */
+    public function filterAll(array $columns, string $searchVal, string $start, string $length) : object;
+
+    /**
+     * method untuk menghitung total records `kain`
+     * @return int
+     */
+    public function countRecords() : int;
+
+    /**
+     * method untuk mendapatkan semua yard berdasarkan `kode_kain`
+     * @param string
+     * @return object
+     */
+    public function getYards(string $kodeKain) : object;
 
 }

@@ -25,9 +25,23 @@ class TransaksiKainController extends Controller {
         $this->trash = $trashRepo;
     }
 
-    public function index() {
-        $data = $this->transaksiKain->all();
-        return Helper::send_response(200, "Berhasil", $data);
+    public function index(Request $request) {
+        $search = $request->search;
+        $columns = $request->columns;
+        $start = $request->start;
+        $length = $request->length;
+
+        $allData = $this->transaksiKain->all($start, $length);
+        $totalRecords = $this->transaksiKain->countRecords();
+        $totalFilteredRecords = $totalRecords;
+
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
+
+            $filteredData = $this->transaksiKain->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        }
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
     }
 
     // public function getAllBahan() {
@@ -127,6 +141,11 @@ class TransaksiKainController extends Controller {
         $response = new \stdClass();
         $response->is_ready = $size > 0 ? true : false;
         return Helper::send_response(200, 'Berhasil', $response);
+    }
+
+    public function detail(int $id) {
+        $data = $this->transaksiKain->get($id);
+        return Helper::send_response(200, 'Berhasil', $data);
     }
 
 }

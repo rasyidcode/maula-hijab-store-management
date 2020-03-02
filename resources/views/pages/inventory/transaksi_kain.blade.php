@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'List Bahan')
+@section('title', 'List Transaksi Kain')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -8,12 +8,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">List Bahan</h1>
+                <h1 class="m-0 text-dark">List Transaksi Kain</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">List Bahan</li>
+                    <li class="breadcrumb-item active">List Transaksi Kain</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,17 +26,20 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                <!-- TODO: bikin modal untuk menampilkan total value keseluruhan, per kode-kain, dan juga ada daterangepicker untuk mendapatkan total value berdasarkan tanggal_masuk dari ke -->
+                <!-- TODO: bikin daterangepicker berdasarkan tanggal_masuk, created_at, updated_at -->
+                <!-- TODO: bikin dropdown untuk memfilter data berdasarkan status -->
+                <!-- TODO: bikin moneyrangepicker berdasarkan harga, value -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Bahan</h3>
+                        <h3 class="card-title">List Transaksi Kain</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="list_bahan" class="table table-bordered">
+                        <table id="list_transaksi_kain" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>id</th>
-                                    <th>No.</th>
                                     <th>Tanggal Masuk</th>
                                     <th>Kode</th>
                                     <th>Yard</th>
@@ -51,7 +54,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_bahan"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_transaksi_kain"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -63,7 +66,7 @@
 <!-- /.content -->
 
 <!-- Modal show bahan -->
-<div class="modal fade" id="modal_show_bahan">
+{{-- <div class="modal fade" id="modal_show_bahan">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,10 +100,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
 <!-- Modal create bahan -->
-<div class="modal fade" id="modal_create_bahan">
+<div class="modal fade" id="modal_create_transaksi_kain">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,8 +117,8 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Kode</label>
-                                <select id="kode_jenis_bahan" class="form-control" style="width: 100%;">
+                                <label for="kode_kain">Kode</label>
+                                <select id="kode_kain" class="form-control" style="width: 100%;">
                                     <option value="0">Pilih</option>
                                 </select>
                             </div>
@@ -156,7 +159,7 @@
 </div>
 
 <!-- Modal edit bahan -->
-<div class="modal fade" id="modal_edit_bahan">
+<div class="modal fade" id="modal_edit_transaksi_kain">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -165,14 +168,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form_edit_bahan" role="form">
+            <form id="form_edit_transaksi_kain" role="form">
                 <div class="modal-body">
                     <div class="row">
                         <input id="id2" type="hidden">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="kode_jenis_bahan2">Kode</label>
-                                <select id="kode_jenis_bahan2" class="form-control" style="width: 100%;">
+                                <label for="kode_kain2">Kode</label>
+                                <select id="kode_kain2" class="form-control" style="width: 100%;">
                                     <option value="0">Pilih</option>
                                 </select>
                             </div>
@@ -214,8 +217,8 @@
 @endsection
 
 @section('custom-js')
-<script src="{{ asset('js/models/model_bahan.js') }}"></script>
-<script src="{{ asset('js/inventory/bahan.js') }}"></script>
+<script src="{{ asset('js/models/model_transaksi_kain.js') }}"></script>
+<script src="{{ asset('js/inventory/transaksi_kain.js') }}"></script>
 <script>
 $(function() {
     $.fn.datetimepicker.Constructor.Default = $.extend({}, 

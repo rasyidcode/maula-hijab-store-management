@@ -39,15 +39,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('list_bahan') }}" class="nav-link {{ Request::is('inventory/bahan') ? 'active' : '' }}">
+                    <a href="{{ route('transaksi_kain') }}" class="nav-link {{ Request::is('inventory/bahan') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Bahan</p>
+                        <p>Transaksi Kain</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('list_jenis_bahan') }}" class="nav-link {{ Request::is('inventory/jenis/bahan') ? 'active' : '' }}">
+                    <a href="{{ route('kain') }}" class="nav-link {{ Request::is('inventory/jenis/bahan') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Jenis Bahan</p>
+                        <p>Kain</p>
                     </a>
                 </li>
                 <li class="nav-item">

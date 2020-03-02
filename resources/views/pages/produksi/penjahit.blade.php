@@ -35,7 +35,6 @@
                         <table id="list_penjahit" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>No.</th>
                                     <th>No. KTP</th>
                                     <th>Nama Lengkap</th>
                                     <th>Nomor HP</th>
@@ -97,7 +96,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_show_penjahit">
+{{-- <div class="modal fade" id="modal_show_penjahit">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -127,9 +126,9 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 
-<div class="modal fade" id="modal_edit_jenis_bahan">
+<div class="modal fade" id="modal_edit_penjahit">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,16 +137,24 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form_edit_jenis_bahan" role="form">
+            <form id="form_edit_penjahit" role="form">
+                <input id="before_edit_noktp" type="hidden" />
                 <div class="modal-body">
-                    <input id="kode2" type="hidden" type="text">
                     <div class="form-group">
-                        <label for="nama2">Nama</label>
-                        <input id="nama2" type="text" class="form-control" placeholder="Ex : Diamond" required>
+                        <label for="no_ktp2">No. KTP</label>
+                        <input id="no_ktp2" type="text" class="form-control" placeholder="Ex : 113330011100" required>
                     </div>
                     <div class="form-group">
-                        <label for="warna2">Warna</label>
-                        <input id="warna2" type="text" class="form-control" placeholder="Ex : Merah" required>
+                        <label for="nama_lengkap2">Nama Lengkap</label>
+                        <input id="nama_lengkap2" type="text" class="form-control" placeholder="Ex : Ahmad Jamil Al Rasyid" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="no_hp2">Nomor HP</label>
+                        <input id="no_hp2" type="text" class="form-control" placeholder="Ex : 081226836303" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat2">Alamat</label>
+                        <textarea class="form-control" id="alamat2" cols="30" rows="10" placeholder="Ex : Jln. Rasamala No. 10C, Condongcatur, Yogyakarta" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

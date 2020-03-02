@@ -77,6 +77,7 @@ class ValidatorHelper {
             'kode' => $isCreate ? 'required|unique:barang' : 'required',
             'kode_induk' => 'required',
             'kode_kain' => 'required',
+            'stok_ready' => 'required',
             'treshold' => 'required|numeric'
         ];
     }
@@ -87,6 +88,7 @@ class ValidatorHelper {
             'kode.unique' => 'Kode sudah terpakai',
             'kode_induk.required' => 'Kode induk tidak boleh kosong',
             'kode_kain.required' => 'Kode kain tidak boleh kosong',
+            'stok_ready.required' => 'Stok ready tidak boleh kosong',
             'treshold.required' => 'Treshold tidak boleh kosong',
             'treshold.numeric' => 'Treshold harus berupa angka'
         ];
