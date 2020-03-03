@@ -8,6 +8,12 @@
 
     <title>Dashboard - @yield('title')</title>
 
+    <script>
+    if (localStorage.getItem("creds") == null) {
+        window.location.replace('/login')
+    }
+    </script>
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->

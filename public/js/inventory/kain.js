@@ -1,11 +1,19 @@
 $(function() {
+    const creds = JSON.parse(localStorage.getItem('creds'))
+
     let datatable = $("#list_kain").DataTable({
         "processing": true,
         "serverSide": true,
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        ajax: '/api/v1/kain',
+        ajax: {
+            url: '/api/v1/kain',
+            type: 'GET',
+            headers: {
+                'Authorization': `${creds.token_type} ${creds.access_token}`
+            }
+        },
         columns: [
             { data: "kode" },
             { data: "nama" },
@@ -36,7 +44,11 @@ $(function() {
             nama: $("#nama").val(),
             warna: $("#warna").val(),
         }
-        axios.post('/api/v1/kain', newKain)
+        axios.post('/api/v1/kain', newKain, {
+            headers: {
+                'Authorization': `${creds.token_type} ${creds.access_token}`
+            }
+        })
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#nama', type: 'text' },
@@ -67,7 +79,11 @@ $(function() {
         }
         const prevKode = $("#kode2").val()
 
-        axios.post(`/api/v1/kain/${prevKode}/edit`, editedKain)
+        axios.post(`/api/v1/kain/${prevKode}/edit`, editedKain, {
+            headers: {
+                'Authorization': `${creds.token_type} ${creds.access_token}`
+            }
+        })
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#nama2', type: 'text' },

@@ -264,11 +264,12 @@ class WosController extends Controller {
 
     public function pay(Request $request, int $id) {
         Helper::isWosExist($this->wos, $id);
-        $userInput = $request->only(['tanggal_bayar']);
 
-        $validator = Validator::make($userInput, ['tanggal_bayar' => 'required'], ['tanggal_bayar.required' => 'Tanggal bayar tidak boleh kosong!']);
-        if ($validator->fails()) return Helper::send_response(422, 'Validasi error!', $validator->errors());
+        // $userInput = $request->only(['tanggal_bayar']);
 
+        // $validator = Validator::make($userInput, ['tanggal_bayar' => 'required'], ['tanggal_bayar.required' => 'Tanggal bayar tidak boleh kosong!']);
+        // if ($validator->fails()) return Helper::send_response(422, 'Validasi error!', $validator->errors());
+        $userInput['tanggal_bayar'] = \Carbon\Carbon::now();
         $userInput['status_bayar'] = true;
         $data = $this->wos->pay($id, $userInput);
         return Helper::send_response(200, 'Jahitan berhasil dibayar!', $data);

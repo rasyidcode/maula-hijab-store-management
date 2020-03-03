@@ -19,100 +19,110 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1'], function() {
     
-    /* kain */
-    Route::group(['prefix' => 'kain'], function() {
-        Route::get('/', 'API\KainController@index'); // worked
-        Route::get('/{kode}', 'API\KainController@get'); // worked
-        Route::post('/', 'API\KainController@create'); // worked
-        Route::post('/{kode}/edit', 'API\KainController@edit'); // worked
-        Route::post('/{kode}/remove', 'API\KainController@remove'); // worked
-        Route::get('/with/relations', 'API\KainController@allWithRelations');  // worked
-        Route::get('/{kode}/with/relations', 'API\KainController@oneWithRelations');  // worked
-        Route::get('/get/nama', 'API\KainController@listNamaKain'); // worked
-        Route::get('/get/warna', 'API\KainController@listWarnaKain'); // worked
-        Route::get('/{kode}/detail', 'API\KainController@get'); // TODO: with total_barang and total_transaksi_kain
-        Route::get('/get/kode', 'API\KainController@listKode');
-    });
-    
-    /* transaksi_kain */
-    Route::group(['prefix' => 'transaksi_kain'], function() {
-        Route::get('/', 'API\TransaksiKainController@index'); // worked
-        // Route::post('/new', 'API\BahanController@getAllBahan');
-        Route::get('/{id}', 'API\TransaksiKainController@get'); // worked
-        Route::post('/', 'API\TransaksiKainController@create'); // worked
-        Route::post('/{id}/edit', 'API\TransaksiKainController@edit'); // worked
-        Route::post('/{id}/remove', 'API\TransaksiKainController@remove'); // worked
-        Route::post('/{id}/status', 'API\TransaksiKainController@setStatusPotong'); //worked
-        Route::get('/get/yard', 'API\TransaksiKainController@getOnlyYard'); //worked
-        Route::get('/{id}/check/status_potong', 'API\TransaksiKainController@checkStatusPotong'); //worked
-        Route::get('/check/ready', 'API\TransaksiKainController@checkTransaksiKainReady'); //worked
-        Route::get('/{id}/detail', 'API\TransaksiKainController@detail');
+    Route::group(['middleware' => 'auth:api'], function() {
+        /* kain */
+        Route::group(['prefix' => 'kain'], function() {
+            Route::get('/', 'API\KainController@index'); // worked
+            Route::get('/{kode}', 'API\KainController@get'); // worked
+            Route::post('/', 'API\KainController@create'); // worked
+            Route::post('/{kode}/edit', 'API\KainController@edit'); // worked
+            Route::post('/{kode}/remove', 'API\KainController@remove'); // worked
+            Route::get('/with/relations', 'API\KainController@allWithRelations');  // worked
+            Route::get('/{kode}/with/relations', 'API\KainController@oneWithRelations');  // worked
+            Route::get('/get/nama', 'API\KainController@listNamaKain'); // worked
+            Route::get('/get/warna', 'API\KainController@listWarnaKain'); // worked
+            Route::get('/{kode}/detail', 'API\KainController@get'); // TODO: with total_barang and total_transaksi_kain
+            Route::get('/get/kode', 'API\KainController@listKode');
+        });
+        
+        /* transaksi_kain */
+        Route::group(['prefix' => 'transaksi_kain'], function() {
+            Route::get('/', 'API\TransaksiKainController@index'); // worked
+            // Route::post('/new', 'API\BahanController@getAllBahan');
+            Route::get('/{id}', 'API\TransaksiKainController@get'); // worked
+            Route::post('/', 'API\TransaksiKainController@create'); // worked
+            Route::post('/{id}/edit', 'API\TransaksiKainController@edit'); // worked
+            Route::post('/{id}/remove', 'API\TransaksiKainController@remove'); // worked
+            Route::post('/{id}/status', 'API\TransaksiKainController@setStatusPotong'); //worked
+            Route::get('/get/yard', 'API\TransaksiKainController@getOnlyYard'); //worked
+            Route::get('/{id}/check/status_potong', 'API\TransaksiKainController@checkStatusPotong'); //worked
+            Route::get('/check/ready', 'API\TransaksiKainController@checkTransaksiKainReady'); //worked
+            Route::get('/{id}/detail', 'API\TransaksiKainController@detail');
+        });
+
+        /* induk */
+        Route::group(['prefix' => 'induk'], function() {
+            Route::get('/', 'API\IndukController@index'); // worked
+            Route::get('/{id}', 'API\IndukController@get'); // worked
+            Route::post('/', 'API\IndukController@create'); // worked
+            Route::post('/{id}/edit', 'API\IndukController@edit'); // worked
+            Route::post('/{id}/remove', 'API\IndukController@remove'); // worked
+            Route::get('/get/kode', 'API\IndukController@listKode'); // worked
+            Route::get('/{id}/detail', 'API\IndukController@detail');
+        });
+
+        /* barang */
+        Route::group(['prefix' => 'barang'], function() {
+            Route::get('/', 'API\BarangController@index'); // worked
+            Route::get('/{kode}', 'API\BarangController@get'); // worked
+            Route::post('/', 'API\BarangController@create'); // worked
+            Route::post('/{kode}/edit', 'API\BarangController@edit'); // worked
+            Route::post('/{kode}/remove', 'API\BarangController@remove'); // worked
+            Route::get('/with/relations', 'API\BarangController@allWithRelations'); // worked
+            Route::get('/{kode}/with/relations', 'API\BarangController@oneWithRelations'); // worked
+            Route::get('/with/on_progress', 'API\BarangController@allWithOnProgress'); // pending_check (need wos)
+            Route::get('/{kode}/with/on_progress', 'API\BarangController@oneWithOnProgress'); // pending_check (need wos)
+            Route::get('/{kode}/detail', 'API\BarangController@detail');
+            Route::get('/{kode}/transaksi_kain/yard', 'API\BarangController@getTransaksiKainYard');
+        });
+
+        /* penjahit */
+        Route::group(['prefix' => 'penjahit'], function() {
+            Route::get('/', 'API\PenjahitController@index'); // worked
+            Route::get('/{no_ktp}', 'API\PenjahitController@get'); // worked
+            Route::post('/', 'API\PenjahitController@create'); // worked
+            Route::post('/{no_ktp}/edit', 'API\PenjahitController@edit'); // worked
+            Route::post('/{no_ktp}/remove', 'API\PenjahitController@remove'); // worked
+            Route::get('/with/wos', 'API\PenjahitController@allWithWos'); // pending_check (need wos)
+            Route::get('/{no_ktp}/wos', 'API\PenjahitController@oneWithWos'); // pending_check (need wos)
+            Route::get('/get/datatable', 'API\PenjahitController@allDatatable');
+        });
+
+        /* wos */
+        Route::group(['prefix' => 'wos'], function() {
+            Route::get('/', 'API\WosController@all'); // worked
+            Route::get('/{id}', 'API\WosController@get'); // worked
+            Route::post('/', 'API\WosController@create'); // worked
+            Route::post('/{id}/edit', 'API\WosController@edit'); // worked
+            Route::post('/{id}/remove', 'API\WosController@remove'); // done_check
+            Route::post('/{id}/take', 'API\WosController@take'); // worked
+            Route::post('/{id}/return', 'API\WosController@return'); // worked
+            Route::get('/with/relations', 'API\WosController@allWithRelations'); // worked
+            Route::get('/{id}/with/relations', 'API\WosController@oneWithRelations'); // worked
+            Route::post('/wos/take/multi', 'API\WosController@takeMulti'); // `belum dipake`
+            Route::post('/setor/multi', 'API\WosController@setorMulti'); // `belum dipake`
+            Route::get('/{kode_barang}/on_progress', 'API\WosController@getOnProgress'); // `belum dipake`
+            Route::get('/payment/list', 'API\WosController@wosPayment'); // worked
+            Route::post('/{id}/payment', 'API\WosController@pay'); // worked
+            Route::get('/get/datatable', 'API\WosController@allDatatable');
+            Route::get('/{id}/detail', 'API\WosController@detail');
+        });
+
+        /* penjualan */
+        Route::group(['prefix' => 'penjualan'], function() {
+            Route::get('/shopee', 'API\PenjualanController@shopee');
+            Route::get('/lazada', 'API\PenjualanController@lazada');
+            Route::post('/upload', 'API\PenjualanController@upload');
+
+            Route::post('/test', 'API\PenjualanController@test');
+            Route::get('/pemesanan', 'API\PenjualanController@pemesanan');
+            Route::get('/produk', 'API\PenjualanController@produk');
+        });
+
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
     });
 
-    /* induk */
-    Route::group(['prefix' => 'induk'], function() {
-        Route::get('/', 'API\IndukController@index'); // worked
-        Route::get('/{id}', 'API\IndukController@get'); // worked
-        Route::post('/', 'API\IndukController@create'); // worked
-        Route::post('/{id}/edit', 'API\IndukController@edit'); // worked
-        Route::post('/{id}/remove', 'API\IndukController@remove'); // worked
-        Route::get('/get/kode', 'API\IndukController@listKode'); // worked
-        Route::get('/{id}/detail', 'API\IndukController@detail');
-    });
-
-    /* barang */
-    Route::group(['prefix' => 'barang'], function() {
-        Route::get('/', 'API\BarangController@index'); // worked
-        Route::get('/{kode}', 'API\BarangController@get'); // worked
-        Route::post('/', 'API\BarangController@create'); // worked
-        Route::post('/{kode}/edit', 'API\BarangController@edit'); // worked
-        Route::post('/{kode}/remove', 'API\BarangController@remove'); // worked
-        Route::get('/with/relations', 'API\BarangController@allWithRelations'); // worked
-        Route::get('/{kode}/with/relations', 'API\BarangController@oneWithRelations'); // worked
-        Route::get('/with/on_progress', 'API\BarangController@allWithOnProgress'); // pending_check (need wos)
-        Route::get('/{kode}/with/on_progress', 'API\BarangController@oneWithOnProgress'); // pending_check (need wos)
-        Route::get('/{kode}/detail', 'API\BarangController@detail');
-        Route::get('/{kode}/transaksi_kain/yard', 'API\BarangController@getTransaksiKainYard');
-    });
-
-    /* penjahit */
-    Route::group(['prefix' => 'penjahit'], function() {
-        Route::get('/', 'API\PenjahitController@index'); // worked
-        Route::get('/{no_ktp}', 'API\PenjahitController@get'); // worked
-        Route::post('/', 'API\PenjahitController@create'); // worked
-        Route::post('/{no_ktp}/edit', 'API\PenjahitController@edit'); // worked
-        Route::post('/{no_ktp}/remove', 'API\PenjahitController@remove'); // worked
-        Route::get('/with/wos', 'API\PenjahitController@allWithWos'); // pending_check (need wos)
-        Route::get('/{no_ktp}/wos', 'API\PenjahitController@oneWithWos'); // pending_check (need wos)
-        Route::get('/get/datatable', 'API\PenjahitController@allDatatable');
-    });
-
-    /* wos */
-    Route::group(['prefix' => 'wos'], function() {
-        Route::get('/', 'API\WosController@all'); // worked
-        Route::get('/{id}', 'API\WosController@get'); // worked
-        Route::post('/', 'API\WosController@create'); // worked
-        Route::post('/{id}/edit', 'API\WosController@edit'); // worked
-        Route::post('/{id}/remove', 'API\WosController@remove'); // done_check
-        Route::post('/{id}/take', 'API\WosController@take'); // worked
-        Route::post('/{id}/return', 'API\WosController@return'); // worked
-        Route::get('/with/relations', 'API\WosController@allWithRelations'); // worked
-        Route::get('/{id}/with/relations', 'API\WosController@oneWithRelations'); // worked
-        Route::post('/wos/take/multi', 'API\WosController@takeMulti'); // `belum dipake`
-        Route::post('/setor/multi', 'API\WosController@setorMulti'); // `belum dipake`
-        Route::get('/{kode_barang}/on_progress', 'API\WosController@getOnProgress'); // `belum dipake`
-        Route::get('/payment/list', 'API\WosController@wosPayment'); // worked
-        Route::post('/{id}/payment', 'API\WosController@pay'); // worked
-        Route::get('/get/datatable', 'API\WosController@allDatatable');
-        Route::get('/{id}/detail', 'API\WosController@detail');
-    });
-
-    /* penjualan */
-    Route::group(['prefix' => 'penjualan'], function() {
-        Route::get('/shopee', 'API\PenjualanController@shopee');
-        Route::get('/lazada', 'API\PenjualanController@lazada');
-        Route::post('/upload', 'API\PenjualanController@upload');
-
-        Route::post('/test', 'API\PenjualanController@test');
-    });
+    Route::post('/login', 'API\AuthController@login');
+    Route::post('/register', 'API\AuthController@register');
 });

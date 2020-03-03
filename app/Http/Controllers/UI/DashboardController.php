@@ -35,4 +35,12 @@ class DashboardController extends Controller
         return view('pages.produksi.pembayaran');
     }
 
+    public function pemesanan() {
+        return view('pages.penjualan.pemesanan');
+    }
+
+    public function produk() {
+        return view('pages.penjualan.produk');
+    }
+
 }

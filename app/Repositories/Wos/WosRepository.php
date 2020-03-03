@@ -89,16 +89,16 @@ class WosRepository implements WosRepositoryInterface {
             ->join('transaksi_kain', 'transaksi_kain.id', 'wos.id_transaksi_kain')
             ->join('induk', 'barang.kode_induk', '=', 'induk.kode')
             ->select(
+                'wos.id',
                 'wos.tanggal_bayar',
                 'penjahit.nama_lengkap', 
                 'barang.kode as kode_barang', 
                 'transaksi_kain.kode_kain', 
                 'wos.status_bayar',
-                'wos.pcs',
                 'induk.harga_jahit',
+                'wos.jumlah_kembali',
                 DB::raw('(wos.pcs * induk.harga_jahit) as total_pembayaran')
             )
-            ->where('status_jahit', true)
             ->get();
 
         return $data;

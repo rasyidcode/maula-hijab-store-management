@@ -97,27 +97,15 @@
             </a>
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="{{ route('wos') }}" class="nav-link {{ Request::is('penjualan/lazada') ? 'active' : '' }}">
+                    <a href="{{ route('pemesanan') }}" class="nav-link {{ Request::is('penjualan/pemesanan') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Lazada</p>
+                        <p>Pemesanan</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('penjahit') }}" class="nav-link {{ Request::is('penjualan/shopee') ? 'active' : '' }}">
+                    <a href="{{ route('produk') }}" class="nav-link {{ Request::is('penjualan/produk') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Shopee</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('pembayaran') }}" class="nav-link {{ Request::is('penjualan/tokopedia') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Tokopedia</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('pembayaran') }}" class="nav-link {{ Request::is('penjualan/blibli') ? 'active' : '' }}">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>BliBli</p>
+                        <p>Produk</p>
                     </a>
                 </li>
             </ul>

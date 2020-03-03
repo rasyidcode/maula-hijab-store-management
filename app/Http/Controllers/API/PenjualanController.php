@@ -10,11 +10,23 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\PenjualanShopee;
 use App\Models\PenjualanLazada;
+use App\Models\Pemesanan;
+use App\Models\Produk;
 
 use App\Http\Controllers\Helper\GeneralHelper as Helper;
 use App\Http\Controllers\Helper\TempProduct;
 
 class PenjualanController extends Controller {
+
+    public function produk() {
+        $data = Produk::with('pemesanan')->get();
+        return Helper::send_response(200, "Berhasil", $data);
+    }
+
+    public function pemesanan() {
+        $data = Pemesanan::with('produk')->get();
+        return Helper::send_response(200, "Berhasil", $data);
+    }
 
     public function shopee() {
         $data = PenjualanShopee::all();
@@ -42,13 +54,15 @@ class PenjualanController extends Controller {
 
         switch($fileType) {
             case 'Xls':
-                $this->handleShopee($sheetData);
+                // $this->handleShopee($sheetData);
+                $this->handleShopee2($sheetData);
                 break;
             case 'Xlsx':
-                $this->handleShopee($sheetData);
+                // $this->handleShopee($sheetData);
+                $this->handleShopee2($sheetData);
                 break;
             case 'Csv':
-                $this->handleLazada($sheetData);
+                $this->handleLazada2($sheetData);
                 break;
         }
 
@@ -57,18 +71,8 @@ class PenjualanController extends Controller {
 
     public function test(Request $request) {
         $file = $request->file('shopee_sample')->getRealPath();
-        // $file2 = $request->file('lazada_sample')->getRealPath();
 
-        /* load xlsx */
-        // $spreadsheet = IOFactory::load($file);
-
-        /* load xls */
-        // $reader = new Xls();
-        // $reader->setReadDataOnly(true);
-        // $spreadsheet = $reader->load($file);
-
-        /* load csv */
-        $reader = IOFactory::createReader('Xlsx');
+        $reader = IOFactory::createReader('Csv');
         $reader->setReadDataOnly(true);
         $spreadsheet = $reader->load($file);
 
@@ -126,7 +130,7 @@ class PenjualanController extends Controller {
 
     private function rpToInteger(string $text) : int {
         $step1 = str_replace('Rp', '', $text);
-        $step2 = str_replace(',', '', $step1);
+        $step2 = str_replace('.', '', $step1);
         $result = (int) $step2;
         return $result;
     }
@@ -203,6 +207,214 @@ class PenjualanController extends Controller {
                 // Log::debug($penjualanLazadaData);
                 PenjualanLazada::create($penjualanLazadaData);
             }
+        }
+    }
+
+    private function handleShopee2($sheetData) {
+        $testData = [];
+        $testAllEmptyRow = [];
+        $currentPemesananId = 0;
+
+        foreach($sheetData as $index => $data) {
+            if (strtolower($data['A']) != 'no. pesanan') {
+                if ($data['A'] != null) {
+                    if (!$this->isPemesananExist($data["A"])) {
+                        $dataPemesanan["metode_pemesanan"] = "shopee";
+                        $dataPemesanan["no_pemesanan"] = $data["A"];
+                        if (strtolower($data["B"]) == "perlu dikirim" && $data["C"] != null) {
+                            $dataPemesanan["status_pemesanan"] = "perlu_dikirim";
+                        } else {
+                            $dataPemesanan["status_pemesanan"] = "refund";
+                        }
+                        $dataPemesanan["no_resi"] = $data["D"];
+                        $dataPemesanan["shipping_provider"] = $data["E"];
+                        $dataPemesanan["status_pickup"] = $data["F"];
+                        $dataPemesanan["batas_pengiriman"] = $data["G"] . ":00";
+                        $dataPemesanan["waktu_pesanan_dibuat"] = $data["I"] . ":00";
+                        $dataPemesanan["waktu_pembayaran_dilakukan"] = $data["J"] . ":00";
+                        $dataPemesanan["ongkos_kirim_dibayar_pembeli"] = $this->rpToInteger($data["AG"]);
+                        $dataPemesanan["total_pembayaran"] = $this->rpToInteger($data["AH"]);
+                        $dataPemesanan["perkiraan_ongkos_kirim"] = $this->rpToInteger($data["AI"]);
+
+                        $dataPemesanan["username"] = $data["AL"];
+                        $dataPemesanan["nama_penerima"] = $data["AM"];
+                        $dataPemesanan["email"] = null;
+                        $dataPemesanan["no_hp"] = $data["AN"];
+                        $dataPemesanan["alamat_pengiriman"] = $data["AO"];
+                        $dataPemesanan["kabupaten"] = $data["AP"];
+                        $dataPemesanan["provinsi"] = $data["AQ"];
+
+                        $createdPemesanan = Pemesanan::create($dataPemesanan);
+                        $currentPemesananId = $createdPemesanan->id;
+
+                        $dataProduk["sku_induk"] = $data["K"];
+                        $dataProduk["nama_produk"] = $data["L"];
+                        $dataProduk["nama_produk"] = $data["M"];
+                        $dataProduk["no_referensi_sku"] = $data["M"];
+                        $dataProduk["warna"] = $data["N"];
+                        $dataProduk["harga_asil"] = $this->rpToInteger($data["O"]);
+                        $dataProduk["harga_setelah_diskon"] = $this->rpToInteger($data["P"]);
+                        $dataProduk["jumlah_pesanan"] = $data["Q"];
+                        $dataProduk["total_harga_produk"] = $this->rpToInteger($data["R"]);
+                        $dataProduk["total_diskon"] = $this->rpToInteger($data["S"]);
+                        $dataProduk["id_pemesanan"] = $currentPemesananId;
+
+                        Produk::create($dataProduk);
+                    } else {
+                        if ($currentPemesananId != 0) {
+                            $dataProduk["sku_induk"] = $data["K"];
+                            $dataProduk["nama_produk"] = $data["L"];
+                            $dataProduk["nama_produk"] = $data["M"];
+                            $dataProduk["no_referensi_sku"] = $data["M"];
+                            $dataProduk["warna"] = $data["N"];
+                            $dataProduk["harga_asil"] = $this->rpToInteger($data["O"]);
+                            $dataProduk["harga_setelah_diskon"] = $this->rpToInteger($data["P"]);
+                            $dataProduk["jumlah_pesanan"] = $data["Q"];
+                            $dataProduk["total_harga_produk"] = $this->rpToInteger($data["R"]);
+                            $dataProduk["total_diskon"] = $this->rpToInteger($data["S"]);
+                            $dataProduk["id_pemesanan"] = $currentPemesananId;
+    
+                            Produk::create($dataProduk);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private function handleLazada2($sheetData) {
+        $currentProduk = [];
+        $dataPemesanan = null;
+
+        foreach($sheetData as $data) {
+            if ($data['A'] != 'Order Item Id') {
+                if (!$this->isPemesananExist($data["I"])) {
+                    if ($dataPemesanan == null && count($currentProduk) == 0) {
+                        $dataPemesanan["metode_pemesanan"] = "lazada";
+                        $dataPemesanan['no_pemesanan'] = $data['I'];
+                        $dataPemesanan['status_pemesanan'] = "perlu_dikirim";
+                        $dataPemesanan['no_resi'] = $data['AW'];
+                        $dataPemesanan['shipping_provider'] = $data['AS'];
+                        $dataPemesanan['status_pickup'] = $data['AY'];
+                        $dataPemesanan['batas_pengiriman'] = null;
+                        $dataPemesanan['waktu_pesanan_dibuat'] = $data['G'];
+                        $dataPemesanan['waktu_pembayaran_dilakukan'] = null;
+                        $dataPemesanan['ongkos_kirim_dibayar_pembeli'] = null;
+                        $dataPemesanan['total_pembayaran'] = null;
+                        $dataPemesanan['perkiraan_ongkos_kirim'] = $data['AN'];
+                        $dataPemesanan['username'] = null;
+                        $dataPemesanan['nama_penerima'] = $data['K'];
+                        $dataPemesanan['email'] = $data['L'];
+                        $dataPemesanan['no_hp'] = $data['T'];
+                        $dataPemesanan['alamat_pengiriman'] = "{$data['O']}, {$data['P']}, {$data['Q']}, {$data['R']}, {$data['S']}";
+                        $dataPemesanan['kabupaten'] = $data["AC"];
+                        $dataPemesanan['provinsi'] = $data["AD"];
+    
+                        $dataProduk["sku_induk"] = explode("-", $data["E"])[0];
+                        $dataProduk["nama_produk"] = $data["AP"];
+                        $dataProduk["no_referensi_sku"] = $data["E"];
+                        $color = preg_split('/.+:/', preg_split('/,/', $data['AQ'])[0]);
+                        $dataProduk["warna"] = trim($color[1]);
+                        $dataProduk["harga_asli"] = $data["AM"];
+                        $dataProduk["harga_setelah_diskon"] = null;
+                        $dataProduk["jumlah_pesanan"] = null;
+                        $dataProduk["total_harga_produk"] = $data["AM"];
+                        $dataProduk["total_diskon"] = $data["AM"];
+    
+                        array_push($currentProduk, $dataProduk);
+                    } else {
+                        Log::debug($dataPemesanan['no_pemesanan'] == $data['I']);
+                        if ($dataPemesanan['no_pemesanan'] == $data['I']) {
+                            $dataProduk["sku_induk"] = explode("-", $data["E"])[0];
+                            $dataProduk["nama_produk"] = $data["AP"];
+                            $dataProduk["no_referensi_sku"] = $data["E"];
+                            $color = preg_split('/.+:/', preg_split('/,/', $data['AQ'])[0]);
+                            $dataProduk["warna"] = trim($color[1]);
+                            $dataProduk["harga_asli"] = $data["AM"];
+                            $dataProduk["harga_setelah_diskon"] = null;
+                            $dataProduk["jumlah_pesanan"] = null;
+                            $dataProduk["total_harga_produk"] = $data["AM"];
+                            $dataProduk["total_diskon"] = $data["AM"];
+    
+                            array_push($currentProduk, $dataProduk);
+    
+                            if (end($sheetData)['A'] == $data['A']) {
+                                $totalPembayaran = 0;
+                                foreach($currentProduk as $produk) {
+                                    $totalPembayaran += $produk['total_harga_produk'];
+                                }
+                                $dataPemesanan['total_pembayaran'] = $totalPembayaran;
+                                $pemesanan = Pemesanan::create($dataPemesanan);
+                                foreach($currentProduk as $produk) {
+                                    $produk['id_pemesanan'] = $pemesanan->id;
+                                    Produk::create($produk);
+                                }
+                            }
+                        } else {
+                            $totalPembayaran = 0;
+                            foreach($currentProduk as $produk) {
+                                $totalPembayaran += $produk['total_harga_produk'];
+                            }
+                            $dataPemesanan['total_pembayaran'] = $totalPembayaran;
+                            $pemesanan = Pemesanan::create($dataPemesanan);
+                            foreach($currentProduk as $produk) {
+                                $produk['id_pemesanan'] = $pemesanan->id;
+                                Produk::create($produk);
+                            }
+    
+                            $currentProduk = [];
+                            $dataPemesanan = null;
+    
+                            $dataPemesanan["metode_pemesanan"] = "lazada";
+                            $dataPemesanan['no_pemesanan'] = $data['I'];
+                            $dataPemesanan['status_pemesanan'] = "perlu_dikirim";
+                            $dataPemesanan['no_resi'] = $data['AW'];
+                            $dataPemesanan['shipping_provider'] = $data['AS'];
+                            $dataPemesanan['status_pickup'] = $data['AY'];
+                            $dataPemesanan['batas_pengiriman'] = null;
+                            $dataPemesanan['waktu_pesanan_dibuat'] = $data['G'];
+                            $dataPemesanan['waktu_pembayaran_dilakukan'] = null;
+                            $dataPemesanan['ongkos_kirim_dibayar_pembeli'] = null;
+                            $dataPemesanan['total_pembayaran'] = null;
+                            $dataPemesanan['perkiraan_ongkos_kirim'] = $data['AN'];
+                            $dataPemesanan['username'] = null;
+                            $dataPemesanan['nama_penerima'] = $data['K'];
+                            $dataPemesanan['email'] = $data['L'];
+                            $dataPemesanan['no_hp'] = $data['T'];
+                            $dataPemesanan['alamat_pengiriman'] = "{$data['O']}, {$data['P']}, {$data['Q']}, {$data['R']}, {$data['S']}";
+                            $dataPemesanan['kabupaten'] = $data["AC"];
+                            $dataPemesanan['provinsi'] = $data["AD"];
+    
+                            $dataProduk["sku_induk"] = explode("-", $data["E"])[0];
+                            $dataProduk["nama_produk"] = $data["AP"];
+                            $dataProduk["no_referensi_sku"] = $data["E"];
+                            $color = preg_split('/.+:/', preg_split('/,/', $data['AQ'])[0]);
+                            $dataProduk["warna"] = trim($color[1]);
+                            $dataProduk["harga_asli"] = $data["AM"];
+                            $dataProduk["harga_setelah_diskon"] = null;
+                            $dataProduk["jumlah_pesanan"] = null;
+                            $dataProduk["total_harga_produk"] = $data["AM"];
+                            $dataProduk["total_diskon"] = $data["AM"];
+    
+                            array_push($currentProduk, $dataProduk);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private function isPemesananExist(string $orderId) : bool { // true = ada, false = tidak ada
+        $pemesanan = Pemesanan::where("no_pemesanan", $orderId)->first();
+
+        if ($pemesanan != null) {
+            if ($orderId != $pemesanan["no_pemesanan"]) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 }
