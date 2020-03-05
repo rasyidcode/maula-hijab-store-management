@@ -19,7 +19,7 @@ $(function() {
                 return
             }
     
-            axios.post('/api/v1/wos', newWos)
+            axios.post('/api/v1/wos', newWos, { headers: General.getHeaders() })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#kode_barang', type: 'select' },
@@ -44,7 +44,7 @@ $(function() {
             }
             console.log(editedWos)
             const idWos = $("#id_wos_edit").val()
-            axios.post(`/api/v1/wos/${idWos}/edit`, editedWos)
+            axios.post(`/api/v1/wos/${idWos}/edit`, editedWos, { headers: General.getHeaders() })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#kode_barang2', type: 'text' },
@@ -75,7 +75,7 @@ $(function() {
                 return
             }
     
-            axios.post(`/api/v1/wos/${id}/take`, takedWos)
+            axios.post(`/api/v1/wos/${id}/take`, takedWos, { headers: General.getHeaders() })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: "#no_ktp", type: "select" },
@@ -98,7 +98,7 @@ $(function() {
                 jumlah_kembali: $("#jumlah_kembali").val()
             }
     
-            axios.post(`/api/v1/wos/${id}/return`, returnedWos)
+            axios.post(`/api/v1/wos/${id}/return`, returnedWos, { headers: General.getHeaders() })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: "#tanggal_kembali", type: "datetimepicker" },
@@ -114,7 +114,7 @@ $(function() {
         },
         modalCreateWosOpen: function (e) {
             General.resetSelect2('#kode_barang')
-            axios.get('/api/v1/barang')
+            axios.get('/api/v1/barang', { headers: General.getHeaders() })
                 .then(function(res) {
                     const dataBarang = res.data.data
                     dataBarang.forEach(function(barang) {
@@ -134,7 +134,7 @@ $(function() {
         },
         modalEditWosOpen: function(e) {
             General.resetSelect2('#kode_barang2')
-            axios.get('/api/v1/barang')
+            axios.get('/api/v1/barang', { headers: General.getHeaders() })
                 .then(function(res) {
                     const dataBarang = res.data.data
                     dataBarang.forEach(function(barang) {
@@ -154,7 +154,7 @@ $(function() {
         },
         modalTakeWosOpen: function(e) {
             General.resetSelect2('#no_ktp')
-            axios.get('/api/v1/penjahit')
+            axios.get('/api/v1/penjahit', { headers: General.getHeaders() })
                 .then(function(res) {
                     const dataPenjahit = res.data.data
                     dataPenjahit.forEach(function(penjahit) {
@@ -170,7 +170,7 @@ $(function() {
             $('#no_ktp').html('')
         },
         buttonCreateWos: function() {
-            axios.get(`/api/v1/transaksi_kain/check/ready`)
+            axios.get(`/api/v1/transaksi_kain/check/ready`, { headers: General.getHeaders() })
                 .then(function(res) {
                     const status = res.data.data
                     if (status.is_ready == true) {
@@ -187,7 +187,7 @@ $(function() {
             const selectedKodeBarang = e.params.data.id
             if (selectedKodeBarang != 0) {
                 General.resetSelect2('#yard_kain')
-                axios.get(`/api/v1/barang/${selectedKodeBarang}/transaksi_kain/yard`)
+                axios.get(`/api/v1/barang/${selectedKodeBarang}/transaksi_kain/yard`, { headers: General.getHeaders() })
                     .then(function(res) {
                         $('#yard_kain').parent().show()
                         const listYard = res.data.data
@@ -207,7 +207,7 @@ $(function() {
             const selectedKodeBarang = e.params.data.id
             if (selectedKodeBarang != 0) {
                 General.resetSelect2('#yard_kain2')
-                axios.get(`/api/v1/barang/${selectedKodeBarang}/transaksi_kain/yard`)
+                axios.get(`/api/v1/barang/${selectedKodeBarang}/transaksi_kain/yard`, { headers: General.getHeaders() })
                     .then(function(res) {
                         $('#yard_kain2').parent().show()
                         const listYard = res.data.data
@@ -252,7 +252,7 @@ $(function() {
                 const id = datatable.row($(this).parent().parent()).data().id
                 const url =`/api/v1/wos/${id}/detail`
 
-                axios.get(url)
+                axios.get(url, { headers: General.getHeaders() })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(renderDetail(data)).show()
@@ -262,7 +262,7 @@ $(function() {
                             $("#yard_kain2").parent().show()
                             const id = $(this).data("idWos")
                             
-                            axios.get(`/api/v1/wos/${id}`)
+                            axios.get(`/api/v1/wos/${id}`, { headers: General.getHeaders() })
                                 .then(function(res) {
                                     const dataWos = res.data.data
 
@@ -282,7 +282,7 @@ $(function() {
                             let result = confirm('Anda yakin ingin dihapus?')
                             if (result) {
                                 const id = $(this).data("idWos")
-                                axios.post(`/api/v1/wos/${id}/remove`)
+                                axios.post(`/api/v1/wos/${id}/remove`, { headers: General.getHeaders() })
                                     .then(function(res) {
                                         General.showToast('success', res.data.message)
                                         datatable.ajax.reload()
@@ -314,7 +314,7 @@ $(function() {
         datatableButtonReturn: function(e) {
             const id = datatable.row($(this).parent().parent()).data().id
 
-            axios.get(`/api/v1/wos/${id}`)
+            axios.get(`/api/v1/wos/${id}`, { headers: General.getHeaders() })
                 .then(function(res) {
                     const tanggal_ambil = res.data.data.tanggal_ambil
                     if (tanggal_ambil !== null) {
@@ -419,7 +419,11 @@ $(function() {
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        ajax: '/api/v1/wos/get/datatable',
+        ajax: {
+            url: '/api/v1/wos/get/datatable',
+            type: 'GET',
+            headers: General.getHeaders()
+        },
         columns: columns
     }
     const datatable = $("#list_wos").DataTable(config)

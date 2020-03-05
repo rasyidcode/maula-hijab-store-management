@@ -1,7 +1,7 @@
 $(function() {    
     const helpers = {
         listKodeInduk: function(elementId) {
-            axios.get('/api/v1/induk/get/kode')
+            axios.get('/api/v1/induk/get/kode', { headers: General.getHeaders()  })
                 .then(function(res) {
                     const dataInduk = res.data.data
                     dataInduk.forEach(function(induk) {
@@ -14,11 +14,12 @@ $(function() {
                 })
         },
         listNamaKain: function(elementId) {
-            axios.get('/api/v1/kain/get/nama')
+            axios.get('/api/v1/kain/get/nama', { headers: General.getHeaders()  })
                 .then(function(res) {
                     const dataNama = res.data.data
                     dataNama.forEach(function(nama) {
-                        const option = new Option(nama.nama, nama.nama, false, false)
+                        const editedNama = nama.nama.replace(' ', '')
+                        const option = new Option(nama.nama, editedNama, false, false)
                         $(elementId).append(option).trigger('change')
                     })
                 })
@@ -27,7 +28,7 @@ $(function() {
                 })
         },
         listWarnaKain: function(elementId, namaKain) {
-            axios.get(`/api/v1/kain/get/warna?nama=${namaKain}`)
+            axios.get(`/api/v1/kain/get/warna?nama=${namaKain}`, { headers: General.getHeaders()  })
                 .then(function(res) {
                     const dataNama = res.data.data
                     dataNama.forEach(function(nama) {
@@ -94,10 +95,10 @@ $(function() {
             General.resetSelect2('#kode_induk2')
             General.resetSelect2('#nama_kain2')
             General.resetSelect2('#warna_kain2')
-    
+
             helpers.listKodeInduk('#kode_induk2')
             helpers.listNamaKain('#nama_kain2')
-            helpers.listWarnaKain('#warna_kain2', $('#nama_kain2').find(':selected').val())
+            // helpers.listWarnaKain('#warna_kain2', $('#nama_kain2').find(':selected').val())
         },
         /* handle modal create barang closed */
         modalCreateClosed: function(e) {
@@ -124,7 +125,7 @@ $(function() {
             const selectedNamaKain = e.params.data.id
             if (selectedNamaKain != '0') {
                 General.resetSelect2('#warna_kain')
-                axios.get(`/api/v1/kain/get/warna?nama=${selectedNamaKain}`)
+                axios.get(`/api/v1/kain/get/warna?nama=${selectedNamaKain}`, { headers: General.getHeaders()  })
                     .then(function(res) {
                         $('#warna_kain')
                             .parent()
@@ -152,7 +153,7 @@ $(function() {
             const selectedNamaKain = e.params.data.id
             if (selectedNamaKain != '0') {
                 General.resetSelect2('#warna_kain2')
-                axios.get(`/api/v1/kain/get/warna?nama=${selectedNamaKain}`)
+                axios.get(`/api/v1/kain/get/warna?nama=${selectedNamaKain}`, { headers: General.getHeaders()  })
                     .then(function(res) {
                         $('#warna_kain2')
                             .parent()
@@ -184,7 +185,7 @@ $(function() {
             const newBarang = {
                 kode: kode,
                 kode_induk: $('#kode_induk').find(':selected').val(),
-                kode_kain: $('#nama_kain').find(':selected').val() + '-' + $('#warna_kain').find(':selected').val(),
+                kode_kain: General.spaceRemover($('#nama_kain').find(':selected').val()) + '-' + General.spaceRemover($('#warna_kain').find(':selected').val()),
                 stok_ready: parseInt($('#stok_ready').val()),
                 treshold: parseInt($('#treshold').val())
             }
@@ -204,7 +205,7 @@ $(function() {
                 return
             }
             
-            axios.post('/api/v1/barang', newBarang)
+            axios.post('/api/v1/barang', newBarang, { headers: General.getHeaders()  })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#kode', type: 'text' },
@@ -252,7 +253,7 @@ $(function() {
             }
 
             const kodes = $('#kodes').val()
-            axios.post(`/api/v1/barang/${kodes}/edit`, editedBarang)
+            axios.post(`/api/v1/barang/${kodes}/edit`, editedBarang, { headers: General.getHeaders()  })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#kodes', type: 'text' },
@@ -282,7 +283,7 @@ $(function() {
                 const kode = datatable.row($(this).parent().parent()).data().kode
                 const url = `/api/v1/barang/${kode}/detail`
 
-                axios.get(url)
+                axios.get(url, { headers: General.getHeaders()  })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(helpers.renderDetail(data)).show()
@@ -298,35 +299,50 @@ $(function() {
             $('#warna_kain2').parent().parent().show()
 
             const kode = datatable.row($(this).parent().parent()).data().kode
-            axios.get(`/api/v1/barang/${kode}`)
+            const kodeKain = datatable.row($(this).parent().parent()).data().kode_kain.split('-')[0]
+
+            axios.get(`/api/v1/kain/get/warna?nama=${kodeKain}`, { headers: General.getHeaders()  })
                 .then(function(res) {
-                    const barang = res.data.data
-                    const nama = barang.kode_kain.split('-')[0]
-                    const warna = barang.kode_kain.split('-')[1]
+                    const dataNama = res.data.data
 
-                    $('#kodes').val(barang.kode)
-                    setTimeout(function() {
-                        $('#kode_induk2').val(`${barang.kode_induk}`).trigger('change')
-                        $('#nama_kain2').val(nama).trigger('change')
-                        $('#warna_kain2').val(warna).trigger('change')
-                    }, 250)
-                    $('#stok_ready2').val(barang.stok_ready)
-                    $('#treshold2').val(barang.treshold)
+                    dataNama.forEach(function(nama) {
+                        const option = new Option(nama.nama, nama.nama, false, false)
+                        $("#warna_kain2").append(option).trigger('change')
+                    })
 
-                    $('#modal_edit_barang').modal('toggle')
-
-                    General.resetSelect2('#warna_kain2')
-                    axios.get(`/api/v1/kain/get/warna?nama=${nama}`)
+                    axios.get(`/api/v1/barang/${kode}`, { headers: General.getHeaders()  })
                         .then(function(res) {
-                            $('#warna_kain2')
-                                .parent()
-                                .parent()
-                                .show()
-                            const listWarnaKain = res.data.data
-                            listWarnaKain.forEach(function(bahan) {
-                                const option = new Option(`${bahan.warna}`, `${bahan.warna}`, false, false)
-                                $('#warna_kain2').append(option).trigger('change')
-                            })
+                            const barang = res.data.data
+                            const nama = barang.kode_kain.split('-')[0]
+                            const warna = barang.kode_kain.split('-')[1]
+
+                            $('#kodes').val(barang.kode)
+                            setTimeout(function() {
+                                $('#kode_induk2').val(`${barang.kode_induk}`).trigger('change')
+                                $('#nama_kain2').val(nama).trigger('change')
+                                $('#warna_kain2').val(warna).trigger('change')
+                            }, 1500)
+                            $('#stok_ready2').val(barang.stok_ready)
+                            $('#treshold2').val(barang.treshold)
+
+                            $('#modal_edit_barang').modal('toggle')
+
+                            General.resetSelect2('#warna_kain2')
+                            axios.get(`/api/v1/kain/get/warna?nama=${nama}`, { headers: General.getHeaders()  })
+                                .then(function(res) {
+                                    $('#warna_kain2')
+                                        .parent()
+                                        .parent()
+                                        .show()
+                                    const listWarnaKain = res.data.data
+                                    listWarnaKain.forEach(function(bahan) {
+                                        const option = new Option(`${bahan.warna}`, `${bahan.warna}`, false, false)
+                                        $('#warna_kain2').append(option).trigger('change')
+                                    })
+                                })
+                                .catch(function(err) {
+                                    console.log(err)
+                                })
                         })
                         .catch(function(err) {
                             console.log(err)
@@ -341,7 +357,7 @@ $(function() {
             let result = confirm('Anda yakin ingin dihapus?')
             if (result) {
                 const kode = datatable.row($(this).parent().parent()).data().kode
-                axios.post(`/api/v1/barang/${kode}/remove`)
+                axios.post(`/api/v1/barang/${kode}/remove`, null, { headers: General.getHeaders()  })
                     .then(function(res) {
                         General.showToast('success', res.data.message)
                         datatable.ajax.reload()
@@ -360,17 +376,30 @@ $(function() {
         { data: 'kode_induk' },
         { data: 'stok_ready' },
         {
-            data: 'stok_on_progress',
-            orderable: false,
-            searchable: false
-        },
-        { data: 'treshold' },
-        { 
-            data: 'status_produksi',
+            data: 'wos',
             orderable: false,
             searchable: false,
             render: function(data, type, row, meta) {
-                return '<span class="badge '+ (data === 'true' ? 'badge-success' : 'badge-danger') +'">'+ (data === 'true' ? 'Aman' : 'Urgent') +'</span>'
+                let totalPcs = 0;
+                let totalJumlahKembali = 0;
+
+                data.forEach(function(wos) {
+                    totalPcs += wos.pcs
+                    totalJumlahKembali += wos.jumlah_kembali
+                })
+
+                return totalPcs - totalJumlahKembali;
+            }
+        },
+        { data: 'treshold' },
+        { 
+            data: function(row, type, val, meta) {
+                return row.stok_ready > row.treshold;
+            },
+            orderable: false,
+            searchable: false,
+            render: function(data, type, row, meta) {
+                return '<span class="badge '+ (data == true ? 'badge-success' : 'badge-danger') +'">'+ (data == true ? 'Aman' : 'Urgent') +'</span>'
             }
         },
         {
@@ -394,7 +423,11 @@ $(function() {
         processing: true,
         serverSide: true,
         initComplete: helpers.dataTableInitComplete,
-        ajax: '/api/v1/barang/with/on_progress',
+        ajax: {
+            url: '/api/v1/barang/with/on_progress',
+            type: 'GET',
+            headers: General.getHeaders() 
+        },
         columns: dataTableColumns
     }
 

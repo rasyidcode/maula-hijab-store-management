@@ -32,7 +32,9 @@
                 <!-- TODO: bikin moneyrangepicker berdasarkan harga, value -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Transaksi Kain</h3>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_transaksi_kain">
+                            <i class="fas fa-plus mr-3"></i>Tambah
+                        </button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -52,10 +54,6 @@
                             <tbody></tbody>
                         </table>
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_transaksi_kain"><i class="fas fa-plus"></i></button>
-                    </div>
                 </div>
                 <!-- /.card -->
             </div>
@@ -65,49 +63,12 @@
 </div>
 <!-- /.content -->
 
-<!-- Modal show bahan -->
-{{-- <div class="modal fade" id="modal_show_bahan">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Detail bahan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-4">Tanggal masuk</dt>
-                        <dd id="dt_tanggal_masuk" class="col-sm-8"></dd> <!-- use moment -->
-                    <dt class="col-sm-4">Kode</dt>
-                        <dd id="dt_kode" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Yard</dt>
-                        <dd id="dt_yard" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Harga</dt>
-                        <dd id="dt_harga" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Value</dt>
-                        <dd id="dt_value" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Status Potong</dt>
-                        <dd id="dt_status_potong" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Tanggal dibuat</dt>
-                        <dd id="dt_created_at" class="col-sm-8"></dd> <!-- Rabu, 14 April 2019, 06:05 AM -->
-                    <dt class="col-sm-4">Tanggal diupdate</dt>
-                        <dd id="dt_updated_at" class="col-sm-8"></dd> <!-- Rabu, 15 April 2019, 06:05 AM -->
-                </dl>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 <!-- Modal create bahan -->
 <div class="modal fade" id="modal_create_transaksi_kain">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Tambah bahan</h4>
+                <h4 class="modal-title">Tambah transaksi kain</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -122,7 +83,6 @@
                                     <option value="0">Pilih</option>
                                 </select>
                             </div>
-                            <!-- /.form-group -->
                         </div>
                         <div class="col-12">
                             <div class="form-group">
@@ -163,7 +123,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit bahan</h4>
+                <h4 class="modal-title">Edit transaksi kain</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

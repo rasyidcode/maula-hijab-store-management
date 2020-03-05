@@ -11,7 +11,9 @@ $(function() {
                 alamat: $("#alamat").val()
             }
     
-            axios.post('/api/v1/penjahit', newPenjahit)
+            axios.post('/api/v1/penjahit', newPenjahit, {
+                headers: General.getHeaders()
+            })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#no_ktp', type: 'text' },
@@ -40,7 +42,9 @@ $(function() {
 
             const noKtpBeforeEdit = $("#before_edit_noktp").val()
 
-            axios.post(`/api/v1/penjahit/${noKtpBeforeEdit}/edit`, editedPenjahit)
+            axios.post(`/api/v1/penjahit/${noKtpBeforeEdit}/edit`, editedPenjahit, {
+                headers: General.getHeaders()
+            })
                 .then(function(res) {
                     General.resetElementsField([
                         { selector: '#no_ktp2', type: 'text' },
@@ -84,7 +88,11 @@ $(function() {
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        ajax: '/api/v1/penjahit/get/datatable',
+        ajax: {
+            url: '/api/v1/penjahit/get/datatable',
+            type: 'GET',
+            headers: General.getHeaders()
+        },
         columns: datatableColumns
     }
 
@@ -107,7 +115,9 @@ $(function() {
                 const noKtp = datatable.row($(this).parent().parent()).data().no_ktp
                 const url =`/api/v1/penjahit/${noKtp}`
 
-                axios.get(url)
+                axios.get(url, {
+                    headers: General.getHeaders()
+                })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(renderDetail(data)).show()
@@ -122,7 +132,9 @@ $(function() {
         $("#list_penjahit tbody").on("click", "tr button.btn-info", function(e) {
             const noKtp = datatable.row($(this).parent().parent()).data().no_ktp
 
-            axios.get(`/api/v1/penjahit/${noKtp}`)
+            axios.get(`/api/v1/penjahit/${noKtp}`, {
+                headers: General.getHeaders()
+            })
                 .then(function(res) {
                     $("#before_edit_noktp").val(res.data.data.no_ktp)
                     $("#no_ktp2").val(res.data.data.no_ktp)
@@ -141,7 +153,9 @@ $(function() {
             if (result) {
                 const noKtp = datatable.row($(this).parent().parent()).data().no_ktp
                 
-                axios.post(`/api/v1/penjahit/${noKtp}/remove`)
+                axios.post(`/api/v1/penjahit/${noKtp}/remove`, null, {
+                    headers: General.getHeaders()
+                })
                     .then(function(res) {
                         General.showToast("success", res.data.message)
                         datatable.ajax.reload()

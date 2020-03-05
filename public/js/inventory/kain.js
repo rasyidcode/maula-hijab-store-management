@@ -1,6 +1,4 @@
 $(function() {
-    const creds = JSON.parse(localStorage.getItem('creds'))
-
     let datatable = $("#list_kain").DataTable({
         "processing": true,
         "serverSide": true,
@@ -10,9 +8,7 @@ $(function() {
         ajax: {
             url: '/api/v1/kain',
             type: 'GET',
-            headers: {
-                'Authorization': `${creds.token_type} ${creds.access_token}`
-            }
+            headers: General.getHeaders()
         },
         columns: [
             { data: "kode" },
@@ -45,9 +41,7 @@ $(function() {
             warna: $("#warna").val(),
         }
         axios.post('/api/v1/kain', newKain, {
-            headers: {
-                'Authorization': `${creds.token_type} ${creds.access_token}`
-            }
+            headers: General.getHeaders()
         })
             .then(function(res) {
                 General.resetElementsField([
@@ -79,12 +73,11 @@ $(function() {
         }
         const prevKode = $("#kode2").val()
 
-        axios.post(`/api/v1/kain/${prevKode}/edit`, editedKain, {
-            headers: {
-                'Authorization': `${creds.token_type} ${creds.access_token}`
-            }
-        })
-            .then(function(res) {
+        axios.post(
+                `/api/v1/kain/${prevKode}/edit`,
+                editedKain,
+                { headers: General.getHeaders() }
+            ).then(function(res) {
                 General.resetElementsField([
                     { selector: '#nama2', type: 'text' },
                     { selector: '#warna2', type: 'text' },
@@ -92,8 +85,7 @@ $(function() {
                 $("#modal_edit_kain").modal('toggle')
                 General.showToast("success", res.data.message)
                 datatable.ajax.reload()
-            })
-            .catch(function(err) {
+            }).catch(function(err) {
                 General.showToast("error", err.message)
             })
     })
@@ -110,7 +102,7 @@ $(function() {
                 const kode = datatable.row($(this).parent().parent()).data().kode
                 const url =`/api/v1/kain/${kode}/detail`
 
-                axios.get(url)
+                axios.get(url, { headers: General.getHeaders() })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(renderDetail(data)).show()
@@ -120,28 +112,12 @@ $(function() {
                         console.log('Error : ', error.response.data)
                     })
             }
-
-            // refaktor to show inline table data detail
-            // axios.get(url)
-            //     .then(function(res) {
-                    
-            //         $("#dt_kode").html(res.data.data.kode)
-            //         $("#dt_nama").html(res.data.data.nama)
-            //         $("#dt_warna").html(res.data.data.warna)
-            //         $("#dt_created_at").html(General.convertToReadableFormat(res.data.data.created_at))
-            //         $("#dt_updated_at").html(General.convertToReadableFormat(res.data.data.updated_at))
-            //         $("#dt_used_count").html(res.data.data.bahan.length > 0 ? `Digunakan oleh <a href="#">${res.data.data.bahan.length} bahan</a>` : "Belum ada bahan yang pakai.")
-            //         $("#modal_show_jenis_bahan").modal('toggle')
-            //     })
-            //     .catch(function(err) {
-            //         console.log(err)
-            //     })
         });
 
         $("#list_kain tbody").on("click", "tr button.btn-info", function() {
             const kode = datatable.row($(this).parent().parent()).data().kode
 
-            axios.get(`/api/v1/kain/${kode}`)
+            axios.get(`/api/v1/kain/${kode}`, { headers: General.getHeaders() })
                 .then(function(res) {
                     $("#kode2").val(res.data.data.kode)
                     $("#nama2").val(res.data.data.nama)
@@ -158,7 +134,7 @@ $(function() {
             if (result) {
                 const kode = datatable.row($(this).parent().parent()).data().kode
                 
-                axios.post(`/api/v1/kain/${kode}/remove`)
+                axios.post(`/api/v1/kain/${kode}/remove`, {}, { headers: General.getHeaders() })
                     .then(function(res) {
                         General.showToast("success", res.data.message)
                         datatable.ajax.reload()

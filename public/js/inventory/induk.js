@@ -5,35 +5,11 @@ $(function() {
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        // ajax: function(data, callback, settings) {
-        //     axios.get(routeList)
-        //         .then(function(res) {
-        //             const allInduk = []
-        //             res.data.data.forEach(function(induk, index) {
-        //                 const modelInduk = new ModelInduk(
-        //                     induk.kode,
-        //                     induk.harga_jahit,
-        //                     induk.harga_basic,
-        //                     induk.hpp_shopee,
-        //                     induk.hpp_lazada,
-        //                     induk.dfs_shopee,
-        //                     induk.dfs_lazada,
-        //                     induk.created_at,
-        //                     induk.updated_at
-        //                 )
-        //                 modelInduk.setNumbering(index + 1)
-        //                 allInduk.push(modelInduk.getUIData())
-        //             })
-        //             const dataInduk = {
-        //                 data: allInduk
-        //             }
-        //             callback(dataInduk)
-        //         })
-        //         .catch(function(err) {
-        //             console.log(err)
-        //         })
-        // },
-        ajax: '/api/v1/induk',
+        ajax: {
+            url: '/api/v1/induk',
+            type: 'GET',
+            headers: General.getHeaders() 
+        },
         columns: [
             { data: 'kode' },
             { 
@@ -83,7 +59,7 @@ $(function() {
             dfs_lazada: General.removeRupiah($('#dfs_lazada').val())
         }
 
-        axios.post('/api/v1/induk', newInduk)
+        axios.post('/api/v1/induk', newInduk, { headers: General.getHeaders()  })
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#kode', type: 'text' },
@@ -116,25 +92,26 @@ $(function() {
         }
         const kode = $('#kodes2').val()
 
-        axios.post(`/api/v1/induk/${kode}/edit`, editedInduk)
-            .then(function(res) {
-                General.resetElementsField([
-                    { selector: '#kodes2', type: 'text' },
-                    { selector: '#kode2', type: 'text' },
-                    { selector: '#harga_jahit2', type: 'text' },
-                    { selector: '#harga_basic2', type: 'text' },
-                    { selector: '#hpp_shopee2', type: 'text' },
-                    { selector: '#dfs_shopee2', type: 'text' },
-                    { selector: '#hpp_lazada2', type: 'text' },
-                    { selector: '#dfs_lazada2', type: 'text' },
-                ])
-                $('#modal_edit_induk').modal('toggle')
-                General.showToast('success', res.data.message)
-                datatable.ajax.reload()
-            })
-            .catch(function(err) {
-                console.log(err)
-            })
+        axios.post(`/api/v1/induk/${kode}/edit`, editedInduk, {
+            headers: General.getHeaders()
+        }).then(function(res) {
+            General.resetElementsField([
+                { selector: '#kodes2', type: 'text' },
+                { selector: '#kode2', type: 'text' },
+                { selector: '#harga_jahit2', type: 'text' },
+                { selector: '#harga_basic2', type: 'text' },
+                { selector: '#hpp_shopee2', type: 'text' },
+                { selector: '#dfs_shopee2', type: 'text' },
+                { selector: '#hpp_lazada2', type: 'text' },
+                { selector: '#dfs_lazada2', type: 'text' },
+            ])
+            $('#modal_edit_induk').modal('toggle')
+            General.showToast('success', res.data.message)
+            datatable.ajax.reload()
+        })
+        .catch(function(err) {
+            console.log(err)
+        })
     })
 
     function handleButtonsClick() {
@@ -149,7 +126,7 @@ $(function() {
             } else {
                 const kode = datatable.row($(this).parent()).data().kode
 
-                axios.get(`/api/v1/induk/${kode}/detail`)
+                axios.get(`/api/v1/induk/${kode}/detail`, { headers: General.getHeaders() })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(renderDetail(data)).show()
@@ -164,7 +141,7 @@ $(function() {
         $('#list_induk tbody').on('click', 'tr button.btn-info', function(e) {
             const kode = datatable.row($(this).parent()).data().kode
 
-            axios.get(`/api/v1/induk/${kode}`)
+            axios.get(`/api/v1/induk/${kode}`, { headers: General.getHeaders() })
                 .then(function(res) {
                     $('#kodes2').val(`${res.data.data.kode}`)
                     $('#kode2').val(`${res.data.data.kode}`)
@@ -186,7 +163,7 @@ $(function() {
             if (result) {
                 const kode = datatable.row($(this).parent().parent()).data().kode
 
-                axios.post(`/api/v1/induk/${kode}/remove`)
+                axios.post(`/api/v1/induk/${kode}/remove`, null, { headers: General.getHeaders() })
                     .then(function(res) {
                         General.showToast('success', res.data.message)
                         datatable.ajax.reload()

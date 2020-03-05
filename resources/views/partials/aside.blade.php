@@ -14,7 +14,7 @@
         <img src="{{ asset('admin-lte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-        <a href="#" class="d-block">Admin</a>
+            <a href="#" class="d-block">Admin</a>
         </div>
     </div>
 
@@ -39,13 +39,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('transaksi_kain') }}" class="nav-link {{ Request::is('inventory/bahan') ? 'active' : '' }}">
+                    <a href="{{ route('transaksi_kain') }}" class="nav-link {{ Request::is('inventory/transaksi_kain') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Transaksi Kain</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('kain') }}" class="nav-link {{ Request::is('inventory/jenis/bahan') ? 'active' : '' }}">
+                    <a href="{{ route('kain') }}" class="nav-link {{ Request::is('inventory/kain') ? 'active' : '' }}">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Kain</p>
                     </a>

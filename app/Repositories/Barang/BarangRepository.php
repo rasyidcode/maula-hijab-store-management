@@ -110,19 +110,21 @@ class BarangRepository implements BarangRepositoryInterface {
     public function allWithOnProgress(string $start, string $length) : object {
         $start = intval($start);
         $length = intval($length);
-        $data = DB::table('barang')
-            ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
-            ->select(
-                'barang.*', 
-                DB::raw('(SUM(wos.pcs) - SUM(wos.jumlah_kembali)) as stok_on_progress'),
-                DB::raw('IF(barang.stok_ready > barang.treshold, "true", "false") as status_produksi')
-            )
-            ->groupBy('barang.kode')
+        // $data = DB::table('barang')
+        //     ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
+        //     ->select(
+        //         'barang.*',
+        //         DB::raw('(SUM(wos.pcs) - SUM(wos.jumlah_kembali)) as stok_on_progress'),
+        //         DB::raw('IF(barang.stok_ready > barang.treshold, "true", "false") as status_produksi')
+        //     )
+        //     ->groupBy('barang.kode')
+        //     ->skip($start)
+        //     ->take($length)
+        //     ->get();
+        $data = Barang::with('wos')
             ->skip($start)
             ->take($length)
             ->get();
-        
-        Log::debug($data);
 
         return $data;
     }

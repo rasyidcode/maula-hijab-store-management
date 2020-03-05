@@ -28,7 +28,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Barang</h3>
+                        <button type="button" class="btn btn-primary btn-sm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#modal_create_barang">
+                            <i class="fas fa-plus mr-3"></i>Tambah
+                        </button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -49,10 +51,6 @@
                             </thead>
                             <tbody></tbody>
                         </table>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-backdrop="static" data-keyboard="false" data-toggle="modal" data-target="#modal_create_barang"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->

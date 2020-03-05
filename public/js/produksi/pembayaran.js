@@ -7,7 +7,7 @@ $(function() {
                 let result = confirm('Bayar sekarang?')
                 if (result) {
                     const id = datatable.row($(this).parent().parent()).data().id
-                    axios.post(`/api/v1/wos/${id}/payment`)
+                    axios.post(`/api/v1/wos/${id}/payment`, null, { headers: General.getHeaders() })
                         .then(function(res) {
                             General.showToast('success', res.data.message)
                             datatable.ajax.reload()
@@ -20,7 +20,11 @@ $(function() {
             })
         },
         pageLength: 100,
-        ajax: '/api/v1/wos/payment/list',
+        ajax: {
+            url: '/api/v1/wos/payment/list',
+            type: 'GET',
+            headers: General.getHeaders()
+        },
         columns: [
             { data: "id", visible: false },
             {

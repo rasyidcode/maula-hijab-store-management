@@ -145,7 +145,7 @@ class KainRepository implements KainRepositoryInterface {
             $data = DB::table('kain')
                 ->select('warna')
                 ->groupBy('warna')
-                ->where('nama', '=', "{$nama}")
+                ->where('kode', 'like', "%{$nama}%")
                 ->get();
         } else {
             $data = DB::table('kain')

@@ -139,7 +139,7 @@ class IndukRepository implements IndukRepositoryInterface {
                 DB::raw('((dfs_shopee * 0.85) / 0.70) as ecer_shopee'),
                 DB::raw('(dfs_lazada * 0.97) as min_fs_lazada'),
                 DB::raw('(dfs_lazada * 0.85) as campaign_lazada'),
-                DB::raw('((dfs_lazada * 0.85) / 0.70) as ecer_lazada'),
+                DB::raw('((dfs_lazada * 0.85) / 0.70) as ecer_lazada')
             )
             ->where('kode', $kode)
             ->first();

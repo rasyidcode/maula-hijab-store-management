@@ -386,4 +386,15 @@ class General {
         moment.locale('id')
         $(datepicker).find('input').val(moment().format('DD/MM/YYYY HH.mm'))
     }
+
+    static getCreds() {
+        return JSON.parse(localStorage.getItem('creds'));
+    }
+
+    static getHeaders() {
+        const creds = this.getCreds()
+        return {
+            'Authorization': `${creds.token_type} ${creds.access_token}`
+        }
+    }
 }

@@ -4,7 +4,11 @@ $(function() {
             
         },
         pageLength: 100,
-        ajax: '/api/v1/penjualan/produk',
+        ajax: {
+            url: '/api/v1/penjualan/produk',
+            type: 'GET',
+            headers: General.getHeaders()
+        },
         columns: [
             { data: "id", visible: false },
             {

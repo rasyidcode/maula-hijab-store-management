@@ -28,7 +28,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">List Kain</h3>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_kain">
+                            <i class="fas fa-plus mr-3"></i>Tambah
+                        </button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -43,19 +45,7 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                            <!-- {{-- <tfoot>
-                                <tr>
-                                    <th>Kode Kain</th>
-                                    <th>Nama</th>
-                                    <th>Warna</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </tfoot> --}} -->
                         </table>
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer text-center">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_create_kain"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <!-- /.card -->

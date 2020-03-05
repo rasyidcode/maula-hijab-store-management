@@ -252,7 +252,7 @@ class PenjualanController extends Controller {
                         $dataProduk["nama_produk"] = $data["M"];
                         $dataProduk["no_referensi_sku"] = $data["M"];
                         $dataProduk["warna"] = $data["N"];
-                        $dataProduk["harga_asil"] = $this->rpToInteger($data["O"]);
+                        $dataProduk["harga_asli"] = $this->rpToInteger($data["O"]);
                         $dataProduk["harga_setelah_diskon"] = $this->rpToInteger($data["P"]);
                         $dataProduk["jumlah_pesanan"] = $data["Q"];
                         $dataProduk["total_harga_produk"] = $this->rpToInteger($data["R"]);
@@ -267,7 +267,7 @@ class PenjualanController extends Controller {
                             $dataProduk["nama_produk"] = $data["M"];
                             $dataProduk["no_referensi_sku"] = $data["M"];
                             $dataProduk["warna"] = $data["N"];
-                            $dataProduk["harga_asil"] = $this->rpToInteger($data["O"]);
+                            $dataProduk["harga_asli"] = $this->rpToInteger($data["O"]);
                             $dataProduk["harga_setelah_diskon"] = $this->rpToInteger($data["P"]);
                             $dataProduk["jumlah_pesanan"] = $data["Q"];
                             $dataProduk["total_harga_produk"] = $this->rpToInteger($data["R"]);

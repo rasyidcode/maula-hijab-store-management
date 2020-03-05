@@ -63,6 +63,32 @@
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+<!-- modal form take wos -->
+<div class="modal fade" id="modal_export_data">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Export Data</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form_export_data" role="form" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="file_data">Input Data File</label>
+                        <input id="file_data" type="file" class="form-control" placeholder="Format didukung: .csv, .xls, .xlsx" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom-js')

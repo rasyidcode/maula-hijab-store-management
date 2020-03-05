@@ -6,7 +6,11 @@ $(function() {
         initComplete: function(settings, json) {
             handleButtonsClick()
         },
-        ajax: '/api/v1/transaksi_kain',
+        ajax: {
+            url: '/api/v1/transaksi_kain',
+            type: 'GET',
+            headers: General.getHeaders()
+        },
         columns: [
             { data: 'id', visible: false },
             { 
@@ -75,7 +79,9 @@ $(function() {
             return
         }
         
-        axios.post('/api/v1/transaksi_kain', newTransaksiKain)
+        axios.post('/api/v1/transaksi_kain', newTransaksiKain, {
+            headers: General.getHeaders()
+        })
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#kode_kain', type: 'select' },
@@ -98,7 +104,9 @@ $(function() {
         General.resetDatePicker('#tanggal_masuk_picker')
 
         const route = "/api/v1/kain/get/kode"
-        axios.get(route)
+        axios.get(route, {
+            headers: General.getHeaders()
+        })
             .then(function(response) {
                 const dataKain = response.data.data
                 dataKain.forEach(function(kain) {
@@ -135,7 +143,9 @@ $(function() {
         const id = $('#id2').val()
         const route = `/api/v1/transaksi_kain/${id}/edit`
         
-        axios.post(route, editedTransaksiKain)
+        axios.post(route, editedTransaksiKain, {
+            headers: General.getHeaders()
+        })
             .then(function(res) {
                 General.resetElementsField([
                     { selector: '#kode_kain2', type: 'select' },
@@ -154,21 +164,23 @@ $(function() {
     /* handle modal edit transaksi_kain */
     $("#modal_edit_transaksi_kain").on("show.bs.modal", function(e) {
         /* TODO: load jenis bahan menggunakan filter Nama atau Warna kemudian tampilkan  */
-        General.resetSelect2('#kode_kain2')
-        General.resetDatePicker('#tanggal_masuk_picker2')
+        // General.resetSelect2('#kode_kain2')
+        // General.resetDatePicker('#tanggal_masuk_picker2')
 
-        const url = "/api/v1/kain/get/kode"
-        axios.get(url)
-            .then(function(response) {
-                const dataKain = response.data.data
-                dataKain.forEach(function(kain) {
-                    const option = new Option(kain.kode, kain.kode, false, false)
-                    $("#kode_kain2").append(option).trigger('change')
-                })
-            })
-            .catch(function(err) {
-                console.log(err)
-            })
+        // const url = "/api/v1/kain/get/kode"
+        // axios.get(url, {
+        //     headers: General.getHeaders()
+        // })
+        //     .then(function(response) {
+        //         const dataKain = response.data.data
+        //         dataKain.forEach(function(kain) {
+        //             const option = new Option(kain.kode, kain.kode, false, false)
+        //             $("#kode_kain2").append(option).trigger('change')
+        //         })
+        //     })
+        //     .catch(function(err) {
+        //         console.log(err)
+        //     })
     })
     /* handle modal tambah transaksi_kain closed */
     $('#modal_edit_transaksi_kain').on('hidden.bs.modal', function(e) {
@@ -191,7 +203,9 @@ $(function() {
                 const id = datatable.row($(this).parent().parent()).data().id
                 const url = `/api/v1/transaksi_kain/${id}/detail`
 
-                axios.get(url)
+                axios.get(url, {
+                    headers: General.getHeaders()
+                })
                     .then(function(res) {
                         const data = res.data.data
                         row.child(renderDetail(data)).show()
@@ -201,39 +215,41 @@ $(function() {
                         console.log('Error : ', error.response.data)
                     })
             }
-            // axios.get(url)
-            //     .then(function(res) {
-            //         moment.locale('id')
-            //         $("#dt_tanggal_masuk").html(General.convertToMomentFormat(res.data.data.tanggal_masuk))
-            //         $("#dt_kode").html(res.data.data.kode_jenis_bahan)
-            //         $("#dt_yard").html(res.data.data.yard)
-            //         $("#dt_harga").html(General.rupiahFormat(res.data.data.harga, ''))
-            //         $("#dt_value").html(General.rupiahFormat(res.data.data.value, ''))
-            //         $("#dt_status_potong").html(res.data.data.status_potong === 1 ? 'Sudah dipotong' : 'Belum dipotong')
-            //         $("#dt_created_at").html(General.convertToMomentFormat(res.data.data.created_at))
-            //         $("#dt_updated_at").html(General.convertToMomentFormat(res.data.data.updated_at))
-            //         $("#modal_show_bahan").modal('toggle')
-            //     })
-            //     .catch(function(err) {
-            //         console.log(err)
-            //     })
         })
         /* handle tombol edit */
         $('#list_transaksi_kain tbody').on('click', 'tr button.btn-info', function(e) {
             const id = datatable.row($(this).parent().parent()).data().id
-            const url = `/api/v1/transaksi_kain/${id}/detail`
 
-            axios.get(url)
+            General.resetSelect2('#kode_kain2')
+            General.resetDatePicker('#tanggal_masuk_picker2')
+
+            axios.get("/api/v1/kain/get/kode", {
+                headers: General.getHeaders()
+            })
                 .then(function(response) {
-                    $('#id2').val(response.data.data.id)
-                    setTimeout(function() {
-                        $("#kode_kain2").val(`${response.data.data.kode_kain}`).trigger('change')
-                    }, 250)
-                    $("#yard2").val(response.data.data.yard)
-                    $("#harga2").val(General.rupiahFormat(response.data.data.harga, ''))
-                    $("#tanggal_masuk_picker2").find('input').val(moment(new Date(response.data.data.tanggal_masuk)).format('DD/MM/YYYY HH.mm'))
-                    $("#modal_edit_transaksi_kain").modal('toggle')
+                    const dataKain = response.data.data
+                    dataKain.forEach(function(kain) {
+                        const option = new Option(kain.kode, kain.kode, false, false)
+                        $("#kode_kain2").append(option).trigger('change')
+                    })
 
+                    axios.get(`/api/v1/transaksi_kain/${id}/detail`, {
+                        headers: General.getHeaders()
+                    })
+                        .then(function(response) {
+                            $('#id2').val(response.data.data.id)
+                            setTimeout(function() {
+                                $("#kode_kain2").val(`${response.data.data.kode_kain}`).trigger('change')
+                            }, 250)
+                            $("#yard2").val(response.data.data.yard)
+                            $("#harga2").val(General.rupiahFormat(response.data.data.harga, ''))
+                            $("#tanggal_masuk_picker2").find('input').val(moment(new Date(response.data.data.tanggal_masuk)).format('DD/MM/YYYY HH.mm'))
+                            $("#modal_edit_transaksi_kain").modal('toggle')
+        
+                        })
+                        .catch(function(err) {
+                            console.log(err)
+                        })
                 })
                 .catch(function(err) {
                     console.log(err)
@@ -246,7 +262,9 @@ $(function() {
                 const id = datatable.row($(this).parent().parent()).data().id
                 const url = window.location.origin + `/api/v1/transaksi_kain/${id}/remove`
                 
-                axios.post(url)
+                axios.post(url, null, {
+                    headers: General.getHeaders()
+                })
                     .then(function(res) {
                         General.showToast('success', res.data.message)
                         datatable.ajax.reload()
