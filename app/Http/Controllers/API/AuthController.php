@@ -57,8 +57,8 @@ class AuthController extends Controller {
         $tokenResult = $user->createToken('MaulaHijab-Inventory');
         $token = $tokenResult->token;
 
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
+        // if ($request->remember_me)
+        $token->expires_at = Carbon::now()->addWeeks(1);
 
         $token->save();
 

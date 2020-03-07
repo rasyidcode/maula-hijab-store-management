@@ -60,7 +60,6 @@ $(function() {
                 }
             })
     })
-
     /* handle form edit jenis_bahan */
     $("#form_edit_kain").submit(function(e) {
         e.preventDefault()
@@ -88,6 +87,10 @@ $(function() {
             }).catch(function(err) {
                 General.showToast("error", err.message)
             })
+    })
+    /* modal form tambah kain */
+    $("#modal_create_kain").submit(function(e) {
+        
     })
 
     function handleButtonsClick() {

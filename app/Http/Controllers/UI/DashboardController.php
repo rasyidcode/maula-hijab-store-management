@@ -43,4 +43,8 @@ class DashboardController extends Controller
         return view('pages.penjualan.produk');
     }
 
+    public function settings() {
+        return view('pages.settings.index');
+    }
+
 }

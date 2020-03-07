@@ -13,6 +13,8 @@ use App\Repositories\Induk\IndukRepositoryInterface as IndukRepo;
 use App\Repositories\Barang\BarangRepositoryInterface as BarangRepo;
 use App\Repositories\Penjahit\PenjahitRepositoryInterface as PenjahitRepo;
 use App\Repositories\Wos\WosRepositoryInterface as WosRepo;
+use App\Repositories\Warna\WarnaRepositoryInterface as WarnaRepo;
+use App\Repositories\Bahan\BahanRepositoryInterface as BahanRepo;
 
 class GeneralHelper {
 
@@ -40,6 +42,20 @@ class GeneralHelper {
             'data' => $data,
             'request' => $request->all()
         ]);
+    }
+
+    public static function isBahanExist(BahanRepo $bahanRepo, int $id) {
+        $checkData = $bahanRepo->get($id);
+        if ($checkData == null) {
+            throw new \App\Exceptions\BahanNotFoundException;
+        }
+    }
+
+    public static function isWarnaExist(WarnaRepo $warnaRepo, int $id) {
+        $checkData = $warnaRepo->get($id);
+        if ($checkData == null) {
+            throw new \App\Exceptions\WarnaNotFoundException;
+        }
     }
 
     public static function isKainExist(KainRepo $kainRepo, string $kode) {

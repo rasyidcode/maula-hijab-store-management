@@ -4,6 +4,50 @@ namespace App\Http\Controllers\Helper;
 
 class ValidatorHelper {
 
+    public static function rulesWarna(bool $isCreate = true) : array {
+        return [
+            'name' => $isCreate ? 'required|string|unique:warna' : 'required|string',
+            'hex_code' => 'string'
+        ];
+    }
+
+    public static function messageWarna(bool $isCreate = true) : array {
+        return $isCreate ? 
+            [
+                'name.required' => 'Nama tidak boleh kosong!',
+                'name.string' => 'Nama harus berupa string!',
+                'name.unique' => 'Warna sudah ada, coba yang lain!',
+                'hex_code.string' => 'Hex code harus berupa string!',
+            ]
+            :
+            [
+                'name.required' => 'Nama tidak boleh kosong!',
+                'name.string' => 'Nama harus berupa string!',
+                'hex_code.string' => 'Hex code harus berupa string!'
+            ];
+    }
+
+    public static function rulesBahan(bool $isCreate = true) : array {
+        return [
+                'nama' => $isCreate ? 'required|string|unique:bahan' : 'required|string',
+                'deskripsi' => 'string'
+            ];
+    }
+
+    public static function messageBahan(bool $isCreate = true) : array {
+        return $isCreate ?
+            [
+                'nama.required' => 'Nama tidak boleh kosong!',
+                'nama.string' => 'Nama harus berupa string!',
+                'nama.unique' => 'Nama sudah digunakan!',
+                'deskripsi.string' => 'Deskripsi harus berupa string'
+            ] : [
+                'nama.required' => 'Nama tidak boleh kosong!',
+                'nama.string' => 'Nama harus berupa string!',
+                'deskripsi.string' => 'Deskripsi harus berupa string'
+            ];
+    }
+
     public static function rulesKain(bool $isCreate) : array {
         return [
             'kode' => $isCreate ? 'required|unique:kain' : 'required',

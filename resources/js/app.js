@@ -4,6 +4,7 @@
  * application frontend using useful Laravel and JavaScript libraries.
  */
 
-require('./bootstrap');
+require('./bootstrap')
+// require('./settings')
 // require('moment')
 // require('tempusdominus-bootstrap-4')

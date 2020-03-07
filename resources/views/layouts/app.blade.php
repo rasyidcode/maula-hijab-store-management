@@ -9,8 +9,23 @@
     <title>Dashboard - @yield('title')</title>
 
     <script>
-    if (localStorage.getItem("creds") == null) {
-        window.location.replace('/login')
+    const creds = localStorage.getItem("creds")
+
+    isStillValid(creds).then(function(isValid) {
+        if (creds == null && !isValid) {
+            window.location.replace('/login')
+        }
+    })
+
+    async function isStillValid(credential) {
+        const token = JSON.parse(credential)
+
+        try {
+            const { data } = axios.get('/api/v1/test', { headers: { 'Authorization': `${token.token_type} ${token.access_token}` } })
+            return true
+        } catch(e) {
+            return false
+        }
     }
     </script>
 
@@ -28,6 +43,8 @@
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Google Font: Source Sans Pro -->
@@ -79,14 +96,15 @@
     <script src="{{ asset('admin-lte/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- SweetAlert2 -->
     <script src="{{ asset('admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- bootstrap color picker -->
+    <script src="{{ asset('admin-lte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
     <!-- custom js adminlte -->
     @yield('custom-js-adminlte')
     <!-- AdminLTE App -->
     <script src="{{ asset('admin-lte/dist/js/adminlte.min.js') }}"></script>
 
-    @yield('custom-js')
     <script src="{{ asset('js/general.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    
+    @yield('custom-js')    
 </body>
 </html>

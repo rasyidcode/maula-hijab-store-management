@@ -67,13 +67,23 @@
             </div>
             <form id="form_create_kain" role="form">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input id="nama" type="text" class="form-control" placeholder="Ex : Diamond" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="warna">Warna</label>
-                        <input id="warna" type="text" class="form-control" placeholder="Ex : Merah" required>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="nama_bahan">Nama</label>
+                                <select id="nama_bahan" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="warna_bahan">Warna</label>
+                                <select id="warna_bahan" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -87,38 +97,6 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
-<!-- <div class="modal fade" id="modal_show_jenis_bahan">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Detail jenis bahan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <dl class="row">
-                    <dt class="col-sm-4">Kode</dt>
-                        <dd id="dt_kode" class="col-sm-8">Test</dd>
-                    <dt class="col-sm-4">Nama</dt>
-                        <dd id="dt_nama" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Warna</dt>
-                        <dd id="dt_warna" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Tanggal dibuat</dt>
-                        <dd id="dt_created_at" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Tanggal diupdate</dt>
-                        <dd id="dt_updated_at" class="col-sm-8"></dd>
-                    <dt class="col-sm-4">Jumlah digunakan</dt>
-                        <dd id="dt_used_count" class="col-sm-8"></dd>
-                </dl>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <div class="modal fade" id="modal_edit_kain">
     <div class="modal-dialog modal-md">
@@ -158,4 +136,10 @@
 @section('custom-js')
 <script src="{{ asset('js/models/model_kain.js') }}"></script>
 <script src="{{ asset('js/inventory/kain.js') }}"></script>
+<script>
+$(function() {
+    $('#nama_bahan').select2({ theme: 'bootstrap4' })
+    $('#warna_bahan').select2({ theme: 'bootstrap4' })
+})
+</script>
 @endsection

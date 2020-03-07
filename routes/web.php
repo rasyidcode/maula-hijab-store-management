@@ -40,3 +40,5 @@ Route::group(['prefix' => 'penjualan'], function() {
     Route::get('/pemesanan', 'UI\DashboardController@pemesanan')->name('pemesanan');
     Route::get('/produk', 'UI\DashboardController@produk')->name('produk');
 });
+
+Route::get('/settings', 'UI\DashboardController@settings')->name('settings');

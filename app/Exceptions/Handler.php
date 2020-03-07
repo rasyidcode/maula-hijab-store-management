@@ -73,6 +73,10 @@ class Handler extends ExceptionHandler
             return $exception->render($request);
         } else if ($exception instanceof App\Exceptions\WosNotFoundException) {
             return $exception->render($request);
+        } else if ($exception instanceof App\Exceptions\WarnaNotFoundException) {
+            return $exception->render($request);
+        } else if ($exception instanceof App\Exceptions\BahanNotFoundException) {
+            return $exception->render($request);
         }
 
         return parent::render($request, $exception);

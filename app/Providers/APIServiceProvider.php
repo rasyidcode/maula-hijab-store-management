@@ -40,6 +40,14 @@ class APIServiceProvider extends ServiceProvider
             'App\Repositories\Wos\WosRepositoryInterface',
             'App\Repositories\Wos\WosRepository'
         );
+        $this->app->bind(
+            'App\Repositories\Warna\WarnaRepositoryInterface',
+            'App\Repositories\Warna\WarnaRepository'
+        );
+        $this->app->bind(
+            'App\Repositories\Bahan\BahanRepositoryInterface',
+            'App\Repositories\Bahan\BahanRepository'
+        );
         // $this->app->bind(
         //     'App\Repositories\LoggerCrud\LoggerCrudRepositoryInterface',
         //     'App\Repositories\LoggerCrud\LoggerCrudRepository'

@@ -19310,7 +19310,8 @@ module.exports = function(module) {
  * dependencies. Then, we will be ready to develop a robust and powerful
  * application frontend using useful Laravel and JavaScript libraries.
  */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('moment')
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // require('./settings')
+// require('moment')
 // require('tempusdominus-bootstrap-4')
 
 /***/ }),
@@ -19378,8 +19379,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\my-work\side-work\abcode\MaulaHijabWeb\maulahijab-management\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\my-work\side-work\abcode\MaulaHijabWeb\maulahijab-management\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/jamilchan/jamil/MaulaHijab-PersediaanDanPenjahit/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/jamilchan/jamil/MaulaHijab-PersediaanDanPenjahit/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

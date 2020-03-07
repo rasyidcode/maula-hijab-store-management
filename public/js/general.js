@@ -373,6 +373,8 @@ class General {
             } else if (item.type === 'datetimepicker') {
                 moment.locale('id')
                 $(item.selector).find('input').val(moment().format('DD/MM/YYYY HH.mm'))
+            } else if (item.type === 'textarea') {
+                $(item.selector).html('')
             }
         })
     }

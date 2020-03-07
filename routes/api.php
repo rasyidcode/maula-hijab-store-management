@@ -20,6 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function() {
     
     Route::group(['middleware' => 'auth:api'], function() {
+        /* check token */
+        Route::get('/test', function() {
+            return response()->json([
+                "valid" => true
+            ]);
+        });
+
         /* kain */
         Route::group(['prefix' => 'kain'], function() {
             Route::get('/', 'API\KainController@index'); // worked
@@ -119,8 +126,29 @@ Route::group(['prefix' => 'v1'], function() {
             Route::get('/produk', 'API\PenjualanController@produk');
         });
 
+        /* warna */
+        Route::group(['prefix' => 'warna'], function() {
+            Route::get('/', 'API\WarnaController@index');
+            Route::get('/{id}', 'API\WarnaController@get');
+            Route::post('/', 'API\WarnaController@create');
+            Route::post('/{id}/edit', 'API\WarnaController@edit');
+            Route::post('/{id}/remove', 'API\WarnaController@remove');
+            Route::get('/all/paginate', 'API\WarnaController@paginate');
+        });
+
+        /* bahan */
+        Route::group(['prefix' => 'bahan'], function() {
+            Route::get('/', 'API\BahanController@index');
+            Route::get('/{id}', 'API\BahanController@get');
+            Route::post('/', 'API\BahanController@create');
+            Route::post('/{id}/edit', 'API\BahanController@edit');
+            Route::post('/{id}/remove', 'API\BahanController@remove');
+            Route::get('/all/paginate', 'API\BahanController@paginate');
+        });
+
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+
     });
 
     Route::post('/login', 'API\AuthController@login');
