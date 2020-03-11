@@ -1343,7 +1343,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/jamilchan/jamil/MaulaHijab-PersediaanDanPenjahit/resources/js/settings.js */"./resources/js/settings.js");
+module.exports = __webpack_require__(/*! D:\my-work\side-work\abcode\MaulaHijabWeb\maulahijab-management\resources\js\settings.js */"./resources/js/settings.js");
 
 
 /***/ })

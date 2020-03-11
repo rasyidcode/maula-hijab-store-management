@@ -146,6 +146,13 @@ Route::group(['prefix' => 'v1'], function() {
             Route::get('/all/paginate', 'API\BahanController@paginate');
         });
 
+        /* laporan */
+        Route::group(['prefix' => 'laporan'], function() {
+            Route::get('/transaksi_kain', 'API\LaporanController@transaksi_kain');
+            Route::get('/barang', 'API\LaporanController@barang');
+            // Route::get('/wos', 'API\LaporanCOntroller@wos');
+        });
+
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
 

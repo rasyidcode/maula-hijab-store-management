@@ -29,24 +29,23 @@ $(function() {
             }
         ]
     })
-
-    /* handle form tambah kain */
     $("#form_create_kain").submit(function(e) {
         e.preventDefault()
+        const namaBahan = $("#nama_bahan").find(':selected').val()
+        const warnaBahan = $("#warna_bahan").find(':selected').val()
 
-        const kode = General.spaceRemover($("#nama").val()) + "-" + General.spaceRemover($("#warna").val())
+        const kode = General.spaceRemover(namaBahan) + "-" + General.spaceRemover(warnaBahan)
         const newKain = {
             kode: kode,
-            nama: $("#nama").val(),
-            warna: $("#warna").val(),
+            nama: namaBahan,
+            warna: warnaBahan,
         }
-        axios.post('/api/v1/kain', newKain, {
-            headers: General.getHeaders()
-        })
+
+        axios.post('/api/v1/kain', newKain, { headers: General.getHeaders()})
             .then(function(res) {
                 General.resetElementsField([
-                    { selector: '#nama', type: 'text' },
-                    { selector: '#warna', type: 'text' },
+                    { selector: '#nama_bahan', type: 'select' },
+                    { selector: '#warna_bahan', type: 'select' },
                 ])
                 $("#modal_create_kain").modal('toggle')
                 General.showToast("success", res.data.message)
@@ -60,7 +59,6 @@ $(function() {
                 }
             })
     })
-    /* handle form edit jenis_bahan */
     $("#form_edit_kain").submit(function(e) {
         e.preventDefault()
 
@@ -88,9 +86,73 @@ $(function() {
                 General.showToast("error", err.message)
             })
     })
-    /* modal form tambah kain */
-    $("#modal_create_kain").submit(function(e) {
-        
+    $("#modal_create_kain").on('show.bs.modal', function(e) {
+        General.resetSelect2('#nama_bahan')
+        General.resetSelect2('#warna_bahan')
+
+        axios.get('/api/v1/bahan', { headers: General.getHeaders() })
+            .then(function(res) {
+                const dataBahan = res.data.data
+
+                dataBahan.forEach(function(bahan) {
+                    const option = new Option(`${bahan.nama}`, `${bahan.nama}`, false, false)
+                    $('#nama_bahan').append(option).trigger('change')
+                })
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+
+        axios.get('/api/v1/warna', { headers: General.getHeaders() })
+            .then(function(res) {
+                const dataWarna = res.data.data
+
+                dataWarna.forEach(function(warna) {
+                    const option = new Option(`${warna.name}`, `${warna.name}`, false, false)
+                    $('#warna_bahan').append(option).trigger('change')
+                })
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+    })
+    $('#modal_create_kain').on('hidden.bs.modal', function(e) {
+        $('#nama_bahan').html('')
+        $('#warna_bahan').html('')
+    })
+    $("#modal_edit_kain").on('show.bs.modal', function(e) {
+        General.resetSelect2('#nama_bahan2')
+        General.resetSelect2('#warna_bahan2')
+
+        axios.get('/api/v1/bahan', { headers: General.getHeaders() })
+            .then(function(res) {
+                const dataBahan = res.data.data
+
+                dataBahan.forEach(function(bahan) {
+                    const option = new Option(`${bahan.nama}`, `${bahan.nama}`, false, false)
+                    $('#nama_bahan2').append(option).trigger('change')
+                })
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+
+        axios.get('/api/v1/warna', { headers: General.getHeaders() })
+            .then(function(res) {
+                const dataWarna = res.data.data
+
+                dataWarna.forEach(function(warna) {
+                    const option = new Option(`${warna.name}`, `${warna.name}`, false, false)
+                    $('#warna_bahan2').append(option).trigger('change')
+                })
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+    })
+    $('#modal_edit_kain').on('hidden.bs.modal', function(e) {
+        $('#nama_bahan2').html('')
+        $('#warna_bahan2').html('')
     })
 
     function handleButtonsClick() {
@@ -122,9 +184,11 @@ $(function() {
 
             axios.get(`/api/v1/kain/${kode}`, { headers: General.getHeaders() })
                 .then(function(res) {
-                    $("#kode2").val(res.data.data.kode)
-                    $("#nama2").val(res.data.data.nama)
-                    $("#warna2").val(res.data.data.warna)
+                    $("#prev_kode").val(res.data.data.kode)
+                    setTimeout(function() {
+                        $("#nama_bahan2").val(`${res.data.data.nama}`).trigger('change')
+                        $("#warna_bahan2").val(`${res.data.data.warna}`).trigger('change')
+                    }, 1000)
                     $("#modal_edit_kain").modal('toggle')
                 })
                 .catch(function(err) {

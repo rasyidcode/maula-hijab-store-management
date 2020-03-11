@@ -104,4 +104,10 @@ interface TransaksiKainRepositoryInterface {
      */
     public function getYards(string $kodeKain) : object;
 
+    /**
+     * method untuk mendapatkan laporan `transaksi_kain`
+     * @return object
+     */
+    public function laporan() : object;
+
 }

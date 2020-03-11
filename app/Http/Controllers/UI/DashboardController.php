@@ -47,4 +47,8 @@ class DashboardController extends Controller
         return view('pages.settings.index');
     }
 
+    public function dashboard() {
+        return view('pages.dashboard');
+    }
+
 }

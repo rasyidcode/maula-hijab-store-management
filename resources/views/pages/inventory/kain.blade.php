@@ -108,15 +108,25 @@
                 </button>
             </div>
             <form id="form_edit_kain" role="form">
+                <input id="prev_kode" type="hidden">
                 <div class="modal-body">
-                    <input id="kode2" type="hidden" type="text">
-                    <div class="form-group">
-                        <label for="nama2">Nama</label>
-                        <input id="nama2" type="text" class="form-control" placeholder="Ex : Diamond" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="warna2">Warna</label>
-                        <input id="warna2" type="text" class="form-control" placeholder="Ex : Merah" required>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="nama_bahan2">Nama</label>
+                                <select id="nama_bahan2" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="warna_bahan2">Warna</label>
+                                <select id="warna_bahan2" class="form-control" style="width: 100%;">
+                                    <option value="0">Pilih</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -140,6 +150,9 @@
 $(function() {
     $('#nama_bahan').select2({ theme: 'bootstrap4' })
     $('#warna_bahan').select2({ theme: 'bootstrap4' })
+
+    $('#nama_bahan2').select2({ theme: 'bootstrap4' })
+    $('#warna_bahan2').select2({ theme: 'bootstrap4' })
 })
 </script>
 @endsection

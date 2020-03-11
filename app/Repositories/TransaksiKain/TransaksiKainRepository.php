@@ -176,4 +176,16 @@ class TransaksiKainRepository implements TransaksiKainRepositoryInterface {
         
         return $data;
     }
+
+    /**
+     * method untuk mendapatkan laporan `transaksi_kain`
+     * @return object
+     */
+    public function laporan() : object {
+        $data = TransaksiKain::groupBy('kode_kain')
+            ->selectRaw('kode_kain, cast(sum(yard) as int) as total_yard , cast(sum(value) as int) as total_value')
+            ->get();
+
+        return $data;
+    }
 }

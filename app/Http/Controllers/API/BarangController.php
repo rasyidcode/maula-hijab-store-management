@@ -100,39 +100,39 @@ class BarangController extends Controller {
     }
 
     public function allWithOnProgress(Request $request) {
-        $countWos = $this->wos->countRecords();
         $search = $request->search;
         $columns = $request->columns;
         $start = $request->start;
         $length = $request->length;
 
-        if ($countWos > 0) {
-            $allData = $this->barang->allWithOnProgress($start, $length);
-            $totalRecords = $this->barang->countRecords();
-            $totalFilteredRecords = $totalRecords;
+        $allData = $this->barang->allWithOnProgress($start, $length);
+        $totalRecords = $this->barang->countRecords();
+        $totalFilteredRecords = $totalRecords;
 
-            if ($request->has('search') && $search['value'] != '') {
-                $searchVal = $search['value'];
+        if ($request->has('search') && $search['value'] != '') {
+            $searchVal = $search['value'];
 
-                $filteredData = $this->barang->filterAll($columns, $searchVal, $start, $length);
-                return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
-            }
-
-            return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
-        } else {
-            $allData = $this->barang->allNoWos();
-            $totalRecords = $this->barang->countRecords();
-            $totalFilteredRecords = $totalRecords;
-
-            if ($request->has('search') && $search['value'] != '') {
-                $searchVal = $search['value'];
-
-                $filteredData = $this->barang->filterAllNoWos($columns, $searchVal, $start, $length);
-                return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
-            }
-            
-            return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+            $filteredData = $this->barang->filterAll($columns, $searchVal, $start, $length);
+            return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
         }
+
+        return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+        // if ($countWos > 0) {
+            
+        // } else {
+        //     $allData = $this->barang->allNoWos();
+        //     $totalRecords = $this->barang->countRecords();
+        //     $totalFilteredRecords = $totalRecords;
+
+        //     if ($request->has('search') && $search['value'] != '') {
+        //         $searchVal = $search['value'];
+
+        //         $filteredData = $this->barang->filterAllNoWos($columns, $searchVal, $start, $length);
+        //         return Helper::send_datatable_response($request, $totalRecords, count($filteredData), $filteredData);
+        //     }
+            
+        //     return Helper::send_datatable_response($request, $totalRecords, $totalFilteredRecords, $allData);
+        // }
     }
 
     public function oneWithOnProgress(string $kode) {

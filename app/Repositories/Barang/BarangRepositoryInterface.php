@@ -130,4 +130,10 @@ interface BarangRepositoryInterface {
      * @return object
      */
     public function addStok(string $kode, int $jumlah) : object;
+
+    /**
+     * method untuk mendapatkan laporan `barang`
+     * @return object
+     */
+    public function laporan() : object;
 }

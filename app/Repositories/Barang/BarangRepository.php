@@ -121,7 +121,8 @@ class BarangRepository implements BarangRepositoryInterface {
         //     ->skip($start)
         //     ->take($length)
         //     ->get();
-        $data = Barang::with('wos')
+        $data = Barang::latest()
+            ->with('wos')
             ->skip($start)
             ->take($length)
             ->get();
@@ -268,22 +269,27 @@ class BarangRepository implements BarangRepositoryInterface {
      * @return object
      */
     public function detail(string $kode) : object {
-        $data = DB::table('barang')
-            ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
-            ->select(
-                'barang.*',
-                DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'),
-                DB::raw('count(wos.id) as jumlah_wos'),
-                DB::raw('IF(barang.stok_ready > barang.treshold, "true", "false") as status_produksi')
-            )
-            ->where('wos.kode_barang', '=', $kode)
-            ->groupBy('barang.kode')
-            ->first();
+        // $data = DB::table('barang')
+        //     ->join('wos', 'barang.kode', '=', 'wos.kode_barang')
+        //     ->select(
+        //         'barang.*',
+        //         DB::raw('(SUM(pcs) - SUM(jumlah_kembali)) as stok_on_progress'),
+        //         DB::raw('count(wos.id) as jumlah_wos'),
+        //         DB::raw('IF(barang.stok_ready > barang.treshold, "true", "false") as status_produksi')
+        //     )
+        //     ->where('wos.kode_barang', '=', $kode)
+        //     ->groupBy('barang.kode')
+        //     ->first();
 
-        if ($data == null) {
-            $data = $this->oneNoWos($kode);
-            $data->jumlah_wos = 0;
-        }
+        // if ($data == null) {
+        //     $data = $this->oneNoWos($kode);
+        //     $data->jumlah_wos = 0;
+        // }
+
+        $data = Barang::latest()
+            ->with('wos')
+            ->where('kode', $kode)
+            ->first();
         
         return $data;
     }
@@ -300,6 +306,18 @@ class BarangRepository implements BarangRepositoryInterface {
         $updatedStok = $this->get($kode);
         
         return $updatedStok;
+    }
+
+    /**
+     * method untuk mendapatkan laporan `barang`
+     * @return object
+     */
+    public function laporan() : object {
+        $data = Barang::latest()
+            ->with('induk')
+            ->with('wos')
+            ->get();
+        return $data;
     }
 
 }

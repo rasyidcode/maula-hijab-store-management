@@ -11,21 +11,26 @@
     <script>
     const creds = localStorage.getItem("creds")
 
-    isStillValid(creds).then(function(isValid) {
-        if (creds == null && !isValid) {
-            window.location.replace('/login')
-        }
-    })
+    if (creds) {
+        checkToken(creds)
+    } else {
+        localStorage.clear()
+        window.location.replace('/login')
+    }
 
-    async function isStillValid(credential) {
+    function checkToken(credential) {
         const token = JSON.parse(credential)
+        const xhr = new XMLHttpRequest()
 
-        try {
-            const { data } = axios.get('/api/v1/test', { headers: { 'Authorization': `${token.token_type} ${token.access_token}` } })
-            return true
-        } catch(e) {
-            return false
+        xhr.onload = () => {
+            if (xhr.status != 200) {
+                localStorage.clear()
+                window.location.replace('/login')
+            }
         }
+        xhr.open('GET', '/api/v1/test')
+        xhr.setRequestHeader('Authorization', `${token.token_type} ${token.access_token}`)
+        xhr.send()
     }
     </script>
 
@@ -105,6 +110,14 @@
 
     <script src="{{ asset('js/general.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-    @yield('custom-js')    
+    @yield('custom-js')
+
+    <script>
+    $("#logout").click(function(e) {
+        e.preventDefault()
+        localStorage.clear()
+        window.location.replace('/login')
+    })
+    </script>
 </body>
 </html>
